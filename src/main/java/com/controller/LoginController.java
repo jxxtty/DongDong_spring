@@ -64,7 +64,7 @@ public class LoginController {
 
 		if (userid == null) {
 			model.addAttribute("mesg", "등록되지 않은  회원 정보");
-			return "redirect:/idSerach";
+			return "redirect:/idSearch";
 		} else {
 			// 이메일 전송
 			String host = "smtp.naver.com"; // 호스트 네이버 메일
@@ -103,7 +103,7 @@ public class LoginController {
 
 		if (userid == null) {
 			model.addAttribute("mesg", "등록되지 않은  회원 정보");
-			return "redirect:/idSerach";
+			return "redirect:/idSearch";
 		} else {
 			// 이메일 전송
 			String host = "smtp.naver.com"; // 호스트 네이버 메일

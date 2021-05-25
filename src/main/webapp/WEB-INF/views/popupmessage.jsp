@@ -26,7 +26,7 @@
     $(document).ready(function(){
     	//상대프로필보기
     	$("#user").click(function() {
-			location.href="../userprofile?nickName="+"${message[0].nickName}"+"&userImage="+"${message[0].userImage}"+"&saleCount="+"${saleCount}";
+			location.href="../userprofile?userid=${message[0].sUserid}";
 		})
     	
     	$("#chat").click(function() {

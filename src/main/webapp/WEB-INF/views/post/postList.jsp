@@ -162,17 +162,15 @@ for(int i=1;i<=list.size();i++){
 <script>
 $(document).ready(function(){ 
 	$("#card"+<%=pNum %>).on("click",function(){
-		location.href="PostDetailServlet?pNum=<%=pNum %>";
+		location.href="postDetail?pNum=<%=pNum %>";
 	})
-	/* document.getElementByid("#paginate previous").sytle.display="block"; */
-	
-	$("#page_nation a").on("click",function(){
+	/* $("#page_nation a").on("click",function(){
 		  if($(this).hasClass("active")){
 		    $(this).removeClass("active");
 		  }else{
 		    $(this).addClass("active");  
 		  }
-		});
+		}); */
 })
 </script>
 		

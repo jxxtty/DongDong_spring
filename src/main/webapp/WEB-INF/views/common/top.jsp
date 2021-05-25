@@ -8,15 +8,15 @@
 	<script type="text/javascript">
 			$(document).ready(function(){
 				$("#main").click(function() {
-					location.href="main";
+					location.href="/";
 				})
 				
 				$("#back").on("click", function() {
-					location.href ="main";
+					location.href ="/";
 				});
 				
 				$("#search").on("click", function(){
-					location.href="CategorySearchUIServlet";
+					location.href="categorySearch";
 				});
 				
 			    $("#keyword").keydown(function(e) {
