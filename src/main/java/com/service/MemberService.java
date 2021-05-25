@@ -10,6 +10,7 @@ import com.dto.MemberDTO;
 
 @Service
 public class MemberService {
+	
 	@Autowired
 	MemberDAO dao;
 	
@@ -23,9 +24,6 @@ public class MemberService {
 		 int n = dao.memberAdd(dto);
 		 return n;
 	}//end memberAdd
-	
-	
-	
 	
 	public MemberDTO login(HashMap<String, String> map) {
 		MemberDTO dto = dao.login(map);

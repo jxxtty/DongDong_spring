@@ -39,7 +39,7 @@ public class LoginController {
 	@RequestMapping(value = "/login")
 	public String login(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		MemberDTO dto = service.login(map);
-		System.out.println(map);
+		//System.out.println(map);
 		if (dto != null) {
 			session.setAttribute("login", dto);
 			return "redirect:/";

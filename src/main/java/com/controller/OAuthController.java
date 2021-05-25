@@ -11,6 +11,7 @@ import java.util.HashMap;
 import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -23,6 +24,8 @@ import com.service.MemberService;
 @Controller
 public class OAuthController {
 	
+	@Autowired
+	MemberService service;
 	
 	@RequestMapping(value = "/kakao")
 	public String kakaoLogin(String code, HttpSession session) {
@@ -92,7 +95,6 @@ public class OAuthController {
 			map.put("userid", userid);
 			map.put("passwd", passwd);
 			
-			MemberService service = new MemberService();
 			MemberDTO dto = service.login(map);
 			
 			if(dto != null) {
@@ -106,7 +108,7 @@ public class OAuthController {
 				session.setAttribute("login", newMem);
 			}
 			
-			return "redirect:/main";
+			return "redirect:/";
 			
 		} catch (Exception e) {
 			e.printStackTrace();
