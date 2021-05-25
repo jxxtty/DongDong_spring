@@ -27,7 +27,7 @@ public class LoginController {
 
 	@Autowired
 	MemberService service;
-
+	
 	@RequestMapping(value = "/loginCheck/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -123,7 +123,7 @@ public class LoginController {
 			sendMail(model, host, subject, from, fromName, to, content, mesg);
 		}
 		
-		return "redirect:/main";
+		return "redirect:/";
 	}
 
 	private void sendMail(Model model, String host, String subject, String from, String fromName, String to,
