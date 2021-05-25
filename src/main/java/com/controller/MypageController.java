@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -56,40 +57,28 @@ public class MypageController {
 	}//mypage
 	
 	@RequestMapping(value = "/loginCheck/MemberUpdate", produces = "text/plain;charset=UTF-8") 
-	public String memberUpdate(HttpServletRequest request, HttpSession session) throws IOException {
+	public String memberUpdate(String userid, String username, String resultNick,
+			String addr, String phone, String email1, String email2, HttpSession session,MultipartFile file) throws IOException {
 		MemberDTO mdto =(MemberDTO)session.getAttribute("login");
-		String path = "c://images/profile"; // 업로드할 위치
-		int maxSize = 1024*1024*10; //업로드 받을 최대 크기 -> 10mb
 		String enc = "UTF-8";
-		DefaultFileRenamePolicy policy = new DefaultFileRenamePolicy(); // 덮어씌우기 방지(같은이름방지)
-		MultipartRequest multi = new MultipartRequest(request,path,maxSize,enc,policy);
 		
 		// user가 프로필사진을 변경한 경우 새로운 이미지파일 이름을받아온다.
-		String fileName = multi.getFilesystemName("photo");
+		//String fileName = multi.getFilesystemName("photo");
 		//String originFileName = multi.getOriginalFileName("photo");
-		
+		String fileName = file.getOriginalFilename();
 		// 기존 이미지파일을 받아온다.
-		String basicFile = multi.getParameter("basic_photo");
 		
-		String userid = multi.getParameter("userid");
 		String passwd = mdto.getPasswd(); // mypage.jsp에서 넘겨주는 값이 없어서 dto에서 뽑아왔어요!(어차피 수정되는부분이아니라 null들어가도 상관없긴함)
-		String username = multi.getParameter("username");
-		
-		String nickName = multi.getParameter("resultNick");
-		String addr = multi.getParameter("addr");
-		String phone = multi.getParameter("phone");
-		String email1 = multi.getParameter("email1");
-		String email2 = multi.getParameter("email2");
 		String userImage = "";
 		if(fileName == null) {
 			// 새로들어온 파일이 없는경우 --> user가 프로필사진은 변경하지 않은경우
-			userImage = basicFile;
+			//userImage = basicFile;
 		} else {
 			// 새로들어온 파일이 있는경우 --> user가 프로필사진을 변경한 경우
 			userImage = fileName;
 		}
 		MemberDTO dto2 =
-				new MemberDTO(userid,passwd,username,nickName,
+				new MemberDTO(userid,passwd,username,resultNick,
 						addr,phone,email1,email2,userImage);
 		
 		mService.memberUpdate(dto2);
