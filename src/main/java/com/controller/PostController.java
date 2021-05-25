@@ -221,7 +221,7 @@ public class PostController {
 		} else { // 3일 이상이라면 끌올 가능
 			m.addAttribute("pullAvailable", "T");
 		}
-		return "../pullPost";
+		return "pullPost";
 	}
 	
 	@RequestMapping(value="/loginCheck/postPull", method=RequestMethod.POST)
