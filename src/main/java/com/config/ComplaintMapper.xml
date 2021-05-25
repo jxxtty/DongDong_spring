@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ComplaintMapper">
+	<insert id="insertComplaint" parameterType="ComplaintDTO">
+		INSERT 
+		INTO complaint(coNum, coType, coTarget, 
+					   userid, coContent, createDate)
+		VALUES (COMPLAINT_NUM.NEXTVAL, #{coType},#{coTarget},
+				#{userid},#{coContent},SYSDATE)
+	</insert>
+	
+	<select id="checkDuplication" parameterType="ComplaintDTO" resultType="ComplaintDTO">
+		SELECT *
+		FROM complaint
+		WHERE coTarget=#{coTarget} AND userid=#{userid}
+	</select>
+</mapper>
