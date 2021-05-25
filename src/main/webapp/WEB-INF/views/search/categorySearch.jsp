@@ -11,7 +11,7 @@
 				$(".sub_cate").css("cursor","pointer").on("click", function(e){
 					var v = $(this).find("input").val();
 					console.log(v);
-					location.href="CategorySearchServlet?category="+v;
+					location.href="categorySearch?category="+v;
 				});
 			});
 	</script>

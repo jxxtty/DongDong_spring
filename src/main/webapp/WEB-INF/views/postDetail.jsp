@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,15 +15,11 @@
 				});
 			});//end ready
 			
-			<%
-			String mesg = (String)session.getAttribute("mesg");
-			if(mesg != null){
-			%>
-				alert('<%=mesg %>');
-			<%
-				session.removeAttribute("mesg");
+			
+			<c:if test="${!empty mesg}">
+				alert("${mesg}");
 			}
-			%>
+			</c:if>
 
 		</script>
 		<link rel="preconnect" href="https://fonts.gstatic.com">

@@ -1,5 +1,7 @@
 <%@page import="com.dto.PostDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 <script type="text/javascript">
 		function readURL(input){
@@ -45,9 +47,6 @@
 			});
 		});
 </script>
-<%
-	PostDTO dto = (PostDTO)request.getAttribute("post");
-%>
 	<!-- Bootstrap css -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" 
 		integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
@@ -60,14 +59,14 @@
 	
 	<!-- Bootstrap js -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-	<form action="PostUpdateServlet" method="post" enctype="multipart/form-data">
-		<input type="hidden" id="pNum" name="pNum" value="<%=dto.getpNum()%>">
+	<form action="../loginCheck/postUpdate" method="post" enctype="multipart/form-data">
+		<input type="hidden" id="pNum" name="pNum" value="${postRetrieve.pNum}">
 		<!-- <input type="text" id="title" name="title" placeholder="상품명을 포함한 글 제목"> -->
 		<div class="row" >
 			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
     			<input type="text" name="pTitle" id="pTitle" class="form-control"
-    				aria-describedby="emailHelp" value="<%=dto.getpTitle()%>">
+    				aria-describedby="emailHelp" value="${postRetrieve.pTitle}">
   			</div>
   			<div class="col-md-3 col-sm-2"></div>
   		</div>
@@ -76,20 +75,20 @@
   			<div class="col-md-3 col-sm-2"></div>
 			<div class="col-md-6 col-sm-8 mb-3">
 				<select class="form-select" aria-label="Default select example" name="pCategory" id="pCategory">
-  					<option value="D" <%if(dto.getpCategory().equals("D")){%> Selected <%} %>>[Digital]: 디지털, 가전</option>
-  					<option value="H" <%if(dto.getpCategory().equals("H")){%> Selected <%} %>>[House]: 가구, 인테리어</option>
-  					<option value="BY" <%if(dto.getpCategory().equals("BY")){%> Selected <%} %>>[BABY]: 유아동</option>
-  					<option value="L" <%if(dto.getpCategory().equals("L")){%> Selected <%} %>>[Living]: 생활, 가공식품</option>
-  					<option value="S" <%if(dto.getpCategory().equals("S")){%> Selected <%} %>>[Sports]: 스포츠, 레저</option>
-  					<option value="W" <%if(dto.getpCategory().equals("W")){%> Selected <%} %>>[Woman]: 여성의류, 여성잡화</option>
-					<option value="M" <%if(dto.getpCategory().equals("M")){%> Selected <%} %>>[Man]: 남성의류, 남성잡화</option>
-					<option value="G" <%if(dto.getpCategory().equals("G")){%> Selected <%} %>>[Game]: 게임, 취미</option>
-					<option value="BT" <%if(dto.getpCategory().equals("BT")){%> Selected <%} %>>[Beauty]: 뷰티, 미용</option>
-					<option value="PET" <%if(dto.getpCategory().equals("PET")){%> Selected <%} %>>[Pet]: 반려동물 용품</option>
-					<option value="BK" <%if(dto.getpCategory().equals("BK")){%> Selected <%} %>>[Book]: 도서</option>
-					<option value="T" <%if(dto.getpCategory().equals("T")){%> Selected <%} %>>[Tickets]: 티켓</option>
-					<option value="P" <%if(dto.getpCategory().equals("P")){%> Selected <%} %>>[Plant]: 식물</option>
-					<option value="E" <%if(dto.getpCategory().equals("E")){%> Selected <%} %>>[ETC] : 기타</option>
+  					<option value="D" <c:if test="${postRetrieve.pCategory eq 'D'}">selected</c:if>>[Digital]: 디지털, 가전</option>
+  					<option value="H" <c:if test="${postRetrieve.pCategory  eq 'H'}">selected</c:if>>[House]: 가구, 인테리어</option>
+  					<option value="BY" <c:if test="${postRetrieve.pCategory  eq 'BY'}">selected</c:if>>[BABY]: 유아동</option>
+  					<option value="L" <c:if test="${postRetrieve.pCategory  eq 'L'}">selected</c:if>>[Living]: 생활, 가공식품</option>
+  					<option value="S" <c:if test="${postRetrieve.pCategory  eq 'S'}">selected</c:if>>[Sports]: 스포츠, 레저</option>
+  					<option value="W" <c:if test="${postRetrieve.pCategory  eq 'W'}">selected</c:if>>[Woman]: 여성의류, 여성잡화</option>
+					<option value="M" <c:if test="${postRetrieve.pCategory  eq 'M'}">selected</c:if>>[Man]: 남성의류, 남성잡화</option>
+					<option value="G" <c:if test="${postRetrieve.pCategory  eq 'G'}">selected</c:if>>[Game]: 게임, 취미</option>
+					<option value="BT" <c:if test="${postRetrieve.pCategory eq 'BT'}">selected</c:if>>[Beauty]: 뷰티, 미용</option>
+					<option value="PET" <c:if test="${postRetrieve.pCategory  eq 'PET'}">selected</c:if>>[Pet]: 반려동물 용품</option>
+					<option value="BK" <c:if test="${postRetrieve.pCategory  eq 'BK'}">selected</c:if>>[Book]: 도서</option>
+					<option value="T" <c:if test="${postRetrieve.pCategory  eq 'T'}">selected</c:if>>[Tickets]: 티켓</option>
+					<option value="P" <c:if test="${postRetrieve.pCategory  eq 'P'}">selected</c:if>>[Plant]: 식물</option>
+					<option value="E" <c:if test="${postRetrieve.pCategory  eq 'E'}">selected</c:if>>[ETC] : 기타</option>
 				</select>
 			</div>
   			<div class="col-md-3 col-sm-2"></div>
@@ -98,13 +97,12 @@
 		
 		<br>
 		
-		<img id="thumbnail" src="/Dong-Dong/images/<%=dto.getpImage()%>" width="400px"/><br>
-	
+		<img id="thumbnail" src="/Dong-Dong/images/${postRetrieve.pImage}" width="400px"/><br>
  		<div class="row">
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
   				<label for="formFile" class="form-label">판매할 상품 사진</label>
-  				<input class="form-control" type="file" id="photo" name="photo" 
+  				<input class="form-control" type="file" id="photo" name="file" 
   					accept="image/gif,image/jpg,image/png,image/jpeg" onchange="readURL(this);">
 			</div>
 			<div class="col-md-3 col-sm-2"></div>
@@ -117,7 +115,7 @@
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
   				<textarea class="form-control" name="pContent" rows="10" id="pContent"
-  					placeholder="자세한 상품 설명과 거래 방법을 작성하세요" style="resize: none;"><%= dto.getpContent() %></textarea>
+  					placeholder="자세한 상품 설명과 거래 방법을 작성하세요" style="resize: none;">${postRetrieve.pContent}</textarea>
 			</div>
 			<div class="col-md-3 col-sm-2"></div>
 		</div>	
@@ -128,7 +126,7 @@
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
     			<input type="text" name="pPrice" id="price" class="form-control"
-    				aria-describedby="price" placeholder="상품가격" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="10" value="<%=dto.getpPrice()%>">
+    				aria-describedby="price" placeholder="상품가격" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="10" value="${postRetrieve.pPrice}">
   			</div>
   			<div class="col-md-3 col-sm-2"></div>
   		</div>

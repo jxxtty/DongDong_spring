@@ -3,6 +3,7 @@ package com.controller;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -12,8 +13,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dto.FavoriteDTO;
 import com.dto.MemberDTO;
 import com.dto.MyOrderSheetDTO;
 import com.dto.PostDTO;
@@ -286,7 +290,53 @@ public class MypageController {
 		return "redirect:../SaleList";
 	}//판매내역  
 	
+	@RequestMapping(value = "/loginCheck/favorateSwitch")
+	public @ResponseBody boolean favorateSwitch(HttpSession session, @RequestParam Map<String, String> map) {
+		MemberDTO mDTO = (MemberDTO)session.getAttribute("login"); // 로그인 정보 조회
+		String pNum = map.get("pNum");
+		boolean favorite = (map.get("favorite").equals("true")?true:false); // 현재 상태 저장 T: 관심O / F: 관심X
+		boolean returnValue;
+		
+		FavoriteDTO fDTO = new FavoriteDTO();
+		fDTO.setpNum(Integer.parseInt(pNum));
+		fDTO.setUserId(mDTO.getUserid());
+			
+		// 현재 상태에 따라 if_else
+		if(!favorite) { // 관심 X 일때 -> 관심목록에 추가하기
+			int insertResult = fService.insertFavoite(fDTO); // 관심목록에 저장
+			if(insertResult==1) { // 성공여부 확인
+					
+				returnValue = true; // 관심목록 저장이 완료된 것을 페이지에 표시하기 위해 비동기 전달
+			} else {
+				session.setAttribute("mesg", "관심목록 저장에 실패하였습니다.");
+				returnValue = false;
+			}
+		}else { // 관심 O 일때 -> 관심목록에서 삭제하기
+			int deleteResult = fService.deleteFavoite(fDTO); // 관심목록에서 삭제
+			if(deleteResult==1) { // 성공여부 확인
+				returnValue = false; // 관심목록 삭제가 완료된 것을 페이지에 표시하기 위해 비동기 전달
+			} else {
+				session.setAttribute("mesg", "관심목록 삭제에 실패하였습니다.");
+				returnValue = true;
+			}
+		}
+		return returnValue;
+	}
 	
+	@RequestMapping(value = "/userprofile")
+	public ModelAndView userProfile(HttpSession session, @RequestParam("userid") String userid) {
+		MemberDTO dto = mService.mypage(userid);
+		int saleCount = tService.saleCount(userid);
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("nickName",dto.getNickName());
+		mav.addObject("userImage",dto.getUserimage());
+		mav.addObject("userid",userid);
+		mav.addObject("saleCount",saleCount);
+		mav.setViewName("userprofile");
+
+		return mav;
+	}
 	
 	
 }//mService

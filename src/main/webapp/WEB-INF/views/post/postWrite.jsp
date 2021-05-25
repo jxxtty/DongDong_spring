@@ -66,12 +66,12 @@
 <body>
 <!-- Bootstrap js -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-	<form action="PostWriteServlet" method="post" enctype="multipart/form-data">
+	<form action="loginCheck/postWrite" method="post" enctype="multipart/form-data">
 		<!-- 글 제목 입력 -->
 		<div class="row" >
 			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
-    			<input type="text" name="title" id="title" class="form-control"
+    			<input type="text" name="pTitle" id="title" class="form-control"
     				aria-describedby="emailHelp" placeholder="상품명을 포함한 글 제목" maxlength="30">
   			</div>
   			<div class="col-md-3 col-sm-2"></div>
@@ -81,7 +81,7 @@
   		<div class="row">
   			<div class="col-md-3 col-sm-2"></div>
 			<div class="col-md-6 col-sm-8 mb-3">
-				<select class="form-select" aria-label="Default select example" name="category" id="category">
+				<select class="form-select" aria-label="Default select example" name="pCategory" id="category">
   					<option value="none" selected>카테고리 선택</option>
   					<option value="D">[Digital]: 디지털, 가전</option>
 					<option value="H">[House]: 가구, 인테리어</option>
@@ -111,7 +111,7 @@
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
   				<label for="formFile" class="form-label">판매할 상품 사진</label>
-  				<input class="form-control" type="file" id="photo" name="photo" 
+  				<input class="form-control" type="file" id="photo" name="file" 
   					accept="image/gif,image/jpg,image/png,image/jpeg" onchange="readURL(this);">
 			</div>
 			<div class="col-md-3 col-sm-2"></div>
@@ -123,7 +123,7 @@
 		<div class="row">
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
-  				<textarea class="form-control" name="content" id="content" rows="10"
+  				<textarea class="form-control" name="pContent" id="content" rows="10"
   					placeholder="자세한 상품 설명과 거래 방법을 작성하세요" maxlength="300"></textarea>
 			</div>
 			<div class="col-md-3 col-sm-2"></div>
@@ -134,7 +134,7 @@
 		 <div class="row">
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
-    			<input type="text" name="price" id="price" class="form-control"
+    			<input type="text" name="pPrice" id="price" class="form-control"
     				aria-describedby="price" placeholder="상품가격" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="10">
   			</div>
   			<div class="col-md-3 col-sm-2"></div>

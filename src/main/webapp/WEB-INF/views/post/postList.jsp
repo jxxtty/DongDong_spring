@@ -11,7 +11,10 @@
  
 	int curPage = 1;
  	int totalPage = (int)request.getAttribute("totalPage");
-
+	int blockPerPage = (int)request.getAttribute("blockPerPage");
+	int prevPageBlock = (int)request.getAttribute("prevPageBlock");
+	int nextPageBlock = (int)request.getAttribute("nextPageBlock");
+	
  	if(request.getParameter("curPage") != null) {
  		curPage = Integer.parseInt((String)request.getAttribute("curPage"));
  	}
@@ -45,50 +48,50 @@
 
 .all {
 	width:1950px;
-	height:1700px;
+	height:auto;
 	margin: 0 auto;
 }
 .center {
 	text-align: center;
 	width:1430px;
-	height:1550px;
+	height:auto;
 	margin:0 auto;
 }
 .container {
-	margin: 0 auto;
 	 width:1220px;
-	height:1580px;
+	 height:auto;
 	display:grid;
-	 grid-template-columns: 1fr 1fr 1fr 1fr;
-	 grid-template-rows: 390px 390px 390px 390px;
+ 	 grid-template-columns: 1fr 1fr 1fr 1fr;
+	 grid-template-rows: 390px;  
+
 }
 
 .card {
+	margin-bottom:10px;
 	width: 288px; 
 	height: 380px;
 }
 #mesg{
 	text-align : center;
 }
-ul {
-    list-style:none;
-    margin:0;
-    padding:0;
+.page_nation a:active{
+	background-color:#d0eefb;
 }
-
-li {
-	display:inline;
-	float: left;
-	width: 21%;
-    border: 0;
-}
-
 .page_wrap {
+	width:auto;
 	text-align: center;
 	font-size:0;
 }
-.page_nation{
+.page_center {
+	text-align: center;
+	
+	
+}
+.page_nation{	
+	width:300px;
+	margin-left:80px;
 	display:inline-block;
+	text-align: center;
 }
 .page_nation a {
    display:block;
@@ -113,9 +116,9 @@ li {
 
 </head>
 <body>
-<div class="all">
+<div class="all"> <!-- 여기서부터 -->
 	<div class="center">
-		<div class="container ">
+		<div class="container">
 			
 <!-- Bootstrap js -->
 	
@@ -161,12 +164,20 @@ $(document).ready(function(){
 	$("#card"+<%=pNum %>).on("click",function(){
 		location.href="PostDetailServlet?pNum=<%=pNum %>";
 	})
+	/* document.getElementByid("#paginate previous").sytle.display="block"; */
 	
+	$("#page_nation a").on("click",function(){
+		  if($(this).hasClass("active")){
+		    $(this).removeClass("active");
+		  }else{
+		    $(this).addClass("active");  
+		  }
+		});
 })
 </script>
 		
-		<div class="card col-lg-7" id="card<%=pNum %>" style="background-color: white; width: 288px; height: 380px; cursor: pointer;">
-			<img class="card-img-top rounded mb-4 mb-lg-0" src="/Dong-Dong/images/<%=pImage %>" alt="Responsive image" style="max-width:288px; height:285px;" >
+		<div class="card" id="card<%=pNum %>" style="background-color: white; width: 288px; height: 380px; cursor: pointer;">
+			<img class="card-img-top" src="/Dong-Dong/images/<%=pImage %>" alt="Responsive image" style="max-width:288px; height:285px;" >
 				<div class="card-body" style="width:288px; height:70px;">
 				      <h6 class="card-title" style="height:35px;"><%=pTitle%></h6>
 				        <h5 class="price"><%=price %>원</h5><small class="text-muted" style="position: absolute; right: 0px; bottom: 0px;"><%=pDateResult%></small>
@@ -176,37 +187,121 @@ $(document).ready(function(){
 }//end for
 %>
 		</div><!-- container -->
+	
 	</div><!-- center -->
-</div><!-- all  -->
+</div><!-- all  --> <!-- 여기까지 -->
+<br/>
 <div class="page_wrap">
-	<div class="page_nation">	
+	<div class="page center">
+		<div class="page_nation" id="page_nation">	
+<!-- 이전버튼 구현 카테고리검색 / 키워드검색 / 메인에서 일반적인 이전버튼  -->
+<%	
+	if (category != null && curPage != 0 && curPage != 1){ 
+%>	
+	<div class="paginate previous" id="paginate previous"><a href='CategorySearchServlet?category=<%=category %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
+
 <%
-	for (int j=1; j<=totalPage; j++) {
+	}
+%>	
+
+<%	
+	if (keyword != null && curPage != 0 && curPage != 1){ 
+%>	
+	<div class="paginate previous" id="paginate previous"><a href='KeywordSearchServlet?keyword=<%=keyword %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
+
+<%
+	}
+%>	
+
+<% 
+	if(category == null && keyword == null && curPage != 0 && curPage != 1) {
+		
+%>
+	<div class="paginate previous" id="paginate previous"><a href='main?curPage=<%=prevPageBlock-1%>'>◁</a></div>
+		
+<%
+	} //if curPage 이전 
+%>
+
+<%
+		//페이지 번호 처리
+ 		if(nextPageBlock > totalPage){
+			nextPageBlock = totalPage;
+		} 
+
+		for (int j=prevPageBlock; j<=nextPageBlock; j++) {
+			
+%>
+<% 
+		if (category == null && keyword == null) {
+%>
+
+		<a href='main?curPage=<%=j %>'><%=j %></a>	
+<%
+		}
+%>
+
+			
+			
+<% 				
+				
 		if (keyword != null){
 %>
 			<a href='KeywordSearchServlet?keyword=<%=keyword %>&curPage=<%=j %>'><%=j %></a>	
-<% 
-		}
+<% 			
+			
+		}// if keyword != null
 %>
 
 <%				
 		if (category != null){
 %>			
 		<a href='CategorySearchServlet?category=<%=category %>&curPage=<%=j %>'><%=j %></a>	
-<% 
-		}
-%> 
-<% 
-		if (category == null && keyword == null) {
-			%>
 		
-		<a href='main?curPage=<%=j %>'><%=j %></a>
+<% 
+		}//if category != null
+%> 
+
 
 
 <%	
-		}
-}	
+				
+}	//전체 for
 %>
-		</div>
-</div>
+<!-- 다음버튼 구현 카테고리검색 / 키워드검색 / 메인에서 일반적인 다음버튼  -->
+<%	
+	if (category != null && totalPage > nextPageBlock){
+		if(totalPage != 1){
+%>	
+	<div class="paginate next"><a href='CategorySearchServlet?category=<%=category %>&curPage=<%=nextPageBlock+1%>'>▷</a></div>
+
+<%
+		}
+	}
+%>	
+
+<%	
+	if (keyword != null && totalPage > nextPageBlock){ 
+		if(totalPage != 1){
+%>	
+	<div class="paginate next"><a href='KeywordSearchServlet?keyword=<%=keyword %>&curPage=<%=nextPageBlock+1%>'>▷</a></div>
+
+<%
+	}
+}
+
+%>	
+
+<% 
+	if(category == null && keyword == null && totalPage > nextPageBlock) {
+			
+%>			
+ 	<div class="paginate next"><a href='main?curPage=<%=nextPageBlock+1%>'>▷</a></div>
+<%
+
+	} //if curPage 다음
+%>
+		</div> <!--page_nation  -->
+		</div> <!--page center  -->
+</div><!-- page_wrap  -->
 </body>	 

@@ -42,7 +42,7 @@ $(function() {
 			}
 			$.ajax({
 				type: "post",
-				url: "/ComplaintAcceptServlet",
+				url: "complaintAccept",
 				data: {
 					coTarget: coTarget,
 					userid : <%=dto.getUserid()%>,
@@ -58,7 +58,7 @@ $(function() {
 						opener.alert("<%=coTypeName[Integer.parseInt(coType)-1]%> 신고가 실패하였습니다.");
 						window.close();
 					}else if(data=="dup") {
-						opener.alert("이미 신고한 <%=coTypeName[Integer.parseInt(coType)-1]%> 입니다.");
+						opener.alert("이미 신고한 <%=coTypeName[Integer.parseInt(coType)-1]%>입니다.");
 						window.close();
 					}//if_elseif_elseif
 				}, //success

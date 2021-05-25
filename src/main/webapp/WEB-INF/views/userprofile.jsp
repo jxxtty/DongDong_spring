@@ -1,16 +1,8 @@
 <%@page import="com.dto.MemberDTO"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
-<%
- MemberDTO dto = (MemberDTO)session.getAttribute("login");
- //거래량 추가해야함
- String userid = (String)request.getParameter("userid");
- String userImage = (String)request.getParameter("userImage");
- String nickName = (String)request.getParameter("nickName");
- String saleCount = (String)request.getParameter("saleCount");
- 
-%>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -41,7 +33,7 @@
 			<div class="profile-sidebar">
 				<!-- SIDEBAR USERPIC -->
 				<div class="profile-userpic">
-					<img src="/Dong-Dong/images/profile/<%= userImage %>" class="img-responsive" alt="">
+					<img src="/Dong-Dong/images/profile/${userImage}" class="img-responsive" alt="">
 				</div>
 		
 				</div>
@@ -52,12 +44,12 @@
 						<li>
 							<a href="#">
 							<i class="glyphicon glyphicon-user"></i>
-							<%= nickName %></a>
+							${nickName}</a>
 						</li>
 						<li>
 							<a href="#" >
 							<i class="glyphicon glyphicon-ok"></i>
-							거래량  <%=saleCount%>개 </a>
+							거래량  ${saleCount}개 </a>
 						</li>
 					
 					</ul>
@@ -71,11 +63,11 @@
 			   안녕하세요.
             </div>
 		</div>
-		<%if(dto!=null && !dto.getUserid().equals(userid)) { %>
-		<div style="text-align : right">
-			<a class="btn btn-danger" href="complaint/complaintDetail.jsp?userid=<%=userid%>&coType=1" id="complaintUser">신고</a>
-		</div>
-		<%}%>
+		<c:if test="${!empty login && login.userid!=userid}">
+			<div style="text-align : right">
+				<a class="btn btn-danger" href="loginCheck/complaintDetail?userid=${userid}&coType=1" id="complaintUser">신고</a>
+			</div>
+		</c:if>
 	</div>
 </body>
 </html>

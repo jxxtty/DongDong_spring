@@ -130,7 +130,7 @@
 %>	
 			<a href="loginCheck/mypage">mypage</a><!--수정  -->
 			<a href="loginCheck/logout">로그아웃</a>
-			<a href="PostWriteUIServlet">글쓰기</a>
+			<a href="loginCheck/postWrite">글쓰기</a>
 		</div>
 		<div id="user_profile" class="user">
 			<%=dto.getNickName() %>
@@ -140,7 +140,7 @@
 	} else{ //아닌경우
 %>
 			<a href="loginForm">로그인</a>
-			<a href="MemberAddUIServlet">회원가입</a><!--MVC 패턴 -->
+			<a href="MemberForm">회원가입</a><!--MVC 패턴 -->
 		</div>
 <%		
 	}//end if~else

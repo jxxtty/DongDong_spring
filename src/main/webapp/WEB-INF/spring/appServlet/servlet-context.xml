@@ -25,6 +25,8 @@
 	<mvc:view-controller path="/loginForm" view-name="loginForm"/>
 	<mvc:view-controller path="/idSearch" view-name="idSearch"/>
 	<mvc:view-controller path="/pwSearch" view-name="pwSearch"/>
+	<mvc:view-controller path="/postWrite" view-name="postWrite"/><!-- 글쓰기 페이지 -->
+	<mvc:view-controller path="/categoryList" view-name="categorySearch"/><!--카테고리 검색 페이지 -->
 	<mvc:view-controller path="/mypage" view-name="mypage"/><!--mypage.jsp  -->
 	<mvc:view-controller path="checkNick" view-name="checkNick" /> <!--checkNick.jsp  -->
 	<mvc:view-controller path="/confirmNick" view-name="confirmNick" /> <!--confirmNick.jsp  -->

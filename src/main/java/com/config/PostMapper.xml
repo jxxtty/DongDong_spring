@@ -134,8 +134,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by pDate desc
 	</select>
 	
-	<update id="pullPost" parameterType="int">
-		UPDATE post SET pDate=SYSDATE WHERE pNum=#{pNum}
+	<update id="pullPost" parameterType="PostDTO">
+		UPDATE post SET pDate=SYSDATE, pPull=#{pPull} WHERE pNum=#{pNum}
 	</update>
 	
 	<update id="poststatus" parameterType="int">

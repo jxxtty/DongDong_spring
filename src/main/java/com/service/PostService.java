@@ -61,8 +61,8 @@ public class PostService {
 		return n;
 	}
 
-	public PageDTO searchByCategory(int curPage, HashMap<String, String> map) {
-        PageDTO dto = pDAO.searchByCategory(map,curPage);
+	public PageDTO searchByCategory(int curPage,boolean login, HashMap<String, String> map) {
+        PageDTO dto = pDAO.searchByCategory(curPage,login,map);
         return dto;
 	}
 
@@ -71,8 +71,8 @@ public class PostService {
 		return pDTO;
 	}
 	
-	public int pullPost(int pNum) {
-        int pullResult = pDAO.pullPost(pNum);
+	public int pullPost(PostDTO pDto) {
+        int pullResult = pDAO.pullPost(pDto);
         return pullResult;
 	}
 }// end class

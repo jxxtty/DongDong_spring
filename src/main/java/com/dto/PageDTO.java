@@ -2,6 +2,9 @@ package com.dto;
 
 import java.util.List;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("PageDTO")
 public class PageDTO {
 
 	private List<PostDTO> list;   //페이지번호(curPage)에 해당하는 perPage개수만큼만
@@ -12,13 +15,36 @@ public class PageDTO {
 	private int totalCountCategory;
 	private int totalCountKeyword;
 	private int offset;
+	private int blockPerPage; //한블록에 최대 5개의 페이지만 뿌려주게함
+	private int prevPageBlock;// 이전 블록 버튼
+	private int nextPageBlock;//다음 블록 버튼
 	
 	
 	
+	public int getPrevPageBlock() {
+		return prevPageBlock;
+	}
+	public void setPrevPageBlock(int prevPageBlock) {
+		this.prevPageBlock = prevPageBlock;
+	}
+	public int getNextPageBlock() {
+		return nextPageBlock;
+	}
+	public void setNextPageBlock(int nextPageBlock) {
+		this.nextPageBlock = nextPageBlock;
+	}
+	public int getBlockPerPage() {
+		return blockPerPage;
+	}
+	public void setBlockPerPage(int blockPerPage) {
+		this.blockPerPage = blockPerPage;
+	}
+
 	@Override
 	public String toString() {
 		return "PageDTO [list=" + list + ", curPage=" + curPage + ", perPage=" + perPage + ", totalCount=" + totalCount
-				+ ", totalCountCategory=" + totalCountCategory + ", totalCountKeyword=" + totalCountKeyword+ ", offset=" + offset + "]";
+				+ ", totalCountCategory=" + totalCountCategory + ", totalCountKeyword=" + totalCountKeyword+ ", offset=" + offset +
+				", blockPerPage=" + blockPerPage + ", prevPageBlock=" + prevPageBlock + ", nextPageBlock=" + nextPageBlock + "]";
 	}
 	public int getOffset() {
 		return offset;
