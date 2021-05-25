@@ -23,48 +23,46 @@
 <script type="text/javascript">
 	var favorite = ${favorite};
 	$(function() {
-		<c:if test="${!empty login}">
-			$("#favorite").on("click", function(){
-				$.ajax({
-					type: "get",
-					url: "favorateSwitch",
-					data: {
-						pNum: ${pNum},
-						favorite : favorite
-					}, //data
-					dataType: "text",
-					success: function(data, status, xhr) {
-						if(data=="true"){
-							var favoriteCountTemp = $("#favoriteCountSpan").text();
-							$("#favoriteImg").attr("src","/Dong-Dong/images/util/favorite1.png");
-							$("#favoriteCountSpan").text(Number(favoriteCountTemp)+1);
-							favorite = true;
-						} else {
-							var favoriteCountTemp = $("#favoriteCountSpan").text();
-							$("#favoriteImg").attr("src","/Dong-Dong/images/util/favorite2.png");
-							$("#favoriteCountSpan").text(favoriteCountTemp-1);
-							favorite = false;
-						}//if_else
-					}, //success
-					error: function(xhr, status, error) {
-						$("#result").append(error);
-						$("#result").append(status);
-					} //error
-				});//ajax
-			});//on
+		$("#favorite").on("click", function(){
+			$.ajax({
+				type: "get",
+				url: "/loginCheck/favorateSwitch",
+				data: {
+					pNum: ${pNum},
+					favorite : favorite
+				}, //data
+				dataType: "text",
+				success: function(data, status, xhr) {
+					if(data=="true"){
+						var favoriteCountTemp = $("#favoriteCountSpan").text();
+						$("#favoriteImg").attr("src","/Dong-Dong/images/util/favorite1.png");
+						$("#favoriteCountSpan").text(Number(favoriteCountTemp)+1);
+						favorite = true;
+					} else {
+						var favoriteCountTemp = $("#favoriteCountSpan").text();
+						$("#favoriteImg").attr("src","/Dong-Dong/images/util/favorite2.png");
+						$("#favoriteCountSpan").text(favoriteCountTemp-1);
+						favorite = false;
+					}//if_else
+				}, //success
+				error: function(xhr, status, error) {
+					$("#result").append(error);
+					$("#result").append(status);
+				} //error
+			});//ajax
+		});//on
 			
-			function complaintPost() {
-				var popupWidth = 300;
-				var popupHeight = 500;
-				var popupX = (window.screen.width/2)-(popupWidth/2);
-				var popupY= (window.screen.height/2)-(popupHeight/2);
-				url = "loginCheck/complaintDetail?pNum="+"${pNum}"+"&coType=2";
-				open(url,"complaintPost", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
-			}//end compliantPost
-			$("#complaintPost").click(function() {
-				complaintPost();
-			});
-		</c:if>// 위쪽 영역 : 로그인시 사라짐, 아래쪽 영역 : 비 로그인 시에도 동작
+		function complaintPost() {
+			var popupWidth = 300;
+			var popupHeight = 500;
+			var popupX = (window.screen.width/2)-(popupWidth/2);
+			var popupY= (window.screen.height/2)-(popupHeight/2);
+			url = "loginCheck/complaintDetail?pNum="+"${pNum}"+"&coType=2";
+			open(url,"complaintPost", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
+		}//end compliantPost
+		$("#complaintPost").click(function() {
+			complaintPost();
+		});
 		function userprofile() {
 			var popupWidth = 300;
 			var popupHeight = 500;
@@ -132,7 +130,7 @@
 			<a class="btn btn-primary" href="loginCheck/postDelete?pNum=${pNum}">&nbsp;상품 삭제&nbsp;</a>&nbsp;
 		</c:if>
 		<c:if test="${!empty login && pStatus!='1'&&login.userid!=userid}">
-			<a class="btn btn-primary" onclick="window.open('orderSheet/orderSheet.jsp?sUserid=${userid }&pNum=${pNum }&pPrice=${pPrice }','window_name','width=400,height=300,location=no,status=no,scrollbars=yes,left='+((window.screen.width/2)-200)+',top='+((window.screen.height/2)-250))">&nbsp;주문서작성&nbsp;</a>&nbsp;
+			<a class="btn btn-primary" onclick="window.open('orderSheet?sUserid=${userid }&pNum=${pNum }&pPrice=${pPrice }','window_name','width=400,height=300,location=no,status=no,scrollbars=yes,left='+((window.screen.width/2)-200)+',top='+((window.screen.height/2)-250))">&nbsp;주문서작성&nbsp;</a>&nbsp;
 		</c:if>
 		
 			<a id="userprofile" class="btn btn-primary">&nbsp;프로필&nbsp;</a>&nbsp;
