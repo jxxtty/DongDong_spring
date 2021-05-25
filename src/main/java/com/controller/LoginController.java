@@ -27,7 +27,7 @@ public class LoginController {
 
 	@Autowired
 	MemberService service;
-
+	
 	@RequestMapping(value = "/loginCheck/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
@@ -42,7 +42,7 @@ public class LoginController {
 		System.out.println(map);
 		if (dto != null) {
 			session.setAttribute("login", dto);
-			return "redirect:/main";
+			return "redirect:/";
 		} else {
 			model.addAttribute("mesg", "아이디 또는 비밀번호가 잘못되었습니다.");
 			return "loginForm";
@@ -84,7 +84,7 @@ public class LoginController {
 			sendMail(model, host, subject, from, fromName, to, content, mesg);
 		}
 
-		return "redirect:/main";
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/pwSearch")
@@ -123,7 +123,7 @@ public class LoginController {
 			sendMail(model, host, subject, from, fromName, to, content, mesg);
 		}
 		
-		return "redirect:/main";
+		return "redirect:/";
 	}
 
 	private void sendMail(Model model, String host, String subject, String from, String fromName, String to,
