@@ -43,6 +43,7 @@
 	<mvc:view-controller path="/salecomplete" view-name="salecomplete" /><!--salecomplete.jsp  -->
 	<mvc:view-controller path="/BuyList" view-name="BuyList" /><!--BuyList.jsp  -->
 	<mvc:view-controller path="/SaleList" view-name="SaleList" /><!--SaleList.jsp  -->
+	<mvc:view-controller path="/pullPost" view-name="pullPost" /><!--SaleList.jsp  -->
 	
 	
 	
