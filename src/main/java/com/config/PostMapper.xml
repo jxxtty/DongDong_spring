@@ -26,9 +26,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="totalCount" parameterType="string" resultType="int">
 	select count(*)
 	from post
-	<if test="addr != null">
-		where addr = #{addr}
-	</if> 
+	<!-- <if test="addr != null"> -->
+		<!-- where addr = #{addr} -->
+	<!-- </if>  -->
 	</select>
    
 	<select id="postListByAddr" parameterType="string" resultType="PostDTO">
