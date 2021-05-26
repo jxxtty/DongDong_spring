@@ -32,13 +32,13 @@ public class MainController {
 
 
 	@RequestMapping(value= "/")
-	public String postList(HttpSession session,Model model) {
+	public String postList(HttpSession session,HttpServletRequest request,Model model) {
 	MemberDTO member = (MemberDTO)session.getAttribute("login");
+	String curPage = request.getParameter("curPage");
 	String addr = null;
 	if(member != null) {
 		addr = member.getAddr();
 	}
-	String curPage = null;
 	if(curPage == null) {
 		curPage = "1";
 	}
@@ -48,11 +48,12 @@ public class MainController {
 	model.addAttribute("postList", list);
 	model.addAttribute("blockPerPage", pDTO.getBlockPerPage());
 	model.addAttribute("offset", pDTO.getOffset());
-	model.addAttribute("curPage", pDTO.getCurPage());
+	model.addAttribute("curPage", curPage);
 	model.addAttribute("prevPageBlock", pDTO.getPrevPageBlock());
 	model.addAttribute("nextPageBlock", pDTO.getNextPageBlock());
 	model.addAttribute("totalCount", pDTO.getTotalCount());
 	model.addAttribute("totalPage", pDTO.getTotalCount()/pDTO.getPerPage());
+	
 	  return "/main";	  
 	}
 	
