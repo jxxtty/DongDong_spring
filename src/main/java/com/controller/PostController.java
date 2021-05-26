@@ -182,7 +182,6 @@ public class PostController {
 	    		// 삭제한 게시글의 저장된 이미지 삭제
 				File deleteImage = new File("c://images//"+pDto.getpImage());
 				deleteImage.delete();
-				System.out.println("c드라이브 내 이미지 삭제됨");
 	    	}
 			
 		}
@@ -233,12 +232,9 @@ public class PostController {
 			pullTime = String.valueOf(Integer.parseInt(pullTime) - 1);
 			pDto.setpPull(pullTime);
 			int pullResult = pService.pullPost(pDto);
-			System.out.println("끌올한거 : " + pullResult);
-		} else {
-			// 로그인한 회원정보랑 끌올할 글의 작성자정보가 동일하지 않다.
-			// 경고문 + loginForm으로 이동
+			session.setAttribute("mesg", "끌올 완료되었습니다.");
 		}
-		return "redirect:../"; // main으로 이동
+		return "redirect:../loginCheck/MyPostList"; // 내글보기로 이동
 	}
 	
 	@RequestMapping(value = "/postDetail")
