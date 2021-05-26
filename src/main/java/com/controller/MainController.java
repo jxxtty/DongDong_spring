@@ -42,8 +42,6 @@ public class MainController {
 	if(curPage == null) {
 		curPage = "1";
 	}
-	System.out.println("member===================="+member);
-	System.out.println("addr======================"+ addr);
 	PageDTO pDTO = pService.selectAllPostPage(Integer.parseInt(curPage),(member==null?false:true),addr);
 	List<PostDTO> list = null;
 	list = pDTO.getList();
