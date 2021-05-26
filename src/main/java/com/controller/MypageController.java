@@ -1,16 +1,19 @@
 package com.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +25,6 @@ import com.dto.FavoriteDTO;
 import com.dto.MemberDTO;
 import com.dto.MyOrderSheetDTO;
 import com.dto.PostDTO;
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import com.service.FavoriteService;
 import com.service.MemberService;
 import com.service.OrderSheetService;
@@ -42,6 +43,8 @@ public class MypageController {
 	OrderSheetService oService;
 	@Autowired
 	TransactionService tService;
+	@Resource(name="uploadPath")
+	String uploadPath;
 	
 	
 	
@@ -59,29 +62,44 @@ public class MypageController {
 	@RequestMapping(value = "/loginCheck/MemberUpdate", produces = "text/plain;charset=UTF-8") 
 	public String memberUpdate(String userid, String username, String resultNick,
 			String addr, String phone, String email1, String email2, HttpSession session,MultipartFile file) throws IOException {
-		MemberDTO mdto =(MemberDTO)session.getAttribute("login");
-		String enc = "UTF-8";
-		
-		// user가 프로필사진을 변경한 경우 새로운 이미지파일 이름을받아온다.
-		//String fileName = multi.getFilesystemName("photo");
-		//String originFileName = multi.getOriginalFileName("photo");
-		String fileName = file.getOriginalFilename();
-		// 기존 이미지파일을 받아온다.
-		
+		MemberDTO mdto =(MemberDTO)session.getAttribute("login"); // 로그인 정보
 		String passwd = mdto.getPasswd(); // mypage.jsp에서 넘겨주는 값이 없어서 dto에서 뽑아왔어요!(어차피 수정되는부분이아니라 null들어가도 상관없긴함)
-		String userImage = "";
-		if(fileName == null) {
-			// 새로들어온 파일이 없는경우 --> user가 프로필사진은 변경하지 않은경우
-			//userImage = basicFile;
-		} else {
-			// 새로들어온 파일이 있는경우 --> user가 프로필사진을 변경한 경우
-			userImage = fileName;
-		}
-		MemberDTO dto2 =
-				new MemberDTO(userid,passwd,username,resultNick,
-						addr,phone,email1,email2,userImage);
+		MemberDTO updateDto = new MemberDTO();
+		updateDto.setUserid(userid);
+		updateDto.setUsername(username);
+		updateDto.setPasswd(passwd);
+		updateDto.setNickName(resultNick);
+		updateDto.setAddr(addr);
+		updateDto.setPhone(phone);
+		updateDto.setEmail1(email1);
+		updateDto.setEmail2(email2);
 		
-		mService.memberUpdate(dto2);
+		String fileName = file.getOriginalFilename();
+		
+		if(fileName.length() != 0) { // 사진파일 변경된게 옴
+			fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
+			UUID uuid = UUID.randomUUID();
+			fileName = uuid.toString()+"_"+fileName;
+			String uploadPathProfile = uploadPath+"/profile/";
+			File target = new File(uploadPathProfile, fileName);
+			updateDto.setUserimage(fileName);
+			// 경로생성
+			if(! new File(uploadPath).exists()) {
+				new File(uploadPath).mkdirs();
+			}
+			// 파일복사
+			try {
+				FileCopyUtils.copy(file.getBytes(), target);
+			} catch(Exception e) {
+				e.printStackTrace();
+			}
+		} else { // 사진파일 변경된거 없음(기존 정보에 저장되어있는 이미지를 넣어준다)
+			updateDto.setUserimage(mdto.getUserimage());
+		}
+		
+	
+		
+		mService.memberUpdate(updateDto);
 		session.setAttribute("mesg", "회원정보가 수정되었습니다."); 
 		return "redirect:../loginCheck/mypage";
 	}//memberUpdate
