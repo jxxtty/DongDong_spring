@@ -137,8 +137,7 @@ public class PostDAO {
 		// 최초 offset=0, perPage=16
 		// 데이터를 주고 받는 것 PageDTO
 		if (login) {
-			//list = template.selectList("postListByAddr", addr, new RowBounds(offset, perPage));
-			list = template.selectList("postListAll", null, new RowBounds(offset, perPage));
+			list = template.selectList("postListByAddr", addr, new RowBounds(offset, perPage));
 		} else {
 			list = template.selectList("postListAll", null, new RowBounds(offset, perPage));
 		}
