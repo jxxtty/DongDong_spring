@@ -43,8 +43,12 @@ public class MainController {
 		curPage = "1";
 	}
 	PageDTO pDTO = pService.selectAllPostPage(Integer.parseInt(curPage),(member==null?false:true),addr);
-	List<PostDTO> list = null;
+	List<PostDTO> list = null; 
+	int totalPage = pDTO.getTotalCount()/pDTO.getPerPage();
+	if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 11page
+	
 	list = pDTO.getList();
+	
 	model.addAttribute("postList", list);
 	model.addAttribute("blockPerPage", pDTO.getBlockPerPage());
 	model.addAttribute("offset", pDTO.getOffset());
@@ -52,7 +56,7 @@ public class MainController {
 	model.addAttribute("prevPageBlock", pDTO.getPrevPageBlock());
 	model.addAttribute("nextPageBlock", pDTO.getNextPageBlock());
 	model.addAttribute("totalCount", pDTO.getTotalCount());
-	model.addAttribute("totalPage", pDTO.getTotalCount()/pDTO.getPerPage());
+	model.addAttribute("totalPage", totalPage);
 	
 	  return "/main";	  
 	}
