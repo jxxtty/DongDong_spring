@@ -7,17 +7,31 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import com.dto.GoogleOAuthRequest;
+import com.dto.GoogleOAuthResponse;
 import com.dto.KakaoProfileDTO;
 import com.dto.MemberDTO;
 import com.dto.OAuthTokenDTO;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.google.gson.Gson;
 import com.service.MemberService;
 
@@ -117,4 +131,75 @@ public class OAuthController {
 		return "redirect:/loginForm";
 		
 	}
+	
+	
+	@RequestMapping(value = "/google", method = RequestMethod.GET)
+	public String googleAuth(Model model, @RequestParam(value = "code") String authCode,HttpServletRequest request,HttpSession session)
+			throws Exception {
+		
+		//HTTP Request를 위한 RestTemplate
+		RestTemplate restTemplate = new RestTemplate();
+ 
+		//Google OAuth Access Token 요청을 위한 파라미터 세팅
+		GoogleOAuthRequest googleOAuthRequestParam =  new GoogleOAuthRequest();
+		googleOAuthRequestParam.setClientId("898782990200-vm6qpl53536ad2r2i8h65q7jme7ig993.apps.googleusercontent.com");
+		googleOAuthRequestParam.setClientSecret("r-8T6achLwgybjvsrmiNdQMs");
+		googleOAuthRequestParam.setCode(authCode);
+		googleOAuthRequestParam.setRedirectUri("http://localhost:8079/google");
+		googleOAuthRequestParam.setGrantType("authorization_code");
+		
+		//JSON 파싱을 위한 기본값 세팅
+		//요청시 파라미터는 스네이크 케이스로 세팅되므로 Object mapper에 미리 설정해준다.
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+		mapper.setSerializationInclusion(Include.NON_NULL);
+ 
+		//AccessToken 발급 요청
+		ResponseEntity<String> resultEntity = restTemplate.postForEntity("https://oauth2.googleapis.com/token", googleOAuthRequestParam, String.class);
+ 
+		//Token Request
+		GoogleOAuthResponse result = mapper.readValue(resultEntity.getBody(), new TypeReference<GoogleOAuthResponse>() {
+		});
+ 
+		//ID Token만 추출 (사용자의 정보는 jwt로 인코딩 되어있다)
+		String jwtToken = result.getIdToken();
+		//System.out.println("토큰은"+jwtToken);
+		String requestUrl = UriComponentsBuilder.fromHttpUrl("https://oauth2.googleapis.com/tokeninfo").queryParam("id_token", jwtToken).toUriString();
+		
+		String resultJson = restTemplate.getForObject(requestUrl, String.class);
+		
+		Map<String,String> userInfo = mapper.readValue(resultJson, new TypeReference<Map<String, String>>(){});
+		model.addAllAttributes(userInfo);
+		model.addAttribute("token", result.getAccessToken());
+		//System.out.println("유저인포"+userInfo);
+		//System.out.println("네임"+userInfo.get("name"));
+		//System.out.println("메일"+userInfo.get("email"));
+		String userid = "google_"+userInfo.get("name");
+		String passwd = "google_"+userInfo.get("name");
+		String username = userInfo.get("name");
+		String email = userInfo.get("email");
+		String nickName = "google_"+userInfo.get("name");
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("passwd", passwd);
+		
+		MemberDTO dto = service.login(map);
+		
+		if(dto != null) {
+			session.setAttribute("login", dto);
+		}else { //회원정보 없으면 회원가입 진행
+			MemberDTO newGoogle 
+				= new MemberDTO(userid, passwd, username, nickName, "0", "0",email.split("@")[0],email.split("@")[1],"default_userImg.PNG");
+			
+			service.memberAdd(newGoogle);
+			session.setAttribute("mesg", "회원가입이 완료되었습니다. 재로그인 후  Mypage에서 추가 정보를 입력해주세요");
+			session.setAttribute("login", newGoogle);
+		}
+		
+		return "redirect:/";
+	}
+	
+	
+	
 }
