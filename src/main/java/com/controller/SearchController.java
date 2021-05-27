@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.MemberDTO;
@@ -20,8 +21,12 @@ public class SearchController {
 	@Autowired
 	PostService pService;
 	
-	@RequestMapping("/keywordSearch")
+
+	
+
+	@RequestMapping(value="/keywordSearch", method=RequestMethod.GET)
 	public String keywordSearch(String keyword, HttpServletRequest request,HttpSession session) {
+
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String curPage = request.getParameter("curPage");
 		String addr = "null";
@@ -36,6 +41,7 @@ public class SearchController {
 		map.put("keyword", keyword);
 		
 		
+
 		PageDTO pDTO = pService.searchByKeyword(Integer.parseInt(curPage),map);
 		int totalPage = pDTO.getTotalCount()/pDTO.getPerPage();
 		if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 
@@ -49,12 +55,17 @@ public class SearchController {
 		request.setAttribute("nextPageBlock", pDTO.getNextPageBlock());
 		request.setAttribute("totalCount", pDTO.getTotalCount());
 		request.setAttribute("totalPage", totalPage);
+
 		// 키워드도 같이 넘겨야됨!
 		return "/main";
 	}
 	
-	@RequestMapping("/categorySearch")
+
+	
+
+	@RequestMapping(value="/categorySearch")
 	public String categorySearch(@RequestParam("category") String category, HttpServletRequest request,HttpSession session, Model m){
+
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String addr = "null";
 		if(mDto != null) { // 로그인 된 상태

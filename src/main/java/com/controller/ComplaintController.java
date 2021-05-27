@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.ComplaintDTO;
 import com.dto.MemberDTO;
@@ -18,11 +19,39 @@ import com.service.ComplaintService;
 @Controller
 public class ComplaintController {
 	@Autowired
-	ComplaintService service;
+	ComplaintService coService;
+	
+	@RequestMapping(value = "/admin")
+	public String adminPage() {
+		return "admin/adminMain";
+	}
+	
+	@RequestMapping(value = "/admin/complaintMember")
+	public ModelAndView complaintMemberPage() {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", coService.memberComplaintList());
+		mav.setViewName("admin/complaintMember");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/admin/complaintPost")
+	public ModelAndView complaintPostPage() {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", coService.postComplaintList());
+		mav.setViewName("admin/complaintPost");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/admin/complaintComment")
+	public ModelAndView complaintCommentPage() {
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("list", coService.commentComplaintList());
+		mav.setViewName("admin/complaintComment");
+		return mav;
+	}
+	
 	@RequestMapping(value = "/loginCheck/complaintAccept")
 	public @ResponseBody String ComplaintAccept(HttpSession session, @RequestParam Map<String, String> map) {
-		// 기본적인 설정 & 세션 등 생성
-    	
 		MemberDTO dto = (MemberDTO)session.getAttribute("login");
 		String coTarget = map.get("coTarget");
 		String userid = map.get("userid");
@@ -34,13 +63,13 @@ public class ComplaintController {
 		coDTO.setCoTarget(coTarget);
 		coDTO.setUserid(userid);
 			
-		if(service.checkDuplication(coDTO)) {
+		if(coService.checkDuplication(coDTO)) {
 			returnValue = "dup"; 
 		} else {
 			coDTO.setCoContent(coContent);
 			coDTO.setCoType(coType);
 				
-			int insertResult = service.insertComplaint(coDTO);
+			int insertResult = coService.insertComplaint(coDTO);
 				
 			if(insertResult!=1) { // 게시글 업데이트가 실패했을 경우 
 				returnValue = "false"; 

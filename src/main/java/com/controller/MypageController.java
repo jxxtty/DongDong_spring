@@ -127,7 +127,6 @@ public class MypageController {
 		dto2.setUserimage(dto.getUserimage());
 		dto2.setUsername(dto.getUsername());
 		mService.nickUpdate(dto2);
-		
 		m.addAttribute("nickDTO", dto2.getNickName());
 		return "okNick";
 	}//닉네임 업데이트
@@ -157,7 +156,7 @@ public class MypageController {
 		String userid = dto.getUserid();
 		mService.withdrawal(userid);
 		session.setAttribute("withdrawal", "정상적으로 회원탈퇴되었습니다."); 
-		return "main";
+		return "redirect:../";
 	}//회원탈퇴
 	
 	@RequestMapping(value = "loginCheck/FavoriteList", produces = "text/plain;charset=UTF-8")
