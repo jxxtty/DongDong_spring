@@ -50,14 +50,15 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon">
+      <!--               <i class="fas fa-laugh-wink"></i> -->
+                <img class="img-profile" src="/Dong-Dong/images/util/DongDonglogo2.png" width="80">
                 </div>
-                <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+                <div class="sidebar-brand-text mx-3">관리자<br>페이지</div>
             </a>
 
             <!-- Divider -->

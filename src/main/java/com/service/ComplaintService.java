@@ -25,6 +25,10 @@ public class ComplaintService {
 	    }
 	}
 	
+	public ComplaintDTO getComplaint(int coNum) {
+		return coDAO.getComplaint(coNum);
+	}
+	
 	public List<ComplaintDTO> postComplaintList() {
 	    return coDAO.postComplaintList();
 	}
@@ -33,5 +37,9 @@ public class ComplaintService {
 	}
 	public List<ComplaintDTO> commentComplaintList() {
 		return coDAO.commentComplaintList();
+	}
+
+	public int complaintEnd(int coNum) {
+		return coDAO.complaintEnd(coNum);
 	}
 }

@@ -47,14 +47,15 @@
     <div id="wrapper">
 
         <!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+        <ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon">
+      <!--               <i class="fas fa-laugh-wink"></i> -->
+                <img class="img-profile" src="/Dong-Dong/images/util/DongDonglogo2.png" width="80">
                 </div>
-                <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+                <div class="sidebar-brand-text mx-3">관리자<br>페이지</div>
             </a>
 
             <!-- Divider -->
@@ -169,10 +170,10 @@
                                         <tr>
                                             <th>신고 번호</th>
                                             <th>댓글 번호</th>
-                                            <th>신고 내용</th>
                                             <th>신고한 유저</th>
                                             <th>신고일시</th>
                                             <th>처리일시</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -180,10 +181,12 @@
                                         <tr>
                                             <td>${coDTO.coNum}</td>
                                             <td>${coDTO.coTarget}</td>
-                                            <td>${coDTO.coContent}</td>
                                             <td>${coDTO.userid}</td>
                                             <td>${coDTO.createDate}</td>
                                             <td>${coDTO.endDate}</td>
+                                            <td>
+												<a class="btn btn-primary" href="/admin/complaintHandlingDetail?coNum=${coDTO.coNum}">내용보기</a>
+											</td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>
@@ -227,7 +230,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">Ã</span>
+                        <span aria-hidden="true">X</span>
                     </button>
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>

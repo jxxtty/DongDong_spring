@@ -17,6 +17,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE coTarget=#{coTarget} AND userid=#{userid}
 	</select>
 	
+	<select id="getComplaint" parameterType="int" resultType="ComplaintDTO">
+		SELECT *
+		FROM complaint
+		WHERE coNum=#{coNum}
+	</select>
+	
 	<select id="memberComplaintList" resultType="ComplaintDTO">
 		SELECT *
 		FROM complaint
@@ -34,4 +40,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		FROM complaint
 		WHERE cotype=3
 	</select>
+	
+	<update id="complaintEnd" parameterType="int">
+		UPDATE complaint
+		SET coYn='y', endDate=SYSDATE
+		WHERE coNum=#{coNum}
+	</update>
 </mapper>

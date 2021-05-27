@@ -39,7 +39,7 @@
       <!--               <i class="fas fa-laugh-wink"></i> -->
                 <img class="img-profile" src="/Dong-Dong/images/util/DongDonglogo2.png" width="80">
                 </div>
-                <div class="sidebar-brand-text mx-3">관리자 페이지</div>
+                <div class="sidebar-brand-text mx-3">관리자<br>페이지</div>
             </a>
 
             <!-- Divider -->

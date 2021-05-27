@@ -3,16 +3,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>회원 신고 현황</title>
+    <title>신고 세부 정보</title>
 
     <!-- Custom fonts for this template -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" type="text/css">
@@ -25,9 +23,9 @@
 
     <!-- Custom styles for this page -->
     <link href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css"  rel="stylesheet">
-    
-    <!-- Bootstrap core JavaScript-->
-    <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	
+	<!-- Bootstrap core JavaScript-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -42,9 +40,26 @@
 
     <!-- Page level custom scripts -->
     <script src="../js/demo/datatables-demo.js"></script>
-
+    
+    <script type="text/javascript">
+			$(document).ready(function(){
+				$("form").on("submit",function(event){
+					var saType = $("#saType").val();
+					var saDate = $("#saDate").val();		
+					
+					if(saType.length == 4){
+						alert("카테고리 선택");
+						$("#saType").focus();
+						event.preventDefault();	
+					} else if(saDate.length == 4){
+						alert("제재 기간 선택");
+						$("#saDate").focus();
+						event.preventDefault();	
+					} 
+				});
+			});
+	</script>
 </head>
-
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -111,10 +126,16 @@
                 <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <form class="form-inline">
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                    </form>
+
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
-
-
+                        
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
@@ -130,16 +151,16 @@
                                 aria-labelledby="userDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                   	프로필
+                                   	 프로필
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-									활동 내역
+									 활동 내역
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-									로그아웃
+                                   	로그아웃
                                 </a>
                             </div>
                         </li>
@@ -153,41 +174,59 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800">회원 신고 현황</h1>
+                    <h1 class="h3 mb-2 text-gray-800">신고번호 ${coDTO.coNum}. 세부 내용</h1>
                     <p class="mb-4"></p>
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                            <h6 class="m-0 font-weight-bold text-primary"></h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>신고 번호</th>
-                                            <th>회원 번호</th>
-                                            <th>신고 내용</th>
-                                            <th>신고한 유저</th>
-                                            <th>신고일시</th>
-                                            <th>처리일시</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                    	<c:forEach var="coDTO" items="${list}" varStatus="stat">
-                                        <tr>
-                                            <td>${coDTO.coNum}</td>
-                                            <td>${coDTO.coTarget}</td>
-                                            <td>${coDTO.coContent}</td>
-                                            <td>${coDTO.userid}</td>
-                                            <td>${coDTO.createDate}</td>
-                                            <td>${coDTO.endDate}</td>
-                                        </tr>
-                                        </c:forEach>
-                                    </tbody>
-                                </table>
-                            </div>
+                            	<h6 class="m-0 font-weight-bold text-primary">신고된 게시글의 내용</h6>
+                            	
+								
+								<h6 class="m-0 font-weight-bold text-primary">게시글 작성자 정보</h6>
+								
+								
+                                ${coDTO}<br> 
+                                ${pDTO}<br>
+                                ${mDTO}<br>
+                                
+                                <h6 class="m-0 font-weight-bold text-primary">제재 결과 입력</h6>
+                                <form action="/admin/complaintEnd" method="post">
+                                	<input type="hidden" name="coNum" value="${coDTO.coNum}">
+	                                <div class="row">
+							  			<div class="col-md-3 col-sm-2"></div>
+										<div class="col-md-6 col-sm-8 mb-3">
+											<select class="form-select" aria-label="Default select example" name="saType" id="saType">
+							  					<option value="none" selected>카테고리 선택</option>
+							  					<option value="1">불법 사이트 홍보나 계정 해킹 시도</option>
+												<option value="2">불법적인 거래나 범죄 행위</option>
+												<option value="3">폭력적인 언어, 욕설, 비속어, 은어 등의 사용</option>
+												<option value="4">타인에게 불쾌감, 혐오감을 일으킬 수 있는 게시글이나 이미지 게시</option>
+												<option value="5">반복적으로 댓글이나 게시글을 등록하는 등 서비스 방해</option>
+											</select>
+										</div>
+							  			<div class="col-md-3 col-sm-2"></div>
+							  			<div class="col-md-3 col-sm-2"></div>
+										<div class="col-md-6 col-sm-8 mb-3">
+											<select class="form-select" aria-label="Default select example" name="saDate" id="saDate">
+							  					<option value="none" selected>기간 선택</option>
+							  					<option value="1">1일</option>
+												<option value="3">3일</option>
+												<option value="7">7일</option>
+												<option value="14">14일</option>
+												<option value="30">30일</option>
+												<option value="999">영구</option>
+											</select>
+										</div>
+							  			<div class="col-md-3 col-sm-2"></div>
+							  		</div>
+									<input type="submit" value="신고 처리 완료" class="btn btn-danger" style="align-items: right">
+							  	</form>
+                            	</div>
                         </div>
                     </div>
 
@@ -226,7 +265,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">Ã</span>
+                        <span aria-hidden="true">X</span>
                     </button>
                 </div>
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>

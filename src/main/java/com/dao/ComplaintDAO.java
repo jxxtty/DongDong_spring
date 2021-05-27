@@ -32,5 +32,13 @@ public class ComplaintDAO {
 	public List<ComplaintDTO> commentComplaintList() {
 		return template.selectList("ComplaintMapper.commentComplaintList");
 	}
+
+	public int complaintEnd(int coNum) {
+		return template.update("ComplaintMapper.complaintEnd", coNum);
+	}
+
+	public ComplaintDTO getComplaint(int coNum) {
+		return template.selectOne("ComplaintMapper.getComplaint",coNum);
+	}
 	
 }
