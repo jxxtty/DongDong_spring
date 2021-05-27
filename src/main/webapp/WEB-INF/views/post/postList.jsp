@@ -196,7 +196,7 @@ $(document).ready(function(){
 <%	
 	if (category != null && curPage != 0 && curPage != 1){ 
 %>	
-	<div class="paginate previous" id="paginate previous"><a href='categorySearchServlet?category=<%=category %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
+	<div class="paginate previous" id="paginate previous"><a href='categorySearch?category=<%=category %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
 
 <%
 	}

@@ -2,6 +2,7 @@ package com.controller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -13,10 +14,13 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,7 +36,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.google.gson.Gson;
+import com.naver.NaverLoginVO;
 import com.service.MemberService;
 
 @Controller
@@ -198,8 +204,68 @@ public class OAuthController {
 		}
 		
 		return "redirect:/";
-	}
+	}//구글 로그인
 	
+	@RequestMapping(value = "/loginForm", method = {RequestMethod.GET, RequestMethod.POST})
+	public String naverUrl(ModelMap model, HttpSession session) {
+		//네이버 아이디 인증 url을 생성하기 위해 naverLoginBO클래스의 getAuthorizationUrl메소드 호출함
+		NaverLoginVO naver = new NaverLoginVO();
+		String naverAuthUrl = naver.getAuthorizationUrl(session);
+		model.addAttribute("url", naverAuthUrl);
+		return "loginForm";
+	}//네이버 url 생성
+	
+	  @RequestMapping(value = "/naver", method = { RequestMethod.GET, RequestMethod.POST })
+	    public String callback(Model model, @RequestParam String code, @RequestParam String state, HttpSession session) throws Exception {
+	    OAuth2AccessToken oauthToken;
+	    NaverLoginVO naverLoginVO = new NaverLoginVO();
+	    oauthToken = naverLoginVO.getAccessToken(session, code, state);
+	    //1. 로그인 사용자 정보를 읽어온다.
+	    String apiResult = naverLoginVO.getUserProfile(oauthToken); //String형식의 json데이터
+	    //2. String형식인 apiResult를 json형태로 바꿈
+	    JSONParser parser = new JSONParser();
+	    Object obj = null;
+	    try {
+	        obj = parser.parse(apiResult);
+	    } catch (org.json.simple.parser.ParseException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    }
+	    JSONObject jsonObj = (JSONObject) obj;
+	    //3. 데이터 파싱
+	    //Top레벨 단계 _response 파싱
+	    JSONObject response_obj = (JSONObject)jsonObj.get("response");
+	    //response의 nickname값 파싱
+	    String userid = "naver_"+(String)response_obj.get("name");
+	    String passwd = "naver_"+(String)response_obj.get("name");
+	    String username = (String)response_obj.get("name");
+	    String nickName = (String)response_obj.get("nickname");
+	    String email = (String)response_obj.get("email");
+	    String phone =(String)response_obj.get("mobile");
+	    
+	    //System.out.println(jsonObj);
+	    //System.out.println(nickName);
+	    
+	   HashMap<String, String> map = new HashMap<String, String>();
+		map.put("userid", userid);
+		map.put("passwd", passwd);
+		
+		MemberDTO dto = service.login(map);
+		
+		if(dto != null) {
+			session.setAttribute("login", dto);
+		}else { //회원정보 없으면 회원가입 진행
+			MemberDTO newGoogle 
+				= new MemberDTO(userid, passwd, username, nickName, "0", "0",email.split("@")[0],email.split("@")[1],"default_userImg.PNG");
+			
+			service.memberAdd(newGoogle);
+			session.setAttribute("mesg", "회원가입이 완료되었습니다. 재로그인 후  Mypage에서 추가 정보를 입력해주세요");
+			session.setAttribute("login", newGoogle);
+		}
+	   
+	    
+	    return "redirect:/";
+	    }
 	
 	
 }

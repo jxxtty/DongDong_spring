@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,42 +13,74 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.MemberDTO;
+import com.dto.PageDTO;
 import com.service.PostService;
 
 @Controller
 public class SearchController {
 	@Autowired
-	PostService serivce;
+	PostService pService;
 	
-	@RequestMapping(value="/keywordSearch", method=RequestMethod.POST)
-	public String keywordSearch(String keyword, HttpSession session) {
+
+	
+
+	@RequestMapping(value="/keywordSearch", method=RequestMethod.GET)
+	public String keywordSearch(String keyword, HttpServletRequest request,HttpSession session) {
+
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
+		String curPage = request.getParameter("curPage");
 		String addr = "null";
 		if(mDto != null) { // 로그인 된 상태
 			addr = mDto.getAddr();
+		}
+		if(curPage == null) {
+			curPage = "1";
 		}
 		HashMap<String,String> map = new HashMap<>();
 		map.put("addr", addr);
 		map.put("keyword", keyword);
 		
 		
+
+		PageDTO pDTO = pService.searchByKeyword(Integer.parseInt(curPage),map);
+		int totalPage = pDTO.getTotalCount()/pDTO.getPerPage();
+		if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 
+		
+		request.setAttribute("keyword", keyword);
+		request.setAttribute("postList",pDTO.getList());
+		request.setAttribute("blockPerPage", pDTO.getBlockPerPage());
+		request.setAttribute("offset", pDTO.getOffset());
+		request.setAttribute("curPage", curPage);
+		request.setAttribute("prevPageBlock", pDTO.getPrevPageBlock());
+		request.setAttribute("nextPageBlock", pDTO.getNextPageBlock());
+		request.setAttribute("totalCount", pDTO.getTotalCount());
+		request.setAttribute("totalPage", totalPage);
+
 		// 키워드도 같이 넘겨야됨!
-		return "";
+		return "/main";
 	}
 	
+
+	
+
 	@RequestMapping(value="/categorySearch")
-	public String categorySearch(@RequestParam("category") String category, HttpSession session, Model m){
+	public String categorySearch(@RequestParam("category") String category, HttpServletRequest request,HttpSession session, Model m){
+
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String addr = "null";
 		if(mDto != null) { // 로그인 된 상태
 			addr = mDto.getAddr();
+		}
+		String curPage = request.getParameter("curPage");
+		if(curPage == null) {
+			curPage = "1";
 		}
 		HashMap<String,String> map = new HashMap<>();
 		map.put("addr", addr);
 		map.put("category", category);
 		
 		
-		
+		PageDTO pDTO = pService.searchByCategory(Integer.parseInt(curPage),(mDto==null?false:true),map);
 		HashMap<String,String> categoryMap = new HashMap<>();
 		categoryMap.put("D","디지털, 가전");
 		categoryMap.put("H","가구, 인테리어");
@@ -64,11 +97,22 @@ public class SearchController {
 		categoryMap.put("P","식물");
 		categoryMap.put("E","기타");
 		
+		int totalPage = pDTO.getTotalCount()/pDTO.getPerPage();
+		if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 
 		// 넘어온 카테고리로 해당 카테고리 이름 얻어옴
 		String categoryName = categoryMap.get(category);
-		
-		
+	
+		m.addAttribute("category",category);
+		m.addAttribute("categoryMap",categoryMap);
+		m.addAttribute("postList",pDTO.getList());
+		m.addAttribute("blockPerPage", pDTO.getBlockPerPage());
+		m.addAttribute("offset", pDTO.getOffset());
+		m.addAttribute("curPage", curPage);
+		m.addAttribute("prevPageBlock", pDTO.getPrevPageBlock());
+		m.addAttribute("nextPageBlock", pDTO.getNextPageBlock());
+		m.addAttribute("totalCount", pDTO.getTotalCount());
+		m.addAttribute("totalPage", totalPage);
 		m.addAttribute("categoryName", categoryName); //"category이름" 으로 검색된결과 뿌려줘야됨
-		return "";
+		return "/main";
 	}
 }
