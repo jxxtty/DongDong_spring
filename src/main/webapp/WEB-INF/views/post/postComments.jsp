@@ -172,6 +172,7 @@ padding-bottom: 300px;
 	      </form>
 	    </div>
 	    </c:if>
+	  </div>
     </div>
     
     <jsp:include page="../layout/bottom.jsp" flush="true"></jsp:include>

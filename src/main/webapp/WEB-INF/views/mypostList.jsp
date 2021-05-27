@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -48,6 +50,13 @@
 </style>
 </head>
 <body>
+<c:set var="mesg" value="${mesg}"></c:set>
+<c:if test="${!empty mesg}"> 
+	<script>
+		alert("${mesg}");
+	</script>
+	<c:remove var="mesg" scope="session" />
+</c:if>
 <header>
 <jsp:include page="common/top.jsp" flush="true"></jsp:include><br>
 </header>

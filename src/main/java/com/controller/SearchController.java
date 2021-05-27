@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.MemberDTO;
@@ -18,7 +19,7 @@ public class SearchController {
 	@Autowired
 	PostService serivce;
 	
-	@RequestMapping("/keywordSearch")
+	@RequestMapping(value="/keywordSearch", method=RequestMethod.POST)
 	public String keywordSearch(String keyword, HttpSession session) {
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String addr = "null";
@@ -29,11 +30,12 @@ public class SearchController {
 		map.put("addr", addr);
 		map.put("keyword", keyword);
 		
+		
 		// 키워드도 같이 넘겨야됨!
 		return "";
 	}
 	
-	@RequestMapping("/categorySearch")
+	@RequestMapping(value="/categorySearch")
 	public String categorySearch(@RequestParam("category") String category, HttpSession session, Model m){
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String addr = "null";
