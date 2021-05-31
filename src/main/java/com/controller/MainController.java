@@ -48,6 +48,10 @@ public class MainController {
 	if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 11page
 	
 	list = pDTO.getList();
+	for(int i = 0 ; i < list.size() ; i++) {
+		String[] image = list.get(i).getpImage().split(" ");
+		list.get(i).setpImage(image[0]);
+	}
 	
 	model.addAttribute("postList", list);
 	model.addAttribute("blockPerPage", pDTO.getBlockPerPage());

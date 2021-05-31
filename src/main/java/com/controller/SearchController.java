@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
+import com.dto.PostDTO;
 import com.service.PostService;
 
 @Controller
@@ -46,8 +48,15 @@ public class SearchController {
 		int totalPage = pDTO.getTotalCount()/pDTO.getPerPage();
 		if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 
 		
+		// 다중파일 대비 이미지파싱
+		List<PostDTO> list = pDTO.getList();
+		for(int i = 0 ; i < list.size() ; i++) {
+			String[] image = list.get(i).getpImage().split(" ");
+			list.get(i).setpImage(image[0]);
+		}
+		
 		request.setAttribute("keyword", keyword);
-		request.setAttribute("postList",pDTO.getList());
+		request.setAttribute("postList",list);
 		request.setAttribute("blockPerPage", pDTO.getBlockPerPage());
 		request.setAttribute("offset", pDTO.getOffset());
 		request.setAttribute("curPage", curPage);
@@ -101,10 +110,18 @@ public class SearchController {
 		if(pDTO.getTotalCount()%pDTO.getPerPage() != 0) totalPage++;//나머지 있을 경우 1페이지 증가 
 		// 넘어온 카테고리로 해당 카테고리 이름 얻어옴
 		String categoryName = categoryMap.get(category);
-	
+		
+		// 다중파일 대비 이미지파싱
+		List<PostDTO> list = pDTO.getList();
+		for(int i = 0 ; i < list.size() ; i++) {
+			String[] image = list.get(i).getpImage().split(" ");
+			list.get(i).setpImage(image[0]);
+		}
+		
+		
 		m.addAttribute("category",category);
 		m.addAttribute("categoryMap",categoryMap);
-		m.addAttribute("postList",pDTO.getList());
+		m.addAttribute("postList",list);
 		m.addAttribute("blockPerPage", pDTO.getBlockPerPage());
 		m.addAttribute("offset", pDTO.getOffset());
 		m.addAttribute("curPage", curPage);
