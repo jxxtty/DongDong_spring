@@ -82,7 +82,7 @@
   <div class="container" style="max-width: 1100px">
     <div class="row align-items-center my-5">
       <div id="mainImgDiv" class="col-lg-7">
-        <img id="mainImage" class="img-fluid rounded mb-4 mb-lg-0" src="/Dong-Dong/images/${pImage}" width="700px" height="">
+        <img id="mainImage" class="img-fluid rounded mb-4 mb-lg-0" src="/Dong-Dong/images/${imageDetail[0]}" width="700px" height="">
       </div>
       <div class="col-lg-5 font-weight-bold" style="text-align: left">
         <br>
@@ -158,7 +158,28 @@
         <h5 style="line-height: 1.7;">${pContent}</h5>
       </div>
     </div>
-  </div>
+    
+    <c:if test="${isMultiFile eq 'Y'}">
+  		<div class="card text-dark my-5 py-4" style="border: none; ">
+      		<div style="text-align : left; font-weight: bolder; margin-left: 20px"><h2>상세 사진</h2></div>
+      		<hr>
+      		<div id="multiImage">
+      			<c:forEach var="originImage" items="${imageDetail}">
+					<div style="display: inline-flex; padding: 10px;">
+						<li style="list-style:none;">
+							<img src="/Dong-Dong/images/${originImage}"  width=200 height=200 /><br>
+						</li>
+					</div>
+				</c:forEach>
+			</div>
+    	</div>
+  	</c:if>
   
+    
+    
+    
+ </div>
+  
+  	
 
     
