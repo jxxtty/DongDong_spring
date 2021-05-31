@@ -242,7 +242,8 @@ public class OAuthController {
 	    String nickName = (String)response_obj.get("nickname");
 	    String email = (String)response_obj.get("email");
 	    String phone =(String)response_obj.get("mobile");
-	    
+	    String phoneAll = phone.split("-")[0]+phone.split("-")[1]+phone.split("-")[2];
+	    //System.out.println(phoneAll);
 	    //System.out.println(jsonObj);
 	    //System.out.println(nickName);
 	    
@@ -256,16 +257,14 @@ public class OAuthController {
 			session.setAttribute("login", dto);
 		}else { //회원정보 없으면 회원가입 진행
 			MemberDTO newGoogle 
-				= new MemberDTO(userid, passwd, username, nickName, "0", "0",email.split("@")[0],email.split("@")[1],"default_userImg.PNG");
+				= new MemberDTO(userid, passwd, username, nickName, "0", phoneAll, email.split("@")[0], email.split("@")[1],"default_userImg.PNG");
 			
 			service.memberAdd(newGoogle);
 			session.setAttribute("mesg", "회원가입이 완료되었습니다. 재로그인 후  Mypage에서 추가 정보를 입력해주세요");
 			session.setAttribute("login", newGoogle);
 		}
-	   
-	    
 	    return "redirect:/";
-	    }
+	    }//네이버로그인
 	
 	
 }
