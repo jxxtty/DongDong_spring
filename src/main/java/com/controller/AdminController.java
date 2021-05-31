@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -72,32 +73,48 @@ public class AdminController {
 		int saType = Integer.parseInt(map.get("saType"));
 		int saDate = Integer.parseInt(map.get("saDate"));
 		
+		
 		ComplaintDTO coDTO = coService.getComplaint(coNum);
 		SanctionDTO saDTO = new SanctionDTO();
 		saDTO.setCoNum(coNum);
-		saDTO.setUserid(coDTO.getUserid());
 		saDTO.setSaType(saType);
 		saDTO.setSaDate(saDate);
 		
-		int sanctionResult = saService.insertSanction(saDTO);
-		int complaintResult = coService.complaintEnd(coNum);
+		
 		
 		ModelAndView mav = new ModelAndView();
 		
 		switch (coDTO.getCoType()) {
 		case 1:
+			saDTO.setUserid(coDTO.getCoTarget());
 			mav.setViewName("redirect:/admin/complaintMember");
 			break;
 		case 2:
+			PostDTO pDTO = pService.getPostByPNum(Integer.parseInt(coDTO.getCoTarget()));
+			saDTO.setUserid(pDTO.getUserid());
 			mav.setViewName("redirect:/admin/complaintPost");
 			break;
 		case 3:
+			CommentsDTO cDTO = cService.getCommentByCNum(Integer.parseInt(coDTO.getCoTarget()));
+			saDTO.setUserid(cDTO.getUserid());
 			mav.setViewName("redirect:/admin/complaintComment");
 			break;
 		default:
 			mav.setViewName("redirect:/admin");
 			break;
 		}
+
+		if(saService.isSanctioned(saDTO.getUserid())==true) {
+			saDTO.setEndDate(saService.getEndDateByUserid(saDTO.getUserid()));
+		}
+		if(saDate==0) {
+			int complaintResult = coService.complaintEnd(coNum);
+			return mav;
+		}
+		int complaintResult = coService.complaintEnd(coNum);
+		int sanctionResult = saService.insertSanction(saDTO);
+		
+		
 		return mav;
 	}
 	
@@ -109,7 +126,7 @@ public class AdminController {
 		PostDTO pDTO = null;
 		CommentsDTO cDTO = null;
 		ComplaintDTO coDTO = coService.getComplaint(coNum);
-		mav.addObject("coDTO", coDTO);
+		
 		switch (coDTO.getCoType()) {
 		case 1:
 			mDTO = mService.mypage(coDTO.getCoTarget());
@@ -133,9 +150,15 @@ public class AdminController {
 			mav.setViewName("admin/complaintCommentDetail");
 			break;
 		default:
-			mav.setViewName("admin/complaintComment");
+			mav.setViewName("admin");
 			break;
 		}
+
+		mav.addObject("coDTO", coDTO);
+		mav.addObject("sanctionList", saService.sanctionList((String)mDTO.getUserid()));
+		mav.addObject("isSanctioned", saService.isSanctioned((String)mDTO.getUserid()));
+		mav.addObject("endSanctionDate", saService.getEndDateByUserid((String)mDTO.getUserid()));
+		mav.addObject("isAlreadyCompleted", coService.isAlreadyCompleted(coDTO)==0?false:true);
 		return mav;
 	}
 }

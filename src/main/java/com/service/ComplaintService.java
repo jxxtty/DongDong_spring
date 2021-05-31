@@ -29,6 +29,10 @@ public class ComplaintService {
 		return coDAO.getComplaint(coNum);
 	}
 	
+	public int isAlreadyCompleted(ComplaintDTO dto) {
+		return coDAO.isAlreadyCompleted(dto);
+	}
+	
 	public List<ComplaintDTO> postComplaintList() {
 	    return coDAO.postComplaintList();
 	}

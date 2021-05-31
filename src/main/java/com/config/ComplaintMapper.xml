@@ -23,6 +23,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE coNum=#{coNum}
 	</select>
 	
+	<select id="isAlreadyCompleted" parameterType="ComplaintDTO" resultType="int">
+		SELECT COUNT(*) 
+		FROM complaint 
+		WHERE coYn = 'y' AND coType=#{coType} AND coTarget=#{coTarget}
+	</select>
+	
 	<select id="memberComplaintList" resultType="ComplaintDTO">
 		SELECT *
 		FROM complaint
@@ -46,4 +52,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET coYn='y', endDate=SYSDATE
 		WHERE coNum=#{coNum}
 	</update>
+	
+	
 </mapper>

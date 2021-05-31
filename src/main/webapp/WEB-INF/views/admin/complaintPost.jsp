@@ -173,10 +173,10 @@
                                         <tr>
                                             <th>신고 번호</th>
                                             <th>글 번호</th>
-                                            <th>신고 내용</th>
                                             <th>신고한 유저</th>
                                             <th>신고일시</th>
                                             <th>처리일시</th>
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -184,10 +184,11 @@
                                         <tr>
                                             <td>${coDTO.coNum}</td>
                                             <td>${coDTO.coTarget}</td>
-                                            <td>${coDTO.coContent}</td>
                                             <td>${coDTO.userid}</td>
                                             <td>${coDTO.createDate}</td>
-                                            <td>${coDTO.endDate}</td>
+                                            <td>${coDTO.endDate}</td><td>
+												<a class="btn btn-primary" href="/admin/complaintHandlingDetail?coNum=${coDTO.coNum}">내용보기</a>
+											</td>
                                         </tr>
                                         </c:forEach>
                                     </tbody>

@@ -1,6 +1,8 @@
 package com.service;
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,5 +17,17 @@ public class SanctionService {
 
 	public int insertSanction(SanctionDTO saDTO) {
 		return saDAO.insertSanction(saDTO);
+	}
+
+	public List<SanctionDTO> sanctionList(String userid) {
+		return saDAO.sanctionList(userid);
+	}
+	
+	public String getEndDateByUserid(String userid) {
+		return saDAO.getEndDateByUserid(userid);
+	}
+	
+	public boolean isSanctioned(String userid) {
+		return saDAO.isSanctioned(userid);
 	}
 }

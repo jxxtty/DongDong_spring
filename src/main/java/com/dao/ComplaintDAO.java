@@ -41,4 +41,8 @@ public class ComplaintDAO {
 		return template.selectOne("ComplaintMapper.getComplaint",coNum);
 	}
 	
+	public int isAlreadyCompleted(ComplaintDTO dto) {
+		return template.selectOne("ComplaintMapper.isAlreadyCompleted",dto);
+	}
+	
 }
