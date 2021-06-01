@@ -140,7 +140,7 @@
 	} else{ //아닌경우
 %>
 			<a href="loginForm">로그인</a>
-			<a href="MemberForm">회원가입</a><!--MVC 패턴 -->
+			<a href="memberForm">회원가입</a><!--MVC 패턴 -->
 		</div>
 <%		
 	}//end if~else

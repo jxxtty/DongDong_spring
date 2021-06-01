@@ -45,7 +45,7 @@ form {
 </style>
 </head>
 <body>
-	<form action="emailAuthServlet" method="post">
+	<form action="/emailAuthC" method="post">
 		<!-- <form action="#"> -->
 		<h3>이메일 인증</h3>
 		<input type="text" id="email1" name="email1" placeholder="이메일 입력">@

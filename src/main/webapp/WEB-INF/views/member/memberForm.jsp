@@ -54,9 +54,9 @@ $("form").on("submit",function(event){
 			$("#passwd").focus();
 			event.preventDefault();
 		
-/* 		}else if (result4 !="인증완료"){
+		}else if (result4 !="인증완료"){
 			alert("이메일 인증해 주세요.")
-			event.preventDefault(); */
+			event.preventDefault(); 
 		
 		}else if(username.length==0){
 			alert("이름을 입력해주세요.")
@@ -135,7 +135,7 @@ $("#passwd2").on("keyup",function(){
 		// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼줌
 		var popupY= (window.screen.height / 2) - (popupHeight / 2);
 		// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼줌
-		url = "emailAuth.jsp"
+		url = "emailAuth" // 바뀐 부분 @@@@@@@@@@@@@@@@@@@@@
 		open(url,"confirm", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 	}
 	//닉네임 체크 //이메일 값 넘겨주기
@@ -204,9 +204,9 @@ $("#passwd2").on("keyup",function(){
 
 <tr>
 <th><h3>이메일</h3></th>
-<td  style="width:20%;"><input type="text" class="form-control" name="email1"style="width:315px;height:50px"></td>
+<td  style="width:20%;"><input type="text" class="form-control" id ="email1" name="email1" style="width:315px;height:50px"></td>
 <td>@</td>
-<td><input type="text" class="form-control" name="email2"style="width:315px;height:50px">
+<td><input type="text" class="form-control" id ="email2"name="email2"style="width:315px;height:50px">
 <button type="button" id="mailAuth"class="btn btn-info">메일 인증</button><span id="result4" text=""></span></td>		
 </tr>
 

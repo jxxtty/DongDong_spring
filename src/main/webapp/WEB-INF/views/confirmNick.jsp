@@ -45,7 +45,7 @@ form {
 	<c:choose>
 	
 		<c:when test="${nickCheck == 0}">
-			<form id=nickForm>
+			<form id=nickForm><!--  -->
 				<h4>
 					입력하신 닉네임 : ${nickName} <br>사용할 수 있는 닉네임 입니다.
 				</h4>
