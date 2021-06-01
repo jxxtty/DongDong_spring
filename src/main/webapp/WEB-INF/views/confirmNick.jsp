@@ -34,8 +34,6 @@ form {
 		});
 		$("#noNick").click(function() {
 			$("#renick").attr("action", "../checkNick");
-			//opener.$("#nickName").focus();
-			//window.close();
 		});
  });//end ready
 </script>

@@ -16,7 +16,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<select id="getCommentByCNum" parameterType="int" resultType="CommentsDTO">
 		SELECT * 
-		FROM comments 
+		FROM (SELECT c.userid "USERID", pNum, cNum, cContent, createDate, 
+					 updateDate, parentNum, cLevel, nickname, userimage 
+			  FROM comments c 
+			  JOIN member m ON c.userid=m.userid) 
 		WHERE cNum=#{cNum}
 	</select>
 	

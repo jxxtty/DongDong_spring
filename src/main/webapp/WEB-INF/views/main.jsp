@@ -20,7 +20,7 @@
 
 	$(document).ready(function() {
 		$("#main").click(function() {
-			location.href="main";
+			location.href="/";
 		})
 	})//end ready
 </script>

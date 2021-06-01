@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dto.CommentsDTO;
@@ -57,11 +58,45 @@ public class PostController {
 		return "redirect:../postWrite"; // 글쓰기화면으로전환
 	}
 	
+	/*
+	 * @RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.POST)
+	 * public String postWrite(String pTitle, String pCategory, String pContent,
+	 * String pPrice, HttpSession session, MultipartFile file) { PostDTO pDto = new
+	 * PostDTO(); // 입력되어온 내용 pDto에 값 넣기 MemberDTO mDto =
+	 * (MemberDTO)session.getAttribute("login"); pDto.setUserid(mDto.getUserid());
+	 * // 아이디 pDto.setAddr(mDto.getAddr()); // 주소 pDto.setpCategory(pCategory); //
+	 * 카테고리 pDto.setpTitle(pTitle); // 제목 pContent = pContent.replaceAll("\r\n",
+	 * "<br>"); pDto.setpContent(pContent); // 글내용
+	 * pDto.setpPrice(Integer.parseInt(pPrice)); // 가격 pDto.setpStatus("0"); //
+	 * default로 들어가는 값 pDto.setpPull("3"); // default로 들어가는 값 pDto.setpHit(0); //
+	 * default로 들어가는 값
+	 * 
+	 * String fileName = file.getOriginalFilename(); fileName =
+	 * fileName.substring(fileName.lastIndexOf("\\")+1); UUID uuid =
+	 * UUID.randomUUID(); fileName = uuid.toString()+"_"+fileName; File target = new
+	 * File(uploadPath, fileName); pDto.setpImage(fileName); // 경로생성 if(! new
+	 * File(uploadPath).exists()) { new File(uploadPath).mkdirs(); } // 파일복사 try {
+	 * FileCopyUtils.copy(file.getBytes(), target); } catch(Exception e) {
+	 * e.printStackTrace(); }
+	 * 
+	 * // 글쓴내용저장 int n = pService.newPost(pDto);
+	 * 
+	 * // 파일저장이름 중복제거할예정
+	 * 
+	 * return "redirect:../"; // main으로 이동하는 경로 }
+	 */
+	
 	@RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.POST)
-	public String postWrite(String pTitle, String pCategory, String pContent, String pPrice,
-			HttpSession session, MultipartFile file) {
-		PostDTO pDto = new PostDTO();
+	public String postWrite(MultipartHttpServletRequest mtfRequest, HttpSession session) {
+		// 입력되어 온 값 받기
+		String pCategory = mtfRequest.getParameter("pCategory");
+		String pTitle = mtfRequest.getParameter("pTitle");
+		String pPrice = mtfRequest.getParameter("pPrice");
+		String pContent = mtfRequest.getParameter("pContent");
+		List<MultipartFile> fileList = mtfRequest.getFiles("file");
+		
 		// 입력되어온 내용 pDto에 값 넣기
+		PostDTO pDto = new PostDTO();
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		pDto.setUserid(mDto.getUserid()); // 아이디
 		pDto.setAddr(mDto.getAddr()); // 주소
@@ -74,28 +109,30 @@ public class PostController {
 		pDto.setpPull("3"); // default로 들어가는 값
 		pDto.setpHit(0); // default로 들어가는 값
 		
-		String fileName = file.getOriginalFilename();
-		fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
-		UUID uuid = UUID.randomUUID();
-		fileName = uuid.toString()+"_"+fileName;
-		File target = new File(uploadPath, fileName);
-		pDto.setpImage(fileName);
-		// 경로생성
-		if(! new File(uploadPath).exists()) {
-			new File(uploadPath).mkdirs();
+		String dbSave = ""; // db에 저장될 이미지파일이름의 조합
+		for(int i = 0 ; i < fileList.size() ; i++) {
+			MultipartFile mf = fileList.get(i);
+			String originalFileName = mf.getOriginalFilename(); // 원본파일 이름
+			//long fileSize = mf.getSize(); // 파일사이즈
+			//String safeFile = path + System.currentTimeMillis()+"_" +i+ originalFileName;
+			String safeFile = uploadPath + System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
+			
+			String dbSaveFile = System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
+			if(i == fileList.size()-1) {
+				dbSave += dbSaveFile;
+			} else {
+				dbSave += dbSaveFile+" ";
+			}
+			
+			try {
+				mf.transferTo(new File(safeFile));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		// 파일복사
-		try {
-			FileCopyUtils.copy(file.getBytes(), target);
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
-		// 글쓴내용저장
+		pDto.setpImage(dbSave);
+		System.out.println("DB에 들어가는 이미지파일 " + dbSave);
 		int n = pService.newPost(pDto);
-		
-		// 파일저장이름 중복제거할예정
-		
 		return "redirect:../"; // main으로 이동하는 경로
 	}
 	
@@ -106,20 +143,35 @@ public class PostController {
 	public ModelAndView postUpdate(@RequestParam("pNum") String pNum) {
 		ModelAndView mav = new ModelAndView();
 		PostDTO pDto = pService.getPostByPNum(Integer.parseInt(pNum));
+		// 글내용 줄바꿈 파싱
 		String pContent = pDto.getpContent();
 		pContent = pContent.replaceAll("<br>", "\r\n");
 		pDto.setpContent(pContent);
+		// 이미지파일 파일명단위로 끊어서 배열에 넣기
+		String pImage = pDto.getpImage();
+		String[] images = pImage.split(" ");
+		
+		mav.addObject("imagesArr", images);
 		mav.addObject("postRetrieve", pDto);
 		mav.setViewName("postUpdate");
 		return mav;
 	}
 	
 	@RequestMapping(value="/loginCheck/postUpdate", method=RequestMethod.POST)
-	public String postUpdate(String pNum,String pTitle, String pCategory, String pContent, String pPrice,
-			HttpSession session, MultipartFile file) {
+	public String postUpdate(MultipartHttpServletRequest mtfRequest, HttpSession session) {
 		
 		// 로그인 정보
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
+		
+		// 입력되어 온 값 받기
+		String pNum = mtfRequest.getParameter("pNum"); // 수정할 글을 불러오는 용
+		
+		String pCategory = mtfRequest.getParameter("pCategory"); // 수정하는 내용
+		String pTitle = mtfRequest.getParameter("pTitle"); // 수정하는 내용
+		String pPrice = mtfRequest.getParameter("pPrice"); // 수정하는 내용
+		String pContent = mtfRequest.getParameter("pContent"); // 수정하는내용
+		List<MultipartFile> fileList = mtfRequest.getFiles("file"); // 수정하는내용 -> 비어있다면 이미지는 수정하지 않는것.
+		
 		// 수정할 글자체의 정보
 		PostDTO pDto = pService.getPostByPNum(Integer.parseInt(pNum));
 		
@@ -131,33 +183,57 @@ public class PostController {
 			updateDto.setpNum(pDto.getpNum()); // 글번호
 			updateDto.setpCategory(pCategory); // 카테고리
 			updateDto.setpTitle(pTitle); // 제목
+			// 글내용 줄바꿈 파싱
 			pContent = pContent.replaceAll("\r\n", "<br>");
 			updateDto.setpContent(pContent); // 글내용
 			updateDto.setpPrice(Integer.parseInt(pPrice)); // 가격
 			updateDto.setpStatus(pDto.getpStatus());
 			updateDto.setpPull(pDto.getpPull());
 			updateDto.setpHit(pDto.getpHit());
-			
-			String fileName = file.getOriginalFilename();
-			
-			if(fileName.length() != 0) { // 사진파일 변경된게 옴
-				fileName = fileName.substring(fileName.lastIndexOf("\\")+1);
-				UUID uuid = UUID.randomUUID();
-				fileName = uuid.toString()+"_"+fileName;
-				File target = new File(uploadPath, fileName);
-				pDto.setpImage(fileName);
-				// 경로생성
-				if(! new File(uploadPath).exists()) {
-					new File(uploadPath).mkdirs();
+				// 기존에 저장되어있던 파일 삭제
+				/*
+				 * String[] originalImages = pDto.getpImage().split(" "); for(String s :
+				 * originalImages) { String deleteImg = uploadPath+s;
+				 * System.out.println("삭제하는 파일 경로와 이름 : " + deleteImg); File file = new
+				 * File(deleteImg); file.delete(); }
+				 * System.out.println("기존에 저장되어있던 이미지파일 삭제완료");
+				 */
+			int flag = 0;
+			String dbSave = "";// db에 저장될 이미지파일이름의 조합
+			for(int i = 0 ; i < fileList.size() ; i++) {
+				MultipartFile mf = fileList.get(i);
+				String originalFileName = mf.getOriginalFilename(); // 원본파일 이름
+				if(originalFileName.length() == 0) {
+					System.out.println("수정된거 없어서 flag증가시키고 break함");
+					flag++;
+					break;
 				}
-				// 파일복사
+				String safeFile = uploadPath + System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
+				
+				String dbSaveFile = System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
+				if(i == fileList.size()-1) {
+					dbSave += dbSaveFile;
+				} else {
+					dbSave += dbSaveFile+" ";
+				}
 				try {
-					FileCopyUtils.copy(file.getBytes(), target);
-				} catch(Exception e) {
+					mf.transferTo(new File(safeFile));
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			} else { // 사진파일 변경된거 없음
+			}
+			
+			if(flag == 1) { // 이미지 수정이 없어서 반복문수행안하고 나온경우
 				updateDto.setpImage(pDto.getpImage());
+			} else {
+				// 이미지가 수정된 경우 기존이미지파일들은 삭제해준다.
+				String[] originalImages = pDto.getpImage().split(" "); 
+				for(String s :originalImages) { 
+					String deleteImg = uploadPath+s;
+					File file = new File(deleteImg); 
+					file.delete(); 
+				}
+				updateDto.setpImage(dbSave);
 			}
 			
 			// updateDto에 저장된 내용으로 글내용 수정한다.
@@ -179,10 +255,13 @@ public class PostController {
 			int deleteResult = pService.deletePostByPNum(Integer.parseInt(pNum));
 			
 			if(deleteResult==1) { // 게시글 삭제된 경우
-	    		// 삭제한 게시글의 저장된 이미지 삭제
-				File deleteImage = new File("c://images//"+pDto.getpImage());
-				deleteImage.delete();
-				System.out.println("c드라이브 내 이미지 삭제됨");
+				// 삭제되는 게시글의 이미지도 삭제
+				String[] originalImages = pDto.getpImage().split(" ");
+				for(String s :originalImages) { 
+					String deleteImg = uploadPath+s;
+					File file = new File(deleteImg); 
+					file.delete(); 
+				}
 	    	}
 			
 		}
@@ -221,7 +300,7 @@ public class PostController {
 		} else { // 3일 이상이라면 끌올 가능
 			m.addAttribute("pullAvailable", "T");
 		}
-		return "../pullPost";
+		return "pullPost";
 	}
 	
 	@RequestMapping(value="/loginCheck/postPull", method=RequestMethod.POST)
@@ -233,12 +312,9 @@ public class PostController {
 			pullTime = String.valueOf(Integer.parseInt(pullTime) - 1);
 			pDto.setpPull(pullTime);
 			int pullResult = pService.pullPost(pDto);
-			System.out.println("끌올한거 : " + pullResult);
-		} else {
-			// 로그인한 회원정보랑 끌올할 글의 작성자정보가 동일하지 않다.
-			// 경고문 + loginForm으로 이동
+			session.setAttribute("mesg", "끌올 완료되었습니다.");
 		}
-		return "redirect:../"; // main으로 이동
+		return "redirect:../loginCheck/MyPostList"; // 내글보기로 이동
 	}
 	
 	@RequestMapping(value = "/postDetail")
@@ -263,14 +339,25 @@ public class PostController {
     		mav.addObject("pNum", String.valueOf(pDTO.getpNum()));
     		mav.addObject("pCategory", pDTO.getpCategory());
     		mav.addObject("pHit", String.valueOf(pDTO.getpHit()));
-    		mav.addObject("pImage", pDTO.getpImage());
     		mav.addObject("pPrice", String.valueOf(pDTO.getpPrice()));
     		mav.addObject("addr", pDTO.getAddr());
     		mav.addObject("pContent", pDTO.getpContent());
     		mav.addObject("pDate", pDTO.getpDate());
     		mav.addObject("pTitle", pDTO.getpTitle());
     		mav.addObject("pStatus", pDTO.getpStatus());
-        	
+    		
+    		// 다중파일 대비 이미지파싱
+    		String[] originalImages = pDTO.getpImage().split(" ");
+    		mav.addObject("imageDetail", originalImages);
+    		
+    		// 다중파일인 경우 postDetail에서 추가부분이 있어 구분자로 넣어줌
+    		if(originalImages.length == 1) { 
+    			mav.addObject("isMultiFile","N");
+    		} else {
+    			mav.addObject("isMultiFile","Y");
+    		}
+    		
+    		mav.addObject("pImage", pDTO.getpImage());
     		switch (pDTO.getpCategory()) {
     		case "D" :
     			mav.addObject("category", "디지털, 가전");

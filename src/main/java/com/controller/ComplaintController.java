@@ -18,11 +18,10 @@ import com.service.ComplaintService;
 @Controller
 public class ComplaintController {
 	@Autowired
-	ComplaintService service;
+	ComplaintService coService;
+
 	@RequestMapping(value = "/loginCheck/complaintAccept")
 	public @ResponseBody String ComplaintAccept(HttpSession session, @RequestParam Map<String, String> map) {
-		// 기본적인 설정 & 세션 등 생성
-    	
 		MemberDTO dto = (MemberDTO)session.getAttribute("login");
 		String coTarget = map.get("coTarget");
 		String userid = map.get("userid");
@@ -34,13 +33,13 @@ public class ComplaintController {
 		coDTO.setCoTarget(coTarget);
 		coDTO.setUserid(userid);
 			
-		if(service.checkDuplication(coDTO)) {
+		if(coService.checkDuplication(coDTO)) {
 			returnValue = "dup"; 
 		} else {
 			coDTO.setCoContent(coContent);
 			coDTO.setCoType(coType);
 				
-			int insertResult = service.insertComplaint(coDTO);
+			int insertResult = coService.insertComplaint(coDTO);
 				
 			if(insertResult!=1) { // 게시글 업데이트가 실패했을 경우 
 				returnValue = "false"; 

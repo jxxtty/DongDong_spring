@@ -8,15 +8,15 @@
 	<script type="text/javascript">
 			$(document).ready(function(){
 				$("#main").click(function() {
-					location.href="main";
+					location.href="/";
 				})
 				
 				$("#back").on("click", function() {
-					location.href ="main";
+					location.href ="/";
 				});
 				
 				$("#search").on("click", function(){
-					location.href="CategorySearchUIServlet";
+					location.href="categoryList";
 				});
 				
 			    $("#keyword").keydown(function(e) {
@@ -112,7 +112,9 @@
 	</div>
 
 	<div class="col-md-5" id="search_bar">
-		<form action="KeywordSearchServlet" method="get">	
+
+		<form action="keywordSearch" method="get">	
+
     		<input type="text" name="keyword" id="keyword" class="form-control" placeholder="검색할 상품명">
 		</form>
 	</div>
