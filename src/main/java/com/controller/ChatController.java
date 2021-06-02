@@ -27,47 +27,35 @@ import com.service.ChatService;
 @Controller
 public class ChatController {
 	
-	private SimpMessagingTemplate simpMessageTemplate;
-	private ChatService chatService;
+	@Autowired
+	SimpMessagingTemplate simpMessageTemplate;
 	
 	@Autowired
-	public ChatController(SimpMessagingTemplate simpMessagingTemplate, ChatService chatService) {
-		this.simpMessageTemplate = simpMessagingTemplate;
-		this.chatService = chatService;
-	}
+	ChatService cService;
 	
-	@RequestMapping(value="/chat/{pNum}&{bUserid}&{sUserid}", method=RequestMethod.GET)
-	public String productChatMessage(Model model, HttpSession session, 
-			@PathVariable("pNum") String pNum,  @PathVariable("bUserid") String bUserid,
-			@PathVariable("sUserid") String sUserid) throws IOException {
-		
+	//채팅 접속
+	@RequestMapping(value = "/chat", method = RequestMethod.GET)
+	public String productChatMessage(Model model, HttpSession session, int pNum, String bUserid, String sUserid)
+			throws IOException {
+		//로그인 여부 확인
 		if (session.getAttribute("login") == null) {
 			return "redirect:/login";
 		}
-		
-		System.out.println(pNum);
-		System.out.println(sUserid);
-		System.out.println(bUserid);
-		
-		return "chat/chatmessage";
+		return "chat/chatMessage";
 	}
-	
-	/*
-	 * @MessageMapping("/chat") public void send(ChatMessage chatMessage) throws
-	 * IOException { ChatMessage chatMessageInfo =
-	 * null;//chatService.appendMessage(chatMessage); String urlSubscribe =
-	 * "/subscribe/" + chatMessageInfo.getChatid();
-	 * simpMessageTemplate.convertAndSend(urlSubscribe, new
-	 * ChatMessage(chatMessageInfo.getMessage(), chatMessageInfo.getFromname(),
-	 * chatMessageInfo.getSendtime(), chatMessageInfo.getFromid())); }
-	 */
 
-	@RequestMapping(value="/chatList", method=RequestMethod.GET)
+	@MessageMapping("/chatMessage")
+	public void send(ChatMessage chatMessage) throws IOException {
+		cService.appendMessage(chatMessage);
+		String urlSubscribe = "/subscribe/" + chatMessage.getChatId();
+		simpMessageTemplate.convertAndSend(urlSubscribe, new ChatMessage(chatMessage.getUserId(), chatMessage.getMessage(), 
+				chatMessage.getSendTime(), chatMessage.getChatId()));
+	}
+
+	@RequestMapping(value = "/chatList", method = RequestMethod.GET)
 	public ModelAndView getChatList(HttpSession session) {
 		ModelAndView mav = new ModelAndView("chat/chatList");
 		return mav;
 	}
-	
-	
 
 }

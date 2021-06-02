@@ -5,6 +5,8 @@ public class ChatRoom {
 	private int pr_id;
 	private String sellerid;
 	private String buyerid;
+	private String fileName;
+	
 	public ChatRoom() {
 		super();
 		// TODO Auto-generated constructor stub
