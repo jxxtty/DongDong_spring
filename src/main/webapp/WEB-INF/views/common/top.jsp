@@ -131,6 +131,7 @@
 			<a href="loginCheck/mypage">mypage</a><!--수정  -->
 			<a href="loginCheck/logout">로그아웃</a>
 			<a href="loginCheck/postWrite">글쓰기</a>
+			<a href="chatRoom">채팅</a>
 		</div>
 		<div id="user_profile" class="user">
 			<%=dto.getNickName() %>

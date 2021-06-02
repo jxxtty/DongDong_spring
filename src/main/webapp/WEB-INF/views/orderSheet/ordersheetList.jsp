@@ -39,6 +39,10 @@ function oMessage(oNum) {
 			location.href="/loginCheck/OrderDel?oNum="+num; 
 		});//end delBtn
 		
+		
+		$("#chat").click(function() {
+			location.href="chat?pNum=${o.pNum}&bUserid=${o.bUserid}&sUserid=${o.sUserid}";
+		})
 	
 		//체크한 게시글 삭제
 		$("#delAllorder").click(function() {
@@ -123,7 +127,10 @@ h2{
 		
 		<td class="text-center" width="80">${o.oPrice}</td><!--제시가격  -->
 		<td class="text-center" width="40">${o.oDate}</td><!--주문서 보낸 날짜  -->
-		
+		<td class="text-center" align="center" width="30" 
+			style='padding-left: 10px'>
+		<button id="chat">채팅</button>
+		</td>
 		<td class="text-center" align="center" width="30" 
 			style='padding-left: 10px'>
 			<input type="button" value="삭제"  class="delBtn" data-xxx="${o.oNum}" ><!--주문서 삭제시 오더번호로  -->
