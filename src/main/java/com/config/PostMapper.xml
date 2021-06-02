@@ -8,8 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select count(*)
 	from post
 	where pCategory = #{category}
-	<if test="addr != 'null'">
-		AND addr = #{addr}
+	<if test="value != null">
+		AND addr = #{value}
 	</if>
 	</select>
 	
@@ -17,8 +17,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select count(*)
 	from post
 	WHERE pTitle LIKE '%'||#{keyword}||'%'
-	<if test="addr != 'null'">
-		AND addr = #{addr}
+	<if test="value != null">
+		AND addr = #{value}
 	</if>
 	</select>
 	
@@ -26,8 +26,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="totalCount" parameterType="string" resultType="int">
 	select count(*)
 	from post
-	<if test="addr != null">
-		where addr = #{addr}
+	<if test="value != null">
+		where addr = #{value}
 	</if> 
 	</select>
    
@@ -103,8 +103,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		,TRUNC((SYSDATE-pDate) * 24 * 60) AS pDateDiff, pPull
     	FROM post 
 		WHERE pTitle LIKE '%'||#{keyword}||'%'
-		<if test="addr != 'null'">
-			AND addr = #{addr}
+		<if test="value != null">
+			AND addr = #{value}
 		</if>
 		 order by pDate desc
 	</select>
@@ -128,8 +128,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     		,TRUNC((SYSDATE-pDate) * 24 * 60) AS pDateDiff, pPull
     	FROM post 
 		WHERE pCategory = #{category}
-		<if test="addr != 'null'">
-			AND addr = #{addr}
+		<if test="value != null">
+			AND addr = #{value}
 		</if>
 		order by pDate desc
 	</select>

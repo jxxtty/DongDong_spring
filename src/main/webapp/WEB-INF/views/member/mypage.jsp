@@ -112,7 +112,7 @@ float:right;
 <img  id="thumbnail" src="/Dong-Dong/images/profile/${login.userimage}" width="100" height="100" align="center"/><br>
 	프로필사진 바꾸기 : 
 <!-- input type file의 accept  : 파일 창이 열릴때 이미지파일만 보이도록 해준다. -->
-<input type="file" id="photo" name="photo"  accept="image/gif,image/jpg,image/png,image/jpeg"
+<input type="file" id="photo" name="file"  accept="image/gif,image/jpg,image/png,image/jpeg"
 		onchange="readURL(this);"><br>
 	
  <div class="mb-4">

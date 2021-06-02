@@ -37,6 +37,7 @@
 				<value>classpath:com/config/OrderSheetMapper.xml</value>
 				<value>classpath:com/config/TransactionMapper.xml</value>
 				<value>classpath:com/config/ComplaintMapper.xml</value>
+				<value>classpath:com/config/SanctionMapper.xml</value>
 			</list>
 		</property>
 		<property name="typeAliases">
@@ -50,6 +51,7 @@
 				<value>com.dto.OrderSheetDTO</value>
 				<value>com.dto.MyOrderSheetDTO</value>
 				<value>com.dto.ComplaintDTO</value>
+				<value>com.dto.SanctionDTO</value>
 			</list>
 		</property>
 	</bean>

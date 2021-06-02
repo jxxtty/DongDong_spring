@@ -70,4 +70,12 @@
 
 	<context:component-scan base-package="com.*" />
 
+	<!-- file Upload --><!-- 글쓰기 다중파일 업로드용 -->
+    <beans:bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- max upload size in bytes -->
+        <beans:property name="maxUploadSize" value="10485760" /> <!-- 10MB --><!-- 5MB  5242880-->
+        <!-- max size of file in memory (in bytes) -->
+        <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
+    </beans:bean>
+
 </beans:beans>

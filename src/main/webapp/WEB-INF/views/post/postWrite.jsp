@@ -3,18 +3,52 @@
 <head>
 	<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
 	<script type="text/javascript">
-			function readURL(input){
-				if(input.files && input.files[0]){
-					var reader = new FileReader();
-					reader.onload = function(e){
-						$("#thumbnail").attr('src', e.target.result);
-						$("#thumbnail").attr('height', '100');
-						$("#thumbnail").attr('width', '100');
-					}
-					reader.readAsDataURL(input.files[0]);
-				}
+			function onSelect(e) { // 파일업로드 개수 제한
+		    	if (e.files.length > 5) {
+		        	alert("사진은 최대 5장까지 등록가능합니다.");
+		        	$("#myFile").val("");
+		       	 	e.preventDefault();
+		    	}
 			}
+			 function preview(arr){ // 파일업로드 미리보기
+			      arr.forEach(function(f){
+			        
+			        //파일명이 길면 파일명...으로 처리
+			        var fileName = f.name;
+			        if(fileName.length > 10){
+			          fileName = fileName.substring(0,7)+"...";
+			        }
+			        
+			        //div에 이미지 추가
+			        var str = '<div style="display: inline-flex; padding: 10px;"><li style="list-style:none;">';
+			       
+			        
+			        //이미지 파일 미리보기
+			        if(f.type.match('image.*')){
+			          var reader = new FileReader(); //파일을 읽기 위한 FileReader객체 생성
+			          reader.onload = function (e) { //파일 읽어들이기를 성공했을때 호출되는 이벤트 핸들러
+			            //str += '<button type="button" class="delBtn" value="'+f.name+'" style="background: red">x</button><br>';
+			            str += '<img src="'+e.target.result+'" title="'+f.name+'" width=100 height=100 /><br>';
+			            str += '<span>'+fileName+'</span><br>';
+			            str += '</li></div>';
+			            $(str).appendTo('#preview');
+			          } 
+			          reader.readAsDataURL(f);
+			        }
+			      });//arr.forEach
+			    }
+			
 			$(document).ready(function(){
+				$("input[type='file']").change(function(e){
+				      //div 내용 비워주기
+				      $('#preview').empty();
+
+				      var files = e.target.files;
+				      var arr =Array.prototype.slice.call(files);
+				      
+				      preview(arr);   
+				});//file change
+				
 				$("form").on("submit",function(event){
 					var title = $("#title").val();
 					var content = $("#content").val();
@@ -23,23 +57,23 @@
 					var category = $("#category option:selected").val();		
 					
 					if(title.length == 0){
-						alert("글제목은 필수입니다.");
+						alert("글제목을 작성해주세요");
 						$("#title").focus();
 						event.preventDefault();	
 					} else if(category.length == 4){
-						alert("카테고리 선택은 필수입니다.");
+						alert("카테고리를 선택해주세요");
 						$("#category").focus();
 						event.preventDefault();	
 					} else if(!file){
-						alert("사진첨부는 필수입니다.");
+						alert("사진을 첨부해주세요");
 						$("#photo").focus();
 						event.preventDefault();	
 					} else if(content.length == 0){
-						alert("글내용은 필수입니다.");
+						alert("글내용을 입력해주세요");
 						$("#content").focus();
 						event.preventDefault();
 					} else if(price.length == 0){
-						alert("가격은 필수입니다.");
+						alert("가격을 입력해주세요");
 						$("#price").focus();
 						event.preventDefault();	
 					}
@@ -104,15 +138,22 @@
   		
 		
 		<br>
-		<!-- 미리보기 사진 -->
-		<img id="thumbnail" src="/Dong-Dong/images/util/thumbnail.png"  /><br>
-	
+		
+		<div class="row">
+			<div class="col-md-3 col-sm-2"></div>
+			<div class="mb-3 col-md-6 col-sm-8">
+			<!-- 업로드 이미지 미리보기 -->
+				<div id="preview"></div>
+			</div>
+			<div class="col-md-3 col-sm-2"></div>
+		</div>
+		
  		<div class="row">
  			<div class="col-md-3 col-sm-2"></div>
 			<div class="mb-3 col-md-6 col-sm-8">
-  				<label for="formFile" class="form-label">판매할 상품 사진</label>
-  				<input class="form-control" type="file" id="photo" name="file" 
-  					accept="image/gif,image/jpg,image/png,image/jpeg" onchange="readURL(this);">
+  				<label for="formFile" class="form-label">판매할 상품 사진<b>(최대 5장)</b></label>
+  				<input class="form-control" type="file" id="photo" name="file" multiple
+  					accept="image/gif,image/jpg,image/png,image/jpeg" onchange="onSelect(this);">
 			</div>
 			<div class="col-md-3 col-sm-2"></div>
 		</div>

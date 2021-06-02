@@ -196,7 +196,7 @@ $(document).ready(function(){
 <%	
 	if (category != null && curPage != 0 && curPage != 1){ 
 %>	
-	<div class="paginate previous" id="paginate previous"><a href='CategorySearchServlet?category=<%=category %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
+	<div class="paginate previous" id="paginate previous"><a href='categorySearch?category=<%=category %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
 
 <%
 	}
@@ -205,7 +205,7 @@ $(document).ready(function(){
 <%	
 	if (keyword != null && curPage != 0 && curPage != 1){ 
 %>	
-	<div class="paginate previous" id="paginate previous"><a href='KeywordSearchServlet?keyword=<%=keyword %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
+	<div class="paginate previous" id="paginate previous"><a href='keywordSearch?keyword=<%=keyword %>&curPage=<%=prevPageBlock-1%>'>◁</a></div>
 
 <%
 	}
@@ -215,7 +215,7 @@ $(document).ready(function(){
 	if(category == null && keyword == null && curPage != 0 && curPage != 1) {
 		
 %>
-	<div class="paginate previous" id="paginate previous"><a href='main?curPage=<%=prevPageBlock-1%>'>◁</a></div>
+	<div class="paginate previous" id="paginate previous"><a href='?curPage=<%=prevPageBlock-1%>'>◁</a></div>
 		
 <%
 	} //if curPage 이전 
@@ -234,7 +234,7 @@ $(document).ready(function(){
 		if (category == null && keyword == null) {
 %>
 
-		<a href='main?curPage=<%=j %>'><%=j %></a>	
+		<a href='?curPage=<%=j %>'><%=j %></a>	
 <%
 		}
 %>
@@ -245,7 +245,7 @@ $(document).ready(function(){
 				
 		if (keyword != null){
 %>
-			<a href='KeywordSearchServlet?keyword=<%=keyword %>&curPage=<%=j %>'><%=j %></a>	
+			<a href='keywordSearch?keyword=<%=keyword %>&curPage=<%=j %>'><%=j %></a>	
 <% 			
 			
 		}// if keyword != null
@@ -254,7 +254,7 @@ $(document).ready(function(){
 <%				
 		if (category != null){
 %>			
-		<a href='CategorySearchServlet?category=<%=category %>&curPage=<%=j %>'><%=j %></a>	
+		<a href='categorySearch?category=<%=category %>&curPage=<%=j %>'><%=j %></a>	
 		
 <% 
 		}//if category != null
@@ -271,7 +271,7 @@ $(document).ready(function(){
 	if (category != null && totalPage > nextPageBlock){
 		if(totalPage != 1){
 %>	
-	<div class="paginate next"><a href='CategorySearchServlet?category=<%=category %>&curPage=<%=nextPageBlock+1%>'>▷</a></div>
+	<div class="paginate next"><a href='categorySearch?category=<%=category %>&curPage=<%=nextPageBlock+1%>'>▷</a></div>
 
 <%
 		}
@@ -282,7 +282,7 @@ $(document).ready(function(){
 	if (keyword != null && totalPage > nextPageBlock){ 
 		if(totalPage != 1){
 %>	
-	<div class="paginate next"><a href='KeywordSearchServlet?keyword=<%=keyword %>&curPage=<%=nextPageBlock+1%>'>▷</a></div>
+	<div class="paginate next"><a href='keywordSearch?keyword=<%=keyword %>&curPage=<%=nextPageBlock+1%>'>▷</a></div>
 
 <%
 	}
@@ -294,7 +294,7 @@ $(document).ready(function(){
 	if(category == null && keyword == null && totalPage > nextPageBlock) {
 			
 %>			
- 	<div class="paginate next"><a href='main?curPage=<%=nextPageBlock+1%>'>▷</a></div>
+ 	<div class="paginate next"><a href='?curPage=<%=nextPageBlock+1%>'>▷</a></div>
 <%
 
 	} //if curPage 다음
