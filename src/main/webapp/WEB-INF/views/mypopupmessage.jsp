@@ -29,9 +29,6 @@
 			location.href="../userprofile?userid=${message[0].bUserid}";
 		})
     	
-    	$("#chat").click(function() {
-			location.href="chat/chat.jsp";
-		})
 		//삭제버튼
 		$("#delete").on("click", function() {
 			var num = $(this).attr("data-xxx");
@@ -81,7 +78,7 @@
 		</div>
 		<br>
 		<div style="text-align: center;">
-		<button id="chat">채팅</button>&nbsp;<button id="delete" data-xxx="${message[0].oNum}">메세지 삭제</button>
+		<button id="delete" data-xxx="${message[0].oNum}">메세지 삭제</button>
 		</div>
 	</div>
 </body>

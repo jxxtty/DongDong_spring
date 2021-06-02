@@ -16,11 +16,9 @@ public class OrderSheetDAO {
 	@Autowired
 	SqlSessionTemplate template;
 	
-	public int OrderSheetAdd(OrderSheetDTO dto) {
+	public void OrderSheetAdd(OrderSheetDTO dto) {
+		template.insert("OrderSheetMapper.OrderSheetAdd", dto);
 		
-		int num = template.insert("OrderSheetMapper.OrderSheetAdd", dto);
-		
-		return num;
 	}
 
 	public List<MyOrderSheetDTO> ordersheetList(String userid) {

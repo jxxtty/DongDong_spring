@@ -49,8 +49,6 @@
 	<mvc:view-controller path="/orderSheet" view-name="orderSheet/orderSheet" /><!--orderSheet.jsp  -->
 
 
-
-
 	<!-- interceptor의 사용 -->
 	<beans:bean id="loginCheckInterceptor" class="com.interceptor.LoginCheckInterceptor"></beans:bean>
 	<mvc:interceptors>
@@ -80,6 +78,13 @@
         <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </beans:bean>
     
-    
+
+    <websocket:message-broker application-destination-prefix="/sender">
+        <websocket:stomp-endpoint path="/sockJS">
+            <websocket:sockjs/>
+        </websocket:stomp-endpoint>
+        <websocket:simple-broker prefix="/subscribe"/>
+    </websocket:message-broker>
+
 
 </beans:beans>

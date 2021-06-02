@@ -18,9 +18,9 @@ public class OrderSheetService {
 	OrderSheetDAO oDAO;
 	@Autowired
 	PostDAO pDAO;
-	public int OrderSheetAdd(OrderSheetDTO dto) {
-		int num = oDAO.OrderSheetAdd(dto);
-		return num;
+	public void OrderSheetAdd(OrderSheetDTO dto) {
+		
+		oDAO.OrderSheetAdd(dto);
 	}
 
 	public List<MyOrderSheetDTO> ordersheetList(String userid) {
