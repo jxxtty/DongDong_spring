@@ -47,6 +47,8 @@
 	<mvc:view-controller path="/SaleList" view-name="SaleList" /><!--SaleList.jsp  -->
 	<mvc:view-controller path="/pullPost" view-name="pullPost" /><!--pullPost.jsp  -->
 	<mvc:view-controller path="/orderSheet" view-name="orderSheet/orderSheet" /><!--orderSheet.jsp  -->
+	<mvc:view-controller path="/orderEndSheet" view-name="orderSheet/orderEndSheet" /><!--orderEndSheet.jsp  -->
+	
 
 
 	<!-- interceptor의 사용 -->
@@ -77,12 +79,5 @@
         <!-- max size of file in memory (in bytes) -->
         <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </beans:bean>
-    
-    <websocket:message-broker application-destination-prefix="/sender">
-        <websocket:stomp-endpoint path="/sockJS">
-            <websocket:sockjs/>
-        </websocket:stomp-endpoint>
-        <websocket:simple-broker prefix="/subscribe"/>
-    </websocket:message-broker>
-
+     
 </beans:beans>

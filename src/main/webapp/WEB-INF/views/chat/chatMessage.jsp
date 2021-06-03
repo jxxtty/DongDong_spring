@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <meta charset="UTF-8">
 <title>Chatting</title>
 <style>
@@ -22,26 +22,15 @@
 .container h1 {
 	text-align: left;
 	padding: 5px 5px 5px 15px;
-	color: #FFBB00;
-	border-left: 3px solid #FFBB00;
+	color: #8db0d7;
 	margin-bottom: 20px;
 }
 
-.chating {
-	background-color: #000;
+.chatbox {
+	border : 5pt groove #8db0d7;
 	width: 500px;
 	height: 500px;
 	overflow: auto;
-}
-
-.chating .me {
-	color: #F6F6F6;
-	text-align: right;
-}
-
-.chating .others {
-	color: #FFE400;
-	text-align: left;
 }
 
 input {
@@ -50,31 +39,71 @@ input {
 }
 
 </style>
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="/webjars/stomp-websocket/2.3.4/stomp.js" type="text/javascript"></script>
+<script src="/webjars/sockjs-client/1.1.2/sockjs.js" type="text/javascript"></script>
 </head>
 
+<body>
+	<div id="container" class="container">
+		<h1>채팅방</h1>
+		<div id="chatbox" class="chatbox">
+		<!-- chatHistory 출력후 추가적으로 출력 -->
+		
+		</div>
+
+		<div id="Msg">
+			<table class="inputTable">
+				<tr>
+					<th>메시지</th>
+					<th><input id="message" placeholder="보내실 메시지를 입력하세요."></th>
+					<th><button id="send">보내기</button>
+						<input type="hidden" value="${login.userid}" id="userId"/>
+						<input type="hidden" value="${chatId}" id="chatId"/>
+					</th>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
 <script type="text/javascript">
-	$(document).ready(connect);
+
+$(document).ready(connect);
 	var stompClient = null;
 	var userId = $('#userId').val();
-	var chatId = $("#chatid").val();
+	var chatId = $("#chatId").val();
 
 	function connect() {
 		console.log("connected");
-		var sockJS = new SockJS('/sockJS');
-		var urlSubscribe = '/subscribe/' + chatid;
+		var sockJS = new SockJS('http://localhost:8079/sockJS');
+		var urlSubscribe = '/subscribe/' + chatId;
 		stompClient = Stomp.over(sockJS);
-		stompClient.connect({}, function() {
-			stompClient.subscribe(urlSubscribe, function(output) {
-				showBroadcastMessage(createTextNode(JSON.parse(output.body)));
+		stompClient.connect({}, function(frame) {
+			console.log(frame);
+			stompClient.subscribe(urlSubscribe, function(msg) {
+				printMessage(createText(JSON.parse(msg.body)));
 			});
+			
 		}, function(err) {
 			alert('error' + err);
 		});
 	};
 
-	function sendBroadcast(json) {
+	
+	function sendMessage(){
+		var content = $('#message').val();
+		var sendtime = getTime();
+		var json = {
+			'userId' : userId,
+			'message' : content,
+			'sendTime' : sendtime,
+			'chatId' : chatId	
+		};
+		$('#message').val("");
 		stompClient.send('/send/chatMessage', {}, JSON.stringify(json));
 	}
+	
+	$("#send").click(function(){ sendMessage(); });
 
 	function getTime() {
 		var today = new Date();
@@ -84,62 +113,30 @@ input {
 		if (minutes.length == 1)
 			minutes = '0' + minutes;
 		var time = today.getHours() + ":" + minutes;
-		var datetime = date + ' ' + time;
-		return datetime;
-	}
-
-	function send() {
-		var content = $('#message').val();
-		var datetime = getTime();
-		sendBroadcast({
-			'userId' : userId,
-			'message' : content,
-			'sendtime' : datetime,
-			'chatId' : chatId
-		});
-		$('#message').val("");
+		var sendtime = date + ' ' + time;
+		return sendtime;
 	}
 
 	var inputMessage = document.getElementById('message');
+	
 	inputMessage.addEventListener('keyup', function enterSend(event) {
 		if (event.keyCode === null) {
 			event.preventDefault();
 		}
 		if (event.keyCode === 13) {
-			send();
+			sendMessage();
 		}
 	});
-
-	function createTextNode(messageObj) {
+	function createText(messageObj) {
 		return '<p><div class="row alert alert-info"><div class="col_8">'
-				+ messageObj.fromname + '</div><div class="col_4 text-right">'
-				+ messageObj.message + '</div><div>' + messageObj.sendtime
+				+ messageObj.userId + ' : '
+				+ messageObj.message + '</div><div>' + messageObj.sendTime
 				+ '</div></p>';
 	}
 
-	function showBroadcastMessage(message) {
-		$("#content").html($("#content").html() + message);
+	function printMessage(message) {
+		$("#chatbox").html($("#chatbox").html() + message);
 	}
 </script>
-<body>
-	<div id="container" class="container">
-		<h1>채팅</h1>
-		<input type="hidden" id="sessionId" value="">
-
-		<div id="chating" class="chating"></div>
-
-		<div id="Msg">
-			<table class="inputTable">
-				<tr>
-					<th>메시지</th>
-					<th><input id="message" placeholder="보내실 메시지를 입력하세요."></th>
-					<th><button onclick="send()" id="send">보내기</button>
-						<input type="hidden" value="${login.userId()}" id="userId"/>
-						<input type="hidden" value="${chatId}" id="chatId"/>
-					</th>
-				</tr>
-			</table>
-		</div>
-	</div>
 </body>
 </html>
