@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.dto.OrderSheetDTO;
 import com.service.OrderSheetService;
@@ -14,7 +15,7 @@ public class OrderController {
 	OrderSheetService service;
 	
 	@RequestMapping(value = "/AddOrderSheet", method =RequestMethod.GET)
-	public String AddOrderSheet(int pNum, String sUserid, String bUserid
+	public ModelAndView AddOrderSheet(int pNum, String sUserid, String bUserid
 						, String oAddr, int oPrice, String oMessage) {
 		
 		OrderSheetDTO dto = new OrderSheetDTO();
@@ -28,7 +29,9 @@ public class OrderController {
 		
 		service.OrderSheetAdd(dto);
 		
-		return "redirect:/orderEndSheet";
+		ModelAndView mav = new ModelAndView("redirect:/orderEndSheet");
+		
+		return mav;
 	}
 	
 }

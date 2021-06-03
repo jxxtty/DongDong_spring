@@ -27,12 +27,17 @@ import com.service.ChatService;
 @Controller
 public class ChatController {
 	
-	@Autowired
-	SimpMessagingTemplate simpMessageTemplate;
+	private SimpMessagingTemplate simpMessageTemplate;
+	private ChatService cService;
+	
 	
 	@Autowired
-	ChatService cService;
-	
+	public ChatController(SimpMessagingTemplate simpMessageTemplate, ChatService cService) {
+		super();
+		this.simpMessageTemplate = simpMessageTemplate;
+		this.cService = cService;
+	}
+
 	//채팅 접속
 	@RequestMapping(value = "/chat", method = RequestMethod.GET)
 	public String productChatMessage(Model model, HttpSession session, int pNum, String bUserid, String sUserid)
@@ -41,15 +46,19 @@ public class ChatController {
 		if (session.getAttribute("login") == null) {
 			return "redirect:/login";
 		}
+		
+		String chatId = Integer.toString(pNum) + bUserid + sUserid;
+		model.addAttribute("chatId", chatId);
+		
 		return "chat/chatMessage";
 	}
 
 	@MessageMapping("/chatMessage")
 	public void send(ChatMessage chatMessage) throws IOException {
 		cService.appendMessage(chatMessage);
+		System.out.println(chatMessage);
 		String urlSubscribe = "/subscribe/" + chatMessage.getChatId();
-		simpMessageTemplate.convertAndSend(urlSubscribe, new ChatMessage(chatMessage.getUserId(), chatMessage.getMessage(), 
-				chatMessage.getSendTime(), chatMessage.getChatId()));
+		simpMessageTemplate.convertAndSend(urlSubscribe, chatMessage);
 	}
 
 	@RequestMapping(value = "/chatList", method = RequestMethod.GET)
