@@ -62,11 +62,29 @@ padding-bottom: 300px;
 		$(".complaintComment").click(function() {
 			complaintComment(this.id);
 		});
+		
+		
+		var receiver = $("#receiver").val();
+		var sender = $("#sender").val();
+		console.log("글작성자 : ", receiver);
+		console.log("현재 로그인되어있는 회원 : " + sender);
+		var stompClient = null;
+		if(sender){
+			if(sender != receiver){
+				var sockJS = new SockJS('/sockJS');
+				stompClient = Stomp.over(sockJS);
+				console.log("해당 글을 보고있는 user가 소켓에 연결되었음", stompClient);
+			}
+			
+		}
+		
+		
 	});
 </script>
 </c:if>
     <!-- 댓글 기능 표시 시작 지점 --------------------------------------- -->
     <div id="comments_div" class="container footerfix" style="max-width: 1100px"> <!-- 댓글 전체 div -->
+       
        <div style="text-align : left; font-weight: bolder; margin-left: 20px"><h2>댓글 (${comments.size()})</h2></div>
        <hr>
        <c:forEach var="cDTO" items="${comments}" varStatus="status">
@@ -161,6 +179,8 @@ padding-bottom: 300px;
     	<a class="btn btn-primary" href="loginForm">로그인 후 댓글 작성이 가능합니다.</a>
       </c:if>
 	  <c:if test="${pStatus=='1' || !empty login}">
+	  	<input type="hidden" id="receiver" value="${userid}"> <!-- 글 작성자의 userid -->
+       	<input type="hidden" id="sender" value="${login.userid}"> <!-- 댓글작성자의 userid -->
 	    <div class="comment-form well" style="margin-bottom: 10px">
 	     <form action="loginCheck/commentsWrite" method="post">
 	      	<label for="contactComment"></label> 

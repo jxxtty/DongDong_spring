@@ -58,34 +58,6 @@ public class PostController {
 		return "redirect:../postWrite"; // 글쓰기화면으로전환
 	}
 	
-	/*
-	 * @RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.POST)
-	 * public String postWrite(String pTitle, String pCategory, String pContent,
-	 * String pPrice, HttpSession session, MultipartFile file) { PostDTO pDto = new
-	 * PostDTO(); // 입력되어온 내용 pDto에 값 넣기 MemberDTO mDto =
-	 * (MemberDTO)session.getAttribute("login"); pDto.setUserid(mDto.getUserid());
-	 * // 아이디 pDto.setAddr(mDto.getAddr()); // 주소 pDto.setpCategory(pCategory); //
-	 * 카테고리 pDto.setpTitle(pTitle); // 제목 pContent = pContent.replaceAll("\r\n",
-	 * "<br>"); pDto.setpContent(pContent); // 글내용
-	 * pDto.setpPrice(Integer.parseInt(pPrice)); // 가격 pDto.setpStatus("0"); //
-	 * default로 들어가는 값 pDto.setpPull("3"); // default로 들어가는 값 pDto.setpHit(0); //
-	 * default로 들어가는 값
-	 * 
-	 * String fileName = file.getOriginalFilename(); fileName =
-	 * fileName.substring(fileName.lastIndexOf("\\")+1); UUID uuid =
-	 * UUID.randomUUID(); fileName = uuid.toString()+"_"+fileName; File target = new
-	 * File(uploadPath, fileName); pDto.setpImage(fileName); // 경로생성 if(! new
-	 * File(uploadPath).exists()) { new File(uploadPath).mkdirs(); } // 파일복사 try {
-	 * FileCopyUtils.copy(file.getBytes(), target); } catch(Exception e) {
-	 * e.printStackTrace(); }
-	 * 
-	 * // 글쓴내용저장 int n = pService.newPost(pDto);
-	 * 
-	 * // 파일저장이름 중복제거할예정
-	 * 
-	 * return "redirect:../"; // main으로 이동하는 경로 }
-	 */
-	
 	@RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.POST)
 	public String postWrite(MultipartHttpServletRequest mtfRequest, HttpSession session) {
 		// 입력되어 온 값 받기
