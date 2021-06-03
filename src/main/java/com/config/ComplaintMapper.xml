@@ -5,9 +5,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="ComplaintMapper">
 	<insert id="insertComplaint" parameterType="ComplaintDTO">
 		INSERT 
-		INTO complaint(coNum, coType, coTarget, 
+		INTO complaint(coNum, coType, coTarget, targetUserid, targetImage, targetTitle, targetContent,
 					   userid, coContent, createDate)
-		VALUES (COMPLAINT_NUM.NEXTVAL, #{coType},#{coTarget},
+		VALUES (COMPLAINT_NUM.NEXTVAL, #{coType},#{coTarget}, #{targetUserid}, #{targetImage}, #{targetTitle}, #{targetContent},
 				#{userid},#{coContent},SYSDATE)
 	</insert>
 	

@@ -39,20 +39,41 @@
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/datatables-demo.js"></script>
+    <script src="../js/adminPageScript/datatables.js"></script>
     
     <script type="text/javascript">
 			$(document).ready(function(){
+				$("#targetDelete").on("click", function(event){
+					event.preventDefault();
+					var target = ${coDTO.coNum};
+					$.ajax({
+						type: "post",
+						url: "/admin/targetDelete",
+						data: {
+							target: target,
+						}, //data
+						dataType: "text",
+						success: function(data, status, xhr) {
+							$("#targetDelete").toggle(0);
+							$("#deleteResult").html("<font class='text-primary'>게시글이 삭제되었습니다.</font>");
+						}, //success
+						error: function(xhr, status, error) {
+							$("#result").append(error);
+							$("#result").append(status);
+						} //error
+					});//ajax
+				});//on
+				
 				$("form").on("submit",function(event){
 					var saType = $("#saType").val();
 					var saDate = $("#saDate").val();		
 					
 					if(saType.length == 4){
-						alert("카테고리 선택");
+						alert("제재할 카테고리를 선택하세요.");
 						$("#saType").focus();
 						event.preventDefault();	
 					} else if(saDate.length == 4){
-						alert("제재 기간 선택");
+						alert("제재 기간 선택을 정하세요");
 						$("#saDate").focus();
 						event.preventDefault();	
 					} 
@@ -185,7 +206,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                             	<c:if test="${isAlreadyCompleted==true}">
-                                	<h4 class="text-danger">※이미 이 게시글로 제재를 받은 기록이 존재합니다.</h4><br>
+                                	<h4 class="text-danger">※같은 게시글로 신고가 처리된 적이 있습니다.</h4><br>
                                 </c:if>
                             	<h4 class="m-0 font-weight-bold text-primary">신고자의 설명</h4><br>
                             		<h6>${coDTO.coContent}</h6><br>
@@ -195,11 +216,9 @@
                             	 	<img id="mainImage" class="img-fluid rounded mb-4 mb-lg-0" src="/Dong-Dong/images/${pDTO.pImage}" width="200px"><br>
 									<br>제목<br>
         							<h4 class="" style="line-height: 1.5;">${pDTO.pTitle}</h4>
-        							가격<br>
-        							<h4 class="">${pDTO.pPrice}원</h4>
         							글 내용<br>
 									<h4 class="">${pDTO.pContent}</h4><br>
-									<a class="btn reply_comment btn-outline-primary btn-sm" href="/postDetail?pNum=${pDTO.pNum}">해당 게시글로 이동</a><br><br>
+									<%-- <a class="btn reply_comment btn-outline-primary btn-sm" href="/postDetail?pNum=${pDTO.pNum}">해당 게시글로 이동</a><br><br> --%>
 								
 								<h4 class="m-0 font-weight-bold text-primary">게시글 작성자 정보</h4><br>
 								
@@ -261,6 +280,8 @@
         						<h4 class="" style="line-height: 1.5;">${mDTO.nickName}</h4><br>
 								
                                 <h4 class="m-0 font-weight-bold text-primary">제재 결과 입력</h4>
+							  	 <c:if test="${isDeleted==true}"> <font class="text-primary">게시글이 삭제되었습니다.</font><br></c:if>
+                              	<c:if test="${isDeleted==false}"> <br><span id="deleteResult"></span><a class="btn reply_comment btn-outline-danger btn-sm" href="#" id="targetDelete">게시글 삭제</a><br></c:if>
 							  	<c:if test="${coDTO.coYn=='n'}">
                                 <form action="/admin/complaintEnd" method="post">
                                 	<input type="hidden" name="coNum" value="${coDTO.coNum}">

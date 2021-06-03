@@ -24,12 +24,15 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   return s.join(dec);
 }
 
+
+
 // Area Chart Example
+
 var ctx = document.getElementById("myAreaChart");
-var myLineChart = new Chart(ctx, {
+var dailyChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    labels: [],
     datasets: [{
       label: "Earnings",
       lineTension: 0.3,
@@ -43,7 +46,7 @@ var myLineChart = new Chart(ctx, {
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
-      data: [0, 10000, 5000, 15000, 10000, 20000, 15000, 25000, 20000, 30000, 25000, 40000],
+      data: [],
     }],
   },
   options: {
@@ -113,3 +116,20 @@ var myLineChart = new Chart(ctx, {
     }
   }
 });
+
+function dailyChartUpdate(label, data) {
+	removeData();
+	dailyChart.data.labels = label;
+	dailyChart.data.datasets.forEach((dataset)=>{
+        dataset.data = data;
+    });
+	dailyChart.update();
+}
+
+function removeData() {
+	dailyChart.data.labels.pop();
+	dailyChart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+	dailyChart.update();
+}

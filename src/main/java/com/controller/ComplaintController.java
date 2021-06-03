@@ -11,14 +11,25 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.dto.CommentsDTO;
 import com.dto.ComplaintDTO;
 import com.dto.MemberDTO;
+import com.dto.PostDTO;
+import com.service.CommentsService;
 import com.service.ComplaintService;
+import com.service.MemberService;
+import com.service.PostService;
 
 @Controller
 public class ComplaintController {
 	@Autowired
 	ComplaintService coService;
+	@Autowired
+	MemberService mService;
+	@Autowired
+	PostService pService;
+	@Autowired
+	CommentsService cService;
 
 	@RequestMapping(value = "/loginCheck/complaintAccept")
 	public @ResponseBody String ComplaintAccept(HttpSession session, @RequestParam Map<String, String> map) {
@@ -30,6 +41,26 @@ public class ComplaintController {
 		String returnValue = "";
 
 		ComplaintDTO coDTO = new ComplaintDTO();
+		
+		if(coType==1) {
+			coDTO.setTargetUserid(coTarget);
+			coDTO.setTargetContent("");
+			MemberDTO mDTO = mService.mypage(coTarget);
+			coDTO.setTargetTitle(mDTO.getNickName());
+			coDTO.setTargetImage(mDTO.getUserimage());
+		}else if(coType==2) {
+			PostDTO pDTO = pService.getPostByPNum(Integer.parseInt(coTarget));
+			coDTO.setTargetTitle(pDTO.getpTitle());
+			coDTO.setTargetContent(pDTO.getpContent());
+			coDTO.setTargetImage(pDTO.getpImage());
+			coDTO.setTargetUserid(pDTO.getUserid());
+		} else if(coType==3) {
+			CommentsDTO cDTO = cService.getCommentByCNum(Integer.parseInt(coTarget));
+			coDTO.setTargetTitle(cDTO.getNickName());
+			coDTO.setTargetContent(cDTO.getcContent());
+			coDTO.setTargetUserid(cDTO.getUserid());
+			coDTO.setTargetImage(cDTO.getUserimage());
+		}
 		coDTO.setCoTarget(coTarget);
 		coDTO.setUserid(userid);
 			
