@@ -62,5 +62,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	ordersheet
 	where pNum = #{pNum}
 	</delete>
-
+	
+	<insert id="createChatRoom" parameterType="HashMap">
+	INSERT INTO chatRoom(chatid, buserid, suserid, chathistory) 
+	 Values (#{chatId}, #{bUserid}, #{sUserid}, #{chatHistory})
+	</insert>
+	
+	<select id = "checkChatRoom" parameterType = "String" resultType="int">
+	select count(*) from chatRoom where chatid = #{chatId}
+	</select>
+	
 </mapper>

@@ -12,8 +12,8 @@
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 function oMessage(oNum) {
-	var popupWidth = 300;
-	var popupHeight = 500;
+	var popupWidth = 540;
+	var popupHeight = 600;
 	var popupX = (window.screen.width / 2) - (popupWidth / 2);
 	var popupY= (window.screen.height / 2) - (popupHeight / 2);
 	url = "/loginCheck/PopupMessage?oNum="+oNum;
