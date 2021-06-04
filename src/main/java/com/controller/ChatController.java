@@ -68,11 +68,9 @@ public class ChatController {
 				BufferedReader bufReader = new BufferedReader(filereader);
 				String line = "";
 				while ((line = bufReader.readLine()) != null) {
-					System.out.println(line);
 					lines.add(line);
 				}
 				// .readLine()은 끝에 개행문자를 읽지 않는다.
-				System.out.println("while문 탈출");
 				model.addAttribute("lines", lines);
 				bufReader.close();
 			} catch (FileNotFoundException e) {
