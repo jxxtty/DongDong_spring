@@ -29,7 +29,7 @@
 		//개별 삭제
 		$(".delBtn").on("click", function() {
 			var num = $(this).attr("data-xxx");
-			location.href="/postDelete?pNum="+num; 
+			location.href="/loginCheck/mypostDelete?pNum="+num; 
 		});//end delBtn
 		
 		// 끌올
@@ -62,7 +62,7 @@
 				num[idx] = $(this).val();
 			});
 			
-			location.href="PostDelAllServlet?data="+num;
+			location.href="/loginCheck/postDelAll?data="+num;
 		});//end delAllpost
 		
 		

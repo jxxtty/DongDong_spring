@@ -131,8 +131,8 @@
 	if(dto !=null){ //회원인 경우
 %>	
 			<a href="/mypage">mypage</a>
-			<a href="loginCheck/logout">로그아웃</a>
-			<a href="loginCheck/postWrite">글쓰기</a>
+			<a href="/logout">로그아웃</a>
+			<a href="/postWrite">글쓰기</a>
 			<a href="chatRoom">채팅</a>
 		</div>
 		<div id="user_profile" class="user">
@@ -143,7 +143,7 @@
 	} else{ //아닌경우
 %>
 			<a href="loginForm">로그인</a>
-			<a href="MemberForm">회원가입</a><!--MVC 패턴 -->
+			<a href="memberForm">회원가입</a><!--MVC 패턴 -->
 		</div>
 <%		
 	}//end if~else

@@ -5,6 +5,7 @@
 <html>
 <head>
 
+
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -22,7 +23,17 @@
     <!-- Custom styles for this template-->
     <link href="../css/sb-admin-2.min.css" rel="stylesheet">
 	
-
+    <!-- Core plugin JavaScript-->
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+	$(function() {	
+		var dailyChartLabel = ${dailyChartLabel};
+		var dailyChartData = ${dailyChartData};
+		
+		dailyChartUpdate(dailyChartLabel,dailyChartData);
+	});//end ready
+	
+	</script>
 </head>
 
 <body id="page-top">
@@ -486,11 +497,11 @@
     <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.3.0/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/chart-area-demo.js"></script>
-    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script src="../js/adminPageScript/chart-area.js"></script>
+    <script src="../js/adminPageScript/chart-pie.js"></script>
 
 </body>
 

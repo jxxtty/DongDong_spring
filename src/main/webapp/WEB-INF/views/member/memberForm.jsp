@@ -135,7 +135,7 @@ $("#passwd2").on("keyup",function(){
 		// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼줌
 		var popupY= (window.screen.height / 2) - (popupHeight / 2);
 		// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼줌
-		url = "emailAuth.jsp"
+		url = "emailAuth"
 		open(url,"confirm", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 	}
 	//닉네임 체크 //이메일 값 넘겨주기
@@ -179,7 +179,7 @@ $("#passwd2").on("keyup",function(){
 
 <tr>
 <th><h3>패스워드</h3></th>
-<td colspan="3"style="width:20%;"><input type="text" class="form-control" name="passwd" id="passwd" style="width:700px;height:50px" placeholder="비밀번호 입력"></td>
+<td colspan="3"style="width:20%;"><input type="password" class="form-control" name="passwd" id="passwd" style="width:700px;height:50px" placeholder="비밀번호 입력"></td>
 </tr>
 
 <tr>

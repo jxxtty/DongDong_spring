@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,11 +9,11 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CommentsDTO;
 import com.dto.ComplaintDTO;
@@ -39,8 +40,24 @@ public class AdminController {
 	SanctionService saService;
 	
 	@RequestMapping(value = "/admin")
-	public String adminPage() {
-		return "admin/adminMain";
+	public ModelAndView adminPage(Model model) {
+		ModelAndView mav = new ModelAndView();
+		List<String> dailyChartLabel = new ArrayList<String>();
+		dailyChartLabel.add("\"test\"");
+		dailyChartLabel.add("\"estt\"");
+		dailyChartLabel.add("\"stte\"");
+		dailyChartLabel.add("\"ttes\"");
+		dailyChartLabel.add("\"test\"");
+		List<Integer> dailyChartData = new ArrayList<Integer>();
+		dailyChartData.add(10);
+		dailyChartData.add(20);
+		dailyChartData.add(30);
+		dailyChartData.add(40);
+		dailyChartData.add(10);
+		mav.addObject("dailyChartLabel",dailyChartLabel);
+		mav.addObject("dailyChartData",dailyChartData);
+		mav.setViewName("admin/adminMain");
+		return mav;
 	}
 	
 	@RequestMapping(value = "/admin/complaintMember")
@@ -90,13 +107,11 @@ public class AdminController {
 			mav.setViewName("redirect:/admin/complaintMember");
 			break;
 		case 2:
-			PostDTO pDTO = pService.getPostByPNum(Integer.parseInt(coDTO.getCoTarget()));
-			saDTO.setUserid(pDTO.getUserid());
+			saDTO.setUserid(coDTO.getTargetUserid());
 			mav.setViewName("redirect:/admin/complaintPost");
 			break;
 		case 3:
-			CommentsDTO cDTO = cService.getCommentByCNum(Integer.parseInt(coDTO.getCoTarget()));
-			saDTO.setUserid(cDTO.getUserid());
+			saDTO.setUserid(coDTO.getTargetUserid());
 			mav.setViewName("redirect:/admin/complaintComment");
 			break;
 		default:
@@ -129,36 +144,73 @@ public class AdminController {
 		
 		switch (coDTO.getCoType()) {
 		case 1:
-			mDTO = mService.mypage(coDTO.getCoTarget());
-			mav.addObject("mDTO", mDTO);
+			mDTO = mService.mypage(coDTO.getTargetUserid());
+			if(mDTO==null) {
+				mav.addObject("isDeleted", true);
+			} else {
+				mav.addObject("isDeleted", false);
+			}
+			mDTO = new MemberDTO();
+			
+			mDTO.setUserid(coDTO.getTargetUserid());
+			mDTO.setUserimage(coDTO.getTargetImage());
+			mDTO.setNickName(coDTO.getTargetUserid());
+			mDTO.setUserid(coDTO.getTargetUserid());
 			mav.setViewName("admin/complaintMemberDetail");
 			break;
 		case 2:
 			pDTO = pService.getPostByPNum(Integer.parseInt(coDTO.getCoTarget()));
+			if(pDTO==null) {
+				mav.addObject("isDeleted", true);
+			} else {
+				mav.addObject("isDeleted", false);
+			}
+			pDTO = new PostDTO();
+			pDTO.setUserid(coDTO.getTargetUserid());
+			pDTO.setpTitle(coDTO.getTargetTitle());
+			pDTO.setpImage(coDTO.getTargetImage());
+			pDTO.setpContent(coDTO.getTargetContent());
 			mav.addObject("pDTO", pDTO);
-			mDTO = mService.mypage(pDTO.getUserid());
-			mav.addObject("mDTO", mDTO);
 			mav.setViewName("admin/complaintPostDetail");
 			break;
 		case 3:
 			cDTO = cService.getCommentByCNum(Integer.parseInt(coDTO.getCoTarget()));
+			if(cDTO==null) {
+				mav.addObject("isDeleted", true);
+			} else {
+				mav.addObject("isDeleted", false);
+			}
+			cDTO = new CommentsDTO();
+			cDTO.setUserid(coDTO.getTargetUserid());
+			cDTO.setUserimage(coDTO.getTargetImage());
+			cDTO.setcContent(coDTO.getTargetContent());
+			cDTO.setNickName(coDTO.getTargetTitle());
 			mav.addObject("cDTO", cDTO);
-			mDTO = mService.mypage(cDTO.getUserid());
-			mav.addObject("mDTO", mDTO);
-			pDTO = pService.getPostByPNum(cDTO.getpNum());
-			mav.addObject("pDTO", pDTO);
 			mav.setViewName("admin/complaintCommentDetail");
 			break;
 		default:
 			mav.setViewName("admin");
 			break;
 		}
-
+		mDTO = mService.mypage(coDTO.getTargetUserid());
+		mav.addObject("mDTO", mDTO);
 		mav.addObject("coDTO", coDTO);
 		mav.addObject("sanctionList", saService.sanctionList((String)mDTO.getUserid()));
 		mav.addObject("isSanctioned", saService.isSanctioned((String)mDTO.getUserid()));
 		mav.addObject("endSanctionDate", saService.getEndDateByUserid((String)mDTO.getUserid()));
 		mav.addObject("isAlreadyCompleted", coService.isAlreadyCompleted(coDTO)==0?false:true);
 		return mav;
+	}
+	
+	@RequestMapping(value = "/admin/targetDelete")
+	public @ResponseBody void targetDelete(HttpSession session, @RequestParam Map<String, String> map) {
+		ComplaintDTO coDTO = coService.getComplaint(Integer.parseInt(map.get("target")));
+		if(coDTO.getCoType()==1) {
+			
+		} else if(coDTO.getCoType()==2) {
+			pService.deletePostByPNum(Integer.parseInt(coDTO.getCoTarget()));
+		} else if(coDTO.getCoType()==3) {
+			cService.deleteCommentByCNum(Integer.parseInt(coDTO.getCoTarget()));
+		}
 	}
 }

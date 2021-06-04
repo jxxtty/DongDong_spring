@@ -9,7 +9,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		VALUES (SANCTION_NUM.NEXTVAL,#{userid},#{coNum},
 				SYSDATE,#{saType},
 		<choose>
-			<when test="saDate=999">
+			<when test="saDate==999">
 					TO_DATE('3000-12-31','yyyy-mm-dd'))
 			</when>
 			<when test="endDate == null">
