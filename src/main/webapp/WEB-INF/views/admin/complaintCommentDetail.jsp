@@ -39,25 +39,49 @@
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/datatables-demo.js"></script>
+    <script src="../js/adminPageScript/datatables.js"></script>
     
-    <script type="text/javascript">
-			$(document).ready(function(){
-				$("form").on("submit",function(event){
-					var saType = $("#saType").val();
-					var saDate = $("#saDate").val();		
-					
-					if(saType.length == 4){
-						alert("카테고리 선택");
-						$("#saType").focus();
-						event.preventDefault();	
-					} else if(saDate.length == 4){
-						alert("제재 기간 선택");
-						$("#saDate").focus();
-						event.preventDefault();	
-					} 
-				});
-			});
+    
+	<script type="text/javascript">
+
+	$(function() {
+		$("#targetDelete").on("click", function(event){
+			event.preventDefault();
+			var target = ${coDTO.coNum};
+			$.ajax({
+				type: "post",
+				url: "/admin/targetDelete",
+				data: {
+					target: target,
+				}, //data
+				dataType: "text",
+				success: function(data, status, xhr) {
+					$("#targetDelete").toggle(0);
+					$("#deleteResult").html("<font class='text-primary'>댓글이 삭제되었습니다.</font>");
+				}, //success
+				error: function(xhr, status, error) {
+					$("#result").append(error);
+					$("#result").append(status);
+				} //error
+			});//ajax
+		});//on
+		
+		$("form").on("submit",function(event){
+			var saType = $("#saType").val();
+			var saDate = $("#saDate").val();		
+			
+			if(saType.length == 4){
+				alert("제재할 카테고리를 선택하세요.");
+				$("#saType").focus();
+				event.preventDefault();	
+			} else if(saDate.length == 4){
+				alert("제재 기간 선택을 정하세요");
+				$("#saDate").focus();
+				event.preventDefault();	
+			} 
+		});
+	});//end ready
+	</script>
 	</script>
 </head>
 <body id="page-top">
@@ -185,7 +209,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <c:if test="${isAlreadyCompleted==true}">
-                                	<h4 class="text-danger">※이미 이 댓글로 제재를 받은 기록이 존재합니다.</h4><br>
+                                	<h4 class="text-danger">※같은 댓글로 신고가 처리된 적이 있습니다.</h4><br>
                                 </c:if>
                             	<h4 class="m-0 font-weight-bold text-primary">신고자의 설명</h4><br>
                             		<h6>${coDTO.coContent}</h6><br>
@@ -224,7 +248,7 @@
 							      		</div>
 							      	</div>
 							      	<div style="text-align : right">
-					      				<a class="btn reply_comment btn-outline-primary btn-sm" href="/postDetail?pNum=${pDTO.pNum}">해당 게시글로 이동</a>
+					      				<%-- <a class="btn reply_comment btn-outline-primary btn-sm" href="/postDetail?pNum=${pDTO.pNum}">해당 게시글로 이동</a> --%>
 						      		</div>
 						      	</div>
 								
@@ -288,7 +312,9 @@
         						<h4 class="" style="line-height: 1.5;">${mDTO.nickName}</h4><br>
                                 
 								
-                                <h4 class="m-0 font-weight-bold text-primary">제재 결과 입력</h4>
+                                <h4 class="m-0 font-weight-bold text-primary">제재 결과 입력</h4><br>
+                                <c:if test="${isDeleted==true}"> <font class="text-primary">댓글이 삭제되었습니다.</font><br></c:if>
+                              	<c:if test="${isDeleted==false}"> <span id="deleteResult"></span><a class="btn reply_comment btn-outline-primary btn-sm" href="#" id="targetDelete">해당 댓글 삭제</a><br></c:if>
                                 <c:if test="${coDTO.coYn=='n'}">
                                 <form action="/admin/complaintEnd" method="post">
                                 	<input type="hidden" name="coNum" value="${coDTO.coNum}">

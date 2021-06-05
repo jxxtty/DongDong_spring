@@ -4,6 +4,7 @@ import java.io.File;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dto.CommentsDTO;
 import com.dto.FavoriteDTO;
@@ -238,6 +240,39 @@ public class PostController {
 		}
 		return "redirect:../"; // main.jsp로 이동
 	}
+	@RequestMapping(value="/loginCheck/mypostDelete", method=RequestMethod.GET)
+	public String mypostDelete(@RequestParam("pNum") String pNum, HttpSession session,RedirectAttributes attr,Model m) {
+		
+		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
+		PostDTO pDto = pService.getPostByPNum(Integer.parseInt(pNum));
+		
+		if(mDto.getUserid().contentEquals(pDto.getUserid())) { // 로그인 정보와 삭제하려는 글의 id가 동일한 경우에만 삭제된다.
+			int deleteResult = pService.deletePostByPNum(Integer.parseInt(pNum));
+			
+			if(deleteResult==1) { // 게시글 삭제된 경우
+				// 삭제되는 게시글의 이미지도 삭제
+				String[] originalImages = pDto.getpImage().split(" ");
+				for(String s :originalImages) { 
+					String deleteImg = uploadPath+s;
+					File file = new File(deleteImg); 
+					file.delete(); 
+				}
+	    	}
+			
+		}
+		List<PostDTO> list = pService.mypostList(mDto.getUserid());
+		m.addAttribute("mypostList", list);
+		return "mypostList";
+	}
+	
+	@RequestMapping(value = "/loginCheck/postDelAll")
+	public String myOrderDelAll(@RequestParam("data") String num) {
+		String [] x = num.split(",");
+		List<String> list = Arrays.asList(x);
+		pService.postAllDel(list);
+		return "mypostList";
+	}// 내 게시물 체크삭제
+	
 	
 	// 끌올 관련------------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postPull", method=RequestMethod.GET)
@@ -483,4 +518,7 @@ public class PostController {
 		}
 		return "redirect:../"+nextPage;
 	}
+	
+	
+	
 }

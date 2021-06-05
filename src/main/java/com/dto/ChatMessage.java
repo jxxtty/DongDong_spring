@@ -1,5 +1,8 @@
 package com.dto;
 
+import org.apache.ibatis.type.Alias;
+
+@Alias("ChatMessage")
 public class ChatMessage {
 	
 	private String userId;

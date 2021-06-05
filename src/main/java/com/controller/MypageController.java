@@ -182,12 +182,12 @@ public class MypageController {
 	}//관심목록 개별삭제
 	
 	@RequestMapping(value = "loginCheck/MyPostList", produces = "text/plain;charset=UTF-8")
-	public String mypostList(HttpSession session, RedirectAttributes attr) {
+	public String mypostList(HttpSession session, RedirectAttributes attr,Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = pService.mypostList(userid);
-		attr.addFlashAttribute("mypostList", list);
-		return "redirect:../mypostList";
+		m.addAttribute("mypostList", list);
+		return "mypostList";
 	}//내 게시물 보기
 	
 	@RequestMapping(value = "loginCheck/MyOrdersheetList", produces = "text/plain;charset=UTF-8")

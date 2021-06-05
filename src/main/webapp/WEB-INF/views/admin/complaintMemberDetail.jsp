@@ -39,7 +39,7 @@
     <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="../js/demo/datatables-demo.js"></script>
+    <script src="../js/adminPageScript/datatables.js"></script>
     
     <script type="text/javascript">
 			$(document).ready(function(){
@@ -48,11 +48,11 @@
 					var saDate = $("#saDate").val();		
 					
 					if(saType.length == 4){
-						alert("카테고리 선택");
+						alert("제재할 카테고리를 선택하세요.");
 						$("#saType").focus();
 						event.preventDefault();	
 					} else if(saDate.length == 4){
-						alert("제재 기간 선택");
+						alert("제재 기간 선택을 정하세요");
 						$("#saDate").focus();
 						event.preventDefault();	
 					} 

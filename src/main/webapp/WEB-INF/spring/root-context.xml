@@ -54,6 +54,8 @@
 				<value>com.dto.ComplaintDTO</value>
 				<value>com.dto.SanctionDTO</value>
 				<value>com.dto.Alarm</value>
+				<value>com.dto.ChatRoom</value>
+				<value>com.dto.ChatMessage</value>
 			</list>
 		</property>
 	</bean>

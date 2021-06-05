@@ -53,7 +53,9 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
+		
+		<!-- LogBack 사용을 위해 log4j 관련 dependency 주석 처리 -->
+		<!-- <dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>${org.slf4j-version}</version>
@@ -82,8 +84,14 @@
 				</exclusion>
 			</exclusions>
 			<scope>runtime</scope>
-		</dependency>
-
+		</dependency> -->
+		<!-- LogBack -->
+		<dependency>
+        	<groupId>ch.qos.logback</groupId>
+        	<artifactId>logback-classic</artifactId>
+           	<version>1.2.3</version>
+    	</dependency>
+     
 		<!-- @Inject -->
 		<dependency>
 			<groupId>javax.inject</groupId>
