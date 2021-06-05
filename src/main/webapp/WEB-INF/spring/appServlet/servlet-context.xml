@@ -46,6 +46,7 @@
 	<mvc:view-controller path="/pullPost" view-name="pullPost" /><!--pullPost.jsp  -->
 	<mvc:view-controller path="/orderSheet" view-name="orderSheet/orderSheet" /><!--orderSheet.jsp  -->
 	<mvc:view-controller path="/orderEndSheet" view-name="orderSheet/orderEndSheet" /><!--orderEndSheet.jsp  -->
+	<mvc:view-controller path="/myAlarm" view-name="myAlarm" /><!--myAlarm.jsp  -->
 	
 
 

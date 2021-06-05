@@ -7,7 +7,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +25,7 @@ import com.dto.CommentsDTO;
 import com.dto.FavoriteDTO;
 import com.dto.MemberDTO;
 import com.dto.PostDTO;
+import com.service.AlarmService;
 import com.service.CommentsService;
 import com.service.FavoriteService;
 import com.service.MemberService;
@@ -296,6 +295,7 @@ public class PostController {
     	PostDTO pDTO = pService.getPostByPNum(Integer.parseInt(pNum));
     	MemberDTO mDTO = mService.mypage(pDTO.getUserid());
     	List<CommentsDTO> comments = cService.getCommentsByPNum(Integer.parseInt(pNum));
+
     	//게시글 조회수 증가
     	pDTO.setpHit(pDTO.getpHit()+1);
     	int updateResult = pService.updatePHit(pDTO);

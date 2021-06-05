@@ -12,11 +12,11 @@ span {
 <script type="text/javascript">
 //toggle 대상요소를 숨기거나 보여주는 효과를 번갈아 함
 $(function() {
-	$("#menu5").click(function() {
+	$("#menu6").click(function() {
 		$("#hiddenmenu2").toggle("slow");
 	}); // 메뉴 토글
 	
-	$("#menu4").click(function() {
+	$("#menu5").click(function() {
 		$("#hiddenmenu1").toggle("slow");
 	});
 	
@@ -32,13 +32,16 @@ $(function() {
 						<a id="menu1" href="loginCheck/mypage"
 						class="list-group-item list-group-item-info text-center font-weight-bold border border-dark">
 						<span>회원정보</span></a>
-						<a id="menu2" href="loginCheck/FavoriteList"
+						<a id="menu2" href="loginCheck/myAlarm"
+						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
+						<span>알림함</span></a>
+						<a id="menu3" href="loginCheck/FavoriteList"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						<span>관심목록</span></a>
-						<a id="menu3" href="loginCheck/MyPostList"
+						<a id="menu4" href="loginCheck/MyPostList"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						<span>내 게시물 보기</span></a>
-						<a id="menu4" href="#"
+						<a id="menu5" href="#"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						<span>주문 요청함 보기</span></a>
 						
@@ -51,7 +54,7 @@ $(function() {
 						▶수신함</a>
 						</div><!--hiddenmenu  -->
 						
-						<a id="menu5" href="#"
+						<a id="menu6" href="#"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						<span>거래내역</span></a>
 						
@@ -64,7 +67,7 @@ $(function() {
 						▶판매내역</a>
 						</div><!--hiddenmenu  -->
 						
-						<a id="menu6" href="withdrawal"
+						<a id="menu7" href="withdrawal"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						<span>회원탈퇴</span></a>	
 				</div>

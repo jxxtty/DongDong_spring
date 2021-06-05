@@ -6,8 +6,8 @@
 
 <head>
 	<script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.min.js" integrity="sha512-2hPuJOZB0q6Eu4RlRRL2/8/MZ+IoSSxgDUu+eIUNzHOoHLUwf2xvrMFN4se9mu0qCgxIjHum6jdGk/uMiQoMpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="/webjars/stomp-websocket/2.3.4/stomp.js" type="text/javascript"></script>
+	<script src="/webjars/sockjs-client/1.1.2/sockjs.js" type="text/javascript"></script>
 	<script type="text/javascript">
 		$(document).ready(function(){
 			$("#main").click(function() {
@@ -28,34 +28,41 @@
 			    }
 			});
 			
-			// 1트. session에서 login정보를 받아와서 로그인 된 경우에만 소켓에 연결한다.
 			var isLogin = $("#id").val();
-			console.log("isLogin??? " + isLogin);
-			 
-			
 			var stompClient = null;
-			if(isLogin){
-				var sockJS = new SockJS('/sockJS');
-				var urlSubscribe = '/subscribe/alarm/' + ${login.userid}; // 세션에 저장되어있는login정보에서 userid를 추출해서 연결
+			if(isLogin.length != 0){
+				var sockJS = new SockJS('http://localhost:8079/sockJS');
+				var urlSubscribe = '/subscribe/alarm/' + isLogin; // 세션에 저장되어있는login정보에서 userid를 추출해서 연결
 				stompClient = Stomp.over(sockJS);
 				console.log("socket에 연결됐음", stompClient);
 				stompClient.connect({},function(){
 					stompClient.subscribe(urlSubscribe, function(alarm){
 						// 구독해서 넘어오는 데이터(alarm)를 JSON으로 파싱해서 content에 저장
 						var content = JSON.parse(alarm.body);
-						console.log("정보가 제대로 넘어왓닝?",content); // 제대로 연결돼서 넘어왔는지 확인
-						//var sender = content.sender; // 알림을 보낸사람(ex.내가 작성한 글에 댓글을 남긴사람)
-						//var type = content.type; // 댓글인지 주문서인지 채팅인지
-						var info = content.info; // 댓글인경우 -> 어떤글에 댓글단건지 pNum이 넘어온다.
-						var html = viewToUser(content, info);
-						
+						createToast(content);
 					});
 				});
 			}
 		});
 		
-		function viewToUser(){ // 받아온 데이터를 파싱해서 화면에 뿌려줄 코드를 작성한다.
+		function createToast(alarmObj){ // 받아온 데이터를 파싱해서 화면에 뿌려줄 코드를 작성한다.
+			if(alarmObj.type == "c"){
+				var print = '<p><b>'+alarmObj.sender+'님</b>이 <br> 회원님이 작성하신 글에 <b>댓글</b>을 달았습니다.</p>'; // toast-body에 들어갈 내용
+				$("#toast_body").html(print+$("#toast_body").html());
+				$(".toast").toast('show');
+				$("#goPage").click(function(){ // 버튼클릭시 해당 글로 이동하게!
+					location.href="postDetail?pNum="+alarmObj.info;
+				});		
 			
+			}
+		}
+		
+		function viewToUser(alarm){
+			console.log("화면에찍는거 : " + alarm);
+			$("#toast_body").html(alarm+$("#toast_body").html());
+			$("#goPage").click(function(){ // 버튼클릭시 해당 글로 이동하게!
+				location.href="postDetail?pNum="+alarm.info;
+			});
 		}
 	</script>
 	<!-- Bootstrap css -->
@@ -153,8 +160,7 @@
 	<div class="col-md-1" id="imgBox">
 		<img src="/Dong-Dong/images/util/search_category.png" id="search" width="110" height="30" style="cursor: pointer; ">
 	</div>
-
-
+	
 	<div class="col-md-3 ttt">
 		<div id="user_section" class="user">
 
@@ -178,14 +184,19 @@
 	</c:if>
 	</div>
 	
-	<div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-  		<div class="toast-body">
-    		Hello, world! This is a toast message.
-    	<div class="mt-2 pt-2 border-top">
-      	<button type="button" class="btn btn-primary btn-sm">Take action</button>
-      	<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">Close</button>
-    </div>
-  </div>
-</div>
+	<!-- toast알림창 -->
+	<div aria-live="polite" aria-atomic="true" class="position-relative">
+  		<div class="toast-container position-absolute top-0 end-0 p-3">
+			<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+  				<div class="toast-body" id="toast_body">
+    		
+    				<div class="mt-2 pt-2 border-top">
+      					<button type="button" id="goPage" class="btn btn-primary btn-sm">확인하기</button>
+      				<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>
+    				</div>
+ 				</div>
+			</div>
+		</div>
+	</div>
 	
 </body>

@@ -1,23 +1,34 @@
 package com.dto;
 
 public class Alarm {
+	private int aNum;
 	private String sender; // 댓글 작성한 회원
 	private String receiver; // 글 작성한 회원
 	private String type; // 댓글
-	private String info; // 어떤글에?
+	private String info; // 글번호
+	private String detail; // 글제목
 	private int isRead;
 	
 	public Alarm() {
 		super();
 	}
 
-	public Alarm(String sender, String receiver, String type, String info, int isRead) {
+	public Alarm(String sender, String receiver, String type, String info, String detail, int isRead) {
 		super();
 		this.sender = sender;
 		this.receiver = receiver;
 		this.type = type;
 		this.info = info;
+		this.detail = detail;
 		this.isRead = isRead;
+	}
+
+	public int getaNum() {
+		return aNum;
+	}
+
+	public void setaNum(int aNum) {
+		this.aNum = aNum;
 	}
 
 	public String getSender() {
@@ -52,11 +63,21 @@ public class Alarm {
 	public void setInfo(String info) {
 		this.info = info;
 	}
-	
+
+	public String getDetail() {
+		return detail;
+	}
+
+	public void setDetail(String detail) {
+		this.detail = detail;
+	}
+
 	@Override
 	public String toString() {
-		return "Alarm [sender=" + sender + ", receiver=" + receiver + ", type=" + type + ", info=" + info
-				+ ", isRead=" + isRead + "]";
+		return "Alarm [aNum=" + aNum + ", sender=" + sender + ", receiver=" + receiver + ", type=" + type + ", info="
+				+ info + ", detail=" + detail + ", isRead=" + isRead + "]";
 	}
+
 	
+
 }
