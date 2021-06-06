@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.dto.ChatMessage;
+import com.dto.ChatRoom;
+import com.dto.MemberDTO;
 import com.service.ChatService;
 
 @Controller
@@ -63,16 +65,16 @@ public class ChatController {
 				// 파일 객체 생성
 				File file = new File("C:/chatHistory/" + chatId + ".txt");
 				// 입력 스트림 생성
-				FileReader filereader = new FileReader(file);
+				FileReader fr = new FileReader(file);
 				// 입력 버퍼 생성
-				BufferedReader bufReader = new BufferedReader(filereader);
+				BufferedReader br = new BufferedReader(fr);
 				String line = "";
-				while ((line = bufReader.readLine()) != null) {
+				while ((line = br.readLine()) != null) {
 					lines.add(line);
 				}
 				// .readLine()은 끝에 개행문자를 읽지 않는다.
 				model.addAttribute("lines", lines);
-				bufReader.close();
+				br.close();
 			} catch (FileNotFoundException e) {
 				// TODO: handle exception
 			} catch (IOException e) {
@@ -93,10 +95,16 @@ public class ChatController {
 		String urlSubscribe = "/subscribe/" + chatMessage.getChatId();
 		simpMessageTemplate.convertAndSend(urlSubscribe, chatMessage);
 	}
+	
 
 	@RequestMapping(value = "/chatList", method = RequestMethod.GET)
 	public ModelAndView getChatList(HttpSession session) {
+		//chatRoom 정보 긁어와서 모델에 보내주기
+		MemberDTO mDTO = (MemberDTO) session.getAttribute("login");
+		String userid = mDTO.getUserid();
+		List<ChatRoom> list = cService.getChatList(userid);
 		ModelAndView mav = new ModelAndView("chat/chatList");
+		mav.addObject("chatList", list);
 		return mav;
 	}
 

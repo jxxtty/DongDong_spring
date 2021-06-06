@@ -133,7 +133,7 @@
 			<a href="/mypage">mypage</a>
 			<a href="/logout">로그아웃</a>
 			<a href="/postWrite">글쓰기</a>
-			<a href="chatRoom">채팅</a>
+			<a href="/chatList">채팅</a>
 		</div>
 		<div id="user_profile" class="user">
 			<%=dto.getNickName() %>
