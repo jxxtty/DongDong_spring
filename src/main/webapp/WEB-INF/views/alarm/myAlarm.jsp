@@ -61,6 +61,10 @@ h2{
 	margin-left: 10px;
 }
 
+.alarm.read td {
+	color: #8E8E93; 
+}
+
 
 </style>
 
@@ -80,30 +84,12 @@ h2{
 		</tr>
 	</thead>
 	<tbody>
-<c:forEach var="a" items="${myAlarmList}">
-	<c:if test="${a.isRead == 1 }">
-		<tr>
+	<c:forEach var="a" items="${myAlarmList}">
+		<tr class="alarm${a.isRead == 1 ? ' read'  : ' unread'}">
 			<td style="width: 10%;" class="text-center" width="1">
 				<input type="checkbox" name="check" id="check" class="check"  value="${a.aNum}">
 			</td>
-			<td class="text-center" width="1" style="color : #8E8E93;">${typeMap['${a.type}']}</td><!-- 알림종류 -->
-			<td class="text-center" width="80" style="color : #8E8E93;">${a.sender}</td> <!-- 보낸사람 -->
-			<td class="text-center" width="120" style="color : #8E8E93;">
-				<%-- <a href="/postDetail?pNum=${p.pNum}">
-					<img src="/Dong-Dong/images/${p.pImage}" border="0"  width="80" /></a> --%>
-					<div>${a.detail}</div> 
-			</td><!-- 상세정보 -->
-			<td class="text-center" align="center" width="30" style='padding-left: 10px'>
-				<input type="button" value="삭제" class="delBtn" data-xxx="${a.aNum}">
-			</td>	
-		</tr>
-	</c:if>
-	<c:if test="${a.isRead == 0 }">
-		<tr>
-			<td style="width: 10%;" class="text-center" width="1">
-				<input type="checkbox" name="check" id="check" class="check"  value="${a.aNum}">
-			</td>
-			<td class="text-center" width="1">${typeMap['${a.type}']}</td><!-- 알림종류 -->
+			<td class="text-center" width="1">${typeMap[a.type]}</td><!-- 알림종류 -->
 			<td class="text-center" width="80">${a.sender}</td> <!-- 보낸사람 -->
 			<td class="text-center" width="120">
 				<%-- <a href="/postDetail?pNum=${p.pNum}">
@@ -111,11 +97,12 @@ h2{
 					<div>${a.detail}</div> 
 			</td><!-- 상세정보 -->
 			<td class="text-center" align="center" width="30" style='padding-left: 10px'>
-				<input type="button" value="확인"  class="readBtn" data-xxx="${a.aNum}">
+				<c:if test="${a.isRead == 0 }">
+					<input type="button" value="확인"  class="readBtn" data-xxx="${a.aNum}">
+				</c:if>
 				<input type="button" value="삭제" class="delBtn" data-xxx="${a.aNum}">
 			</td>	
 		</tr>
-	</c:if>
 	</c:forEach>
 	</tbody>
 	
@@ -127,5 +114,4 @@ h2{
 </div> <!--컨테이너  -->
 
 <jsp:include page="../layout/bottomLayout.jsp" flush="true"></jsp:include>
-
 
