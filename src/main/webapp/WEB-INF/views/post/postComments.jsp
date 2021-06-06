@@ -26,6 +26,7 @@ padding-bottom: 300px;
 
 <c:if test="${!empty login}">
 <script type="text/javascript">
+	
 	$(document).ready(function() {
 		$(".update_comment").on("click", function() {
 			$(this).parent().parent().parent().find(".comment-update-form").toggle(100);
@@ -62,11 +63,41 @@ padding-bottom: 300px;
 		$(".complaintComment").click(function() {
 			complaintComment(this.id);
 		});
+		
+		
+		var receiver = $("#receiver").val();
+		var sender = $("#sender").val();
+		console.log("글작성자 : ", receiver);
+		console.log("현재 로그인되어있는 회원 : " + sender);
+		var stompClient = null;
+		if(sender.length != 0 && sender!= receiver){ // 글을 보고있는 사람이 회원이고, 글보는사람과 글작성자의 userid가 다를때만
+			var sockJS = new SockJS('/sockJS');
+			stompClient = Stomp.over(sockJS);
+			console.log("글보는사람과 글작성자의 userid가 달라서 소켓연결했어!");
+		}
+		
+		$("#comments_submit").click(function(){ sendMessage(); });
+	
+		function sendMessage(){
+			var pNum = $("#pNum").val();
+			var json = {
+				'sender' : sender,
+				'receiver' : receiver,
+				'type' : 'c',
+				'info' : pNum,
+				'detail' : pTitle,
+				'isRead' : '0'
+			};
+			console.log("댓글>>>데이터전달했어 : " + JSON.stringify(json));
+			stompClient.send('/send/reply/'+receiver, {}, JSON.stringify(json));
+			
+		}
 	});
 </script>
 </c:if>
     <!-- 댓글 기능 표시 시작 지점 --------------------------------------- -->
     <div id="comments_div" class="container footerfix" style="max-width: 1100px"> <!-- 댓글 전체 div -->
+       
        <div style="text-align : left; font-weight: bolder; margin-left: 20px"><h2>댓글 (${comments.size()})</h2></div>
        <hr>
        <c:forEach var="cDTO" items="${comments}" varStatus="status">
@@ -156,18 +187,21 @@ padding-bottom: 300px;
       	</div>
      </c:forEach>
      
+     <input type="hidden" id="receiver" value="${userid}"> <!-- 글 작성자의 userid -->
+     <input type="hidden" id="sender" value="${login.userid}"> <!-- 댓글작성자의 userid -->
+	    
       <c:if test="${pStatus!='1' && empty login}">
       <div style="margin-bottom: 10px">
     	<a class="btn btn-primary" href="loginForm">로그인 후 댓글 작성이 가능합니다.</a>
       </c:if>
 	  <c:if test="${pStatus=='1' || !empty login}">
-	    <div class="comment-form well" style="margin-bottom: 10px">
+	  	<div class="comment-form well" style="margin-bottom: 10px">
 	     <form action="loginCheck/commentsWrite" method="post">
 	      	<label for="contactComment"></label> 
-	      	<input type="hidden" name="pNum" value="${pNum}"/>
+	      	<input type="hidden" name="pNum" id="pNum" value="${pNum}"/>
 	    	<textarea rows="3" class="form-control" name="cContent" style="resize: none;"></textarea>
 	    	<div style="text-align : right" >
-	    		<input type="submit" class="btn btn-outline-primary btn-block btn-sm" value="댓글"/>
+	    		<input type="submit" class="btn btn-outline-primary btn-block btn-sm" id="comments_submit" value="댓글"/>
 	    	</div>
 	      </form>
 	    </div>

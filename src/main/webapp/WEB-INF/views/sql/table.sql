@@ -30,7 +30,7 @@ CREATE TABLE post(
         pTitle VARCHAR2(100) NOT NULL,
         pContent VARCHAR2(800) NOT NULL,
         pPrice NUMBER(10) NOT NULL,
-        pImage VARCHAR2(100) NOT NULL,
+        pImage VARCHAR2(500) NOT NULL,
         pHit NUMBER(5) NOT NULL,
         pDate DATE DEFAULT SYSDATE,
         pStatus VARCHAR2(1) DEFAULT '0',

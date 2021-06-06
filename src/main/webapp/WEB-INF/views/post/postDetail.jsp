@@ -21,6 +21,7 @@
 </style>
 
 <script type="text/javascript">
+	var pTitle = "${pTitle}";
 	var favorite = ${favorite};
 	$(function() {
 		$("#favorite").on("click", function(){
@@ -75,6 +76,8 @@
 			$("#userprofile").click(function() {
 			userprofile();
 		});
+		
+		
 	});//end ready
 </script>
 

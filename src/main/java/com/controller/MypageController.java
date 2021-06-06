@@ -3,6 +3,7 @@ package com.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,10 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dto.Alarm;
 import com.dto.FavoriteDTO;
 import com.dto.MemberDTO;
 import com.dto.MyOrderSheetDTO;
 import com.dto.PostDTO;
+import com.service.AlarmService;
 import com.service.FavoriteService;
 import com.service.MemberService;
 import com.service.OrderSheetService;
@@ -43,6 +46,9 @@ public class MypageController {
 	OrderSheetService oService;
 	@Autowired
 	TransactionService tService;
+	@Autowired
+	AlarmService aService;
+	
 	@Resource(name="uploadPath")
 	String uploadPath;
 	
@@ -344,5 +350,20 @@ public class MypageController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value = "/loginCheck/myAlarm", produces = "text/plain;charset=UTF-8")
+	public String myAlarm(HttpSession session, RedirectAttributes attr) {
+		MemberDTO dto =(MemberDTO)session.getAttribute("login");
+		String receiver = dto.getUserid(); // 해당 회원이 받은 알림
+		List<Alarm> list = aService.getMyAlarm(receiver);
+		attr.addFlashAttribute("myAlarmList", list);
+		
+		Map<String,String> typeMap = new HashMap<>();
+		typeMap.put("c", "댓글");
+		typeMap.put("o", "주문서");
+		attr.addFlashAttribute("typeMap", typeMap);
+		
+		return "redirect:../myAlarm";
+	}//내 알림 보기
 	
 }//mService
