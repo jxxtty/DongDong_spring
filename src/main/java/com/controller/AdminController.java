@@ -1,6 +1,7 @@
 package com.controller;
 
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +26,7 @@ import com.service.ComplaintService;
 import com.service.MemberService;
 import com.service.PostService;
 import com.service.SanctionService;
+import com.service.StatisticService;
 
 @Controller
 public class AdminController {
@@ -38,24 +40,19 @@ public class AdminController {
 	CommentsService cService;
 	@Autowired
 	SanctionService saService;
+	@Autowired
+	StatisticService stService;
 	
 	@RequestMapping(value = "/admin")
 	public ModelAndView adminPage(Model model) {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH");
+		String currentTime = sdf.format(cal.getTime());
+		Map<String, List> complaintChartData = stService.getComplaintChartData(currentTime,"H", 7);
+		
 		ModelAndView mav = new ModelAndView();
-		List<String> dailyChartLabel = new ArrayList<String>();
-		dailyChartLabel.add("\"test\"");
-		dailyChartLabel.add("\"estt\"");
-		dailyChartLabel.add("\"stte\"");
-		dailyChartLabel.add("\"ttes\"");
-		dailyChartLabel.add("\"test\"");
-		List<Integer> dailyChartData = new ArrayList<Integer>();
-		dailyChartData.add(10);
-		dailyChartData.add(20);
-		dailyChartData.add(30);
-		dailyChartData.add(40);
-		dailyChartData.add(10);
-		mav.addObject("dailyChartLabel",dailyChartLabel);
-		mav.addObject("dailyChartData",dailyChartData);
+		mav.addObject("dailyChartLabel",complaintChartData.get("complaintChartLabel"));
+		mav.addObject("dailyChartData",complaintChartData.get("complaintChartData"));
 		mav.setViewName("admin/adminMain");
 		return mav;
 	}
@@ -96,8 +93,6 @@ public class AdminController {
 		saDTO.setCoNum(coNum);
 		saDTO.setSaType(saType);
 		saDTO.setSaDate(saDate);
-		
-		
 		
 		ModelAndView mav = new ModelAndView();
 		
