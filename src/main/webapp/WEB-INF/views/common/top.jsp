@@ -35,7 +35,28 @@
 				location.href = "loginCheck/myAlarm";
 				return;
 			}
-
+			$.ajax({
+				url : 'myAlarmList',//서블릿에서 idDuplicateCheck로 변경
+				type : 'get',//get으로 변경
+				data : {
+					id : $("#id").val(), //userid-> id 
+				}, 
+				dataType:"json",//데이터타입 밑으로 들어옴
+				success : function(data, status, xhr) {
+					$('#alarmListGetFive').html('');
+					var first = "<li class='list-group-item disabled' aria-disabled='true'><b>";
+					var result = "";
+                    for(var i = 0 ; i < 5 ; i++){
+                    	result += first;
+                    	result += data.alarm[i].sender+"</b>님이<br> ["+data.alarm[i].detail+"]글에 댓글을 남겼습니다.</li>";
+                    }
+                    console.log(result);
+					$('#alarmListGetFive').html(result);
+				},
+				error : function(xhr, status, error) {
+					console.log("error");
+				}
+			});
 			$('.my-alarm').toggleClass('d-none');
 		});
 
@@ -90,13 +111,7 @@
 		}
 	}
 
-	function viewToUser(alarm) {
-		console.log("화면에찍는거 : " + alarm);
-		$("#toast_body").html(alarm + $("#toast_body").html());
-		$("#goPage").click(function() { // 버튼클릭시 해당 글로 이동하게!
-			location.href = "postDetail?pNum=" + alarm.info;
-		});
-	}
+
 </script>
 <!-- Bootstrap css -->
 <link
@@ -130,81 +145,14 @@
 .nav-link {
 	font-family: 'Nanum Gothic', sans-serif;
 	font-size: 15px;
-	font-weight: 400;
+	font-weight: 700;
 	color: #8db0d7 !important;
 }
 
-/* *{
-			font-family: 'Nanum Gothic', sans-serif;
-			font-size: 15px;
-			font-weight : 400;
-		}
-		
-		#imgBox {
-			padding : 0;
-			margin : 0;
-		}
-		#main{
-			margin-top : 30px;
-			margin-left : 20px;
-		}
-		
-		#keyword, #search{
-			margin-top:40px;
-		}
-		#keyword{
-			border : 2px solid #8db0d7;
-		}
-		.ttt{
-			display : flex;
-		}
-
-		.user{
-			flex : left;
-		}
-		
-		#user_section{
-			margin-top : 45px;
-		}
-		
-		#user_section a{
-			margin-left : 5px;
-			text-decoration: none;
-			color : #8db0d7;
-			font-weight : 700;
-			font-size: 17px;
-		}
-		
-		#user_section a:hover{
-			margin-left : 5px;
-			text-decoration: none;
-			color : #316ea5;
-			font-weight : 700;
-			font-size: 17px;
-		}
-		
-		
-		
-		#user_profile{
-			margin-top : 25px;
-			margin-left : 10px;
-			border : 2px solid #8db0d7;
-			border-radius : 10px;
-			padding-top : 9px;
-			padding-left : 5px;
-			padding-right : 5px;
-			height : 60px;
-			font-size : 20px;
-		}
-		
-		#user_profile img{
-			border-radius : 10px;
-		}
-		
-		 */
 </style>
 </head>
 <body>
+	<input type="hidden" id="id" value="${login.userid}">
 	<nav class="navbar navbar-expand-lg navbar-light bg-white">
 		<div class="container-fluid">
 			<img id="main" src="/Dong-Dong/images/util/DongDonglogo.png"
@@ -261,68 +209,15 @@
 						</ul>
 					</li>
 				</ul>
-				<ul class="list-group position-absolute my-alarm text-start d-none">
-					<li class="list-group-item disabled" aria-disabled="true"><b>스톤
-							짜바리 팔아요</b><br />안재희님이 댓글을 달았습니다.</li>
-					<li class="list-group-item disabled" aria-disabled="true"><b>스톤
-							짜바리 팔아요</b><br />안재희님이 댓글을 달았습니다.</li>
-					<li class="list-group-item disabled" aria-disabled="true"><b>스톤
-							짜바리 팔아요</b><br />안재희님이 댓글을 달았습니다.</li>
-					<li class="list-group-item disabled" aria-disabled="true"><b>스톤
-							짜바리 팔아요</b><br />안재희님이 댓글을 달았습니다.</li>
-					<li class="list-group-item disabled" aria-disabled="true"><b>스톤
-							짜바리 팔아요</b><br />안재희님이 댓글을 달았습니다.</li>
+				<ul class="list-group position-absolute my-alarm text-start d-none" id="alarmListGetFive">
+					<!-- 비동기 -->
 				</ul>
 			</div>
 		</div>
-		</div>
-	</nav>
-	<%-- <div class="row">
-	<div class="col-md-3" id="logo">
-		<img id="main" src="/Dong-Dong/images/util/DongDonglogo.png" width="222" height="52" style="cursor: pointer;"/><br><br>
-		<!-- 원래 값 : width="222" height="52" -->
-	</div>
-
-	<div class="col-md-5" id="search_bar">
-
-		<form action="keywordSearch" method="get">	
-
-    		<input type="text" name="keyword" id="keyword" class="form-control" placeholder="검색할 상품명">
-		</form>
-	</div>
-	<div class="col-md-1" id="imgBox">
-		<img src="/Dong-Dong/images/util/search_category.png" id="search" width="110" height="30" style="cursor: pointer; ">
-	</div>
-	
-	<div class="col-md-3 ttt">
-		<div id="user_section" class="user">
-
-	<input type="hidden" id="id" value="${login.userid}">
-	<c:if test="${!empty login}">
 		
-			<a href="/mypage">mypage</a>
-			<a href="/logout">로그아웃</a>
-			<a href="/postWrite">글쓰기</a>
-			<a href="chatRoom">채팅</a>
-		</div>
-		<div id="user_profile" class="user">
-			${login.nickName}
-			<img src="/Dong-Dong/images/profile/${login.userimage}" id="user_profileImg" width="40px" height="40px">
-		</div>
-	</c:if>
-	<c:if test="${empty login}">
-			<a href="loginForm">로그인</a>
-			<a href="memberForm">회원가입</a><!--MVC 패턴 -->
-		</div>
-	</c:if>
-	</div>
-	
-	<!-- toast알림창 -->
-	<div class="myAlarm">
+	</nav>
 	<div aria-live="polite" aria-atomic="true" class="position-relative">
   		<div class="toast-container position-absolute top-0 end-0 p-3">
 		</div>
 	</div>
-	</div> --%>
-
 </body>
