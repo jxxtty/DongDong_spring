@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   	
   	<insert id="newAlarm" parameterType="Alarm">
 		INSERT INTO alarm
-		VALUES (ALARM_NUM.NEXTVAL, #{sender}, #{receiver}, #{type}, #{info}, #{detail}, #{isRead})
+		VALUES (ALARM_NUM.NEXTVAL, #{sender}, #{receiver}, #{type}, #{info}, #{detail}, #{isRead}, SYSDATE)
 		<selectKey keyProperty="aNum" resultType="int" order="AFTER"> 
 			SELECT ALARM_NUM.CURRVAL FROM DUAL 
 		</selectKey>
@@ -28,6 +28,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		UPDATE alarm
 		SET isRead = 1
 		WHERE aNum = #{aNum}
+	</update>
+	
+	<select id="myAlarmListFive" parameterType="string" resultType="Alarm">
+		SELECT * FROM (SELECT * FROM alarm ORDER BY aDate DESC) WHERE receiver = #{userid} AND isRead = 0 
+	</select>
+	
+	<delete id="deleteAlarmAll" parameterType="arraylist">
+		DELETE FROM alarm
+		WHERE aNum IN
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
+	</delete>
+	
+	<update id="readAlarmAll" parameterType="arraylist">
+		UPDATE alarm
+		SET isRead = 1
+		WHERE aNum IN
+		<foreach item="item" collection="list" open="(" separator="," close=")">
+			#{item}
+		</foreach>
 	</update>
 	
 </mapper>

@@ -8,10 +8,13 @@ public class Alarm {
 	private String info; // 글번호
 	private String detail; // 글제목
 	private int isRead;
+	private String aDate; //알림 넣은 날짜
 	
 	public Alarm() {
 		super();
 	}
+
+	
 
 	public Alarm(String sender, String receiver, String type, String info, String detail, int isRead) {
 		super();
@@ -22,6 +25,8 @@ public class Alarm {
 		this.detail = detail;
 		this.isRead = isRead;
 	}
+
+
 
 	public int getaNum() {
 		return aNum;
@@ -72,12 +77,20 @@ public class Alarm {
 		this.detail = detail;
 	}
 
+	public String getaDate() {
+		return aDate;
+	}
+
+	public void setaDate(String aDate) {
+		this.aDate = aDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Alarm [aNum=" + aNum + ", sender=" + sender + ", receiver=" + receiver + ", type=" + type + ", info="
-				+ info + ", detail=" + detail + ", isRead=" + isRead + "]";
+				+ info + ", detail=" + detail + ", isRead=" + isRead + ", aDate=" + aDate + "]";
 	}
-
+	
 	
 
 }

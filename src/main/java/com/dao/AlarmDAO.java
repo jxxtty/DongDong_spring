@@ -2,6 +2,7 @@ package com.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -34,5 +35,17 @@ public class AlarmDAO {
 
 	public int readAlarmOne(int aNum) { // 알림을 읽었을때 해당 알림의 isRead값을 1로변경한다.
 		return template.update("AlarmMapper.readAlarmOne", aNum);
+	}
+
+	public List<Alarm> myAlarmListFive(String userid) {
+		return template.selectList("AlarmMapper.myAlarmListFive", userid, new RowBounds(0, 5));
+	}
+
+	public int deleteAlarmAll(List<String> list) {
+		return template.delete("AlarmMapper.deleteAlarmAll", list);
+	}
+	
+	public int readAlarmAll(List<String> list) {
+		return template.update("AlarmMapper.readAlarmAll", list);
 	}
 }
