@@ -163,14 +163,7 @@ public class PostController {
 			updateDto.setpStatus(pDto.getpStatus());
 			updateDto.setpPull(pDto.getpPull());
 			updateDto.setpHit(pDto.getpHit());
-				// 기존에 저장되어있던 파일 삭제
-				/*
-				 * String[] originalImages = pDto.getpImage().split(" "); for(String s :
-				 * originalImages) { String deleteImg = uploadPath+s;
-				 * System.out.println("삭제하는 파일 경로와 이름 : " + deleteImg); File file = new
-				 * File(deleteImg); file.delete(); }
-				 * System.out.println("기존에 저장되어있던 이미지파일 삭제완료");
-				 */
+				
 			int flag = 0;
 			String dbSave = "";// db에 저장될 이미지파일이름의 조합
 			for(int i = 0 ; i < fileList.size() ; i++) {

@@ -54,6 +54,12 @@
 			
 			location.href="/loginCheck/readAlarmAll?data="+num;
 		});
+		
+		$(".goPost").click(function(){
+			var num = $(this).attr("data-info");
+			location.href="postDetail?pNum="+num;
+			// 글 눌러서 이동하면 alarm의 isRead값 수정하기
+		});
 	})//end ready
 	
 </script>
@@ -67,6 +73,10 @@ h2{
 	color: #8E8E93; 
 }
 
+.goPost:hover{
+	cursor : pointer;
+	text-decoration : underline;
+}
 
 </style>
 
@@ -96,7 +106,7 @@ h2{
 			<td class="text-center" width="120">
 				<%-- <a href="/postDetail?pNum=${p.pNum}">
 					<img src="/Dong-Dong/images/${p.pImage}" border="0"  width="80" /></a> --%>
-					<div>${a.detail}</div> 
+					<div class="goPost" data-info="${a.info}">${a.detail}</div> 
 			</td><!-- 상세정보 -->
 			<td class="text-center" align="center" width="30" style='padding-left: 10px'>
 				<c:if test="${a.isRead == 0 }">

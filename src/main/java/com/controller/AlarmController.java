@@ -29,7 +29,7 @@ public class AlarmController {
 	SimpMessagingTemplate simpMessageTemplate;
 	@Autowired
 	AlarmService aService;
-
+	
 	@MessageMapping("/reply/{userid}")
 	public void sendAlarm(Alarm alarm) throws IOException {
 		int aNumPK = aService.newAlarm(alarm); // alarm DB에 데이터 쌓고, 방금insert한 레코드의 PK값을 받아온다.
@@ -49,15 +49,17 @@ public class AlarmController {
                 JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
                 sObject.put("sender", list.get(i).getSender());
                 sObject.put("info", list.get(i).getInfo());
-                sObject.put("detail", list.get(i).getDetail());
+                sObject.put("type", list.get(i).getType()); // 글제목이 길 경우
+                if(list.get(i).getDetail().length() > 7) {
+                	sObject.put("detail", list.get(i).getDetail().substring(0,7)+"...");
+                } else {
+                	sObject.put("detail", list.get(i).getDetail());
+                } 
                 sObject.put("date", list.get(i).getaDate());
                 jArray.put(sObject);
             }
             
             obj.put("alarm", jArray);//배열을 넣음
-
-            System.out.println(obj.toString());
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

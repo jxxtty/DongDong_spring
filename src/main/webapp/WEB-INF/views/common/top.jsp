@@ -12,7 +12,6 @@
 	type="text/javascript"></script>
 <script type="text/javascript">
 	function chatLink(chatid){
-		/* var chatid = $("#chatLink").attr("data-xxx"); */
 		window.open('chatList/chat?chatId='+chatid, '_blank' ,'width=550, height=620');
 	}
 
@@ -73,21 +72,32 @@
 				return;
 			}
 			$.ajax({
-				url : 'myAlarmList',//서블릿에서 idDuplicateCheck로 변경
-				type : 'get',//get으로 변경
+				url : 'myAlarmList',
+				type : 'get',
 				data : {
-					id : $("#id").val(), //userid-> id 
+					id : $("#id").val(),
 				}, 
-				dataType:"json",//데이터타입 밑으로 들어옴
+				dataType:"json",
 				success : function(data, status, xhr) {
 					$('#alarmListGetFive').html('');
-					var first = "<li class='list-group-item disabled' aria-disabled='true'><b>";
+					var first = "<li class='list-group-item' id='alarmList_link'>";
 					var result = "";
-                    for(var i = 0 ; i < 5 ; i++){
-                    	result += first;
-                    	result += data.chat[i].sender+"</b>님이<br> ["+data.alarm[i].detail+"]글에 댓글을 남겼습니다.</li>";
+                    if(data.alarm.length == 0){
+                    	result += first + "알림이 없습니다.</li>";
+                    } else {
+                    	for(var i = 0 ; i < data.alarm.length ; i++){
+                        	if(data.alarm[i].type == "c"){
+	                    		result += first;
+	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글에 댓글이 작성되었습니다.</a><br>";
+	                        	result += "<p id='alarmList_Sub'>by <b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
+	                        } else {
+	                        	result += first;
+	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글의 주문서가 도착했습니다.</a><br>";
+	                        	result += "<p id='alarmList_Sub'> by<b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
+	                        }
+                        }
+                    	result += first+"<a href='loginCheck/myAlarm'><img src='/Dong-Dong/images/util/plus.png' width='20px'></a></li>";
                     }
-                    console.log(result);
 					$('#alarmListGetFive').html(result);
 				},
 				error : function(xhr, status, error) {
@@ -189,6 +199,17 @@
 	font-weight: 700;
 	color: #8db0d7 !important;
 }
+
+#alarmList_Sub{
+	font-size:13px;
+	color : gray;
+}
+
+#alarmList_link a{
+	text-decoration : none;
+	color : black;
+}
+
 
 </style>
 </head>

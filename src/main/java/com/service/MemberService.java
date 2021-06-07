@@ -84,5 +84,10 @@ public class MemberService {
 		int n = dao.addrAuth2(dto2);
 		return n;
 	}//동 달라서 현재위치로 addr 수정
+
+
+	public MemberDTO getMemberByUserid(String senderId) {
+		return dao.getMemberByUserid(senderId);
+	} // userid로 MemberDTO 반환
 	
 }
