@@ -11,7 +11,14 @@
 <script src="/webjars/sockjs-client/1.1.2/sockjs.js"
 	type="text/javascript"></script>
 <script type="text/javascript">
+	function chatLink(chatid){
+		/* var chatid = $("#chatLink").attr("data-xxx"); */
+		window.open('chatList/chat?chatId='+chatid, '_blank' ,'width=550, height=620');
+	}
+
+
 	$(document).ready(function() {
+		
 		$("#main").click(function() {
 			location.href = "/";
 		})
@@ -29,7 +36,37 @@
 				$('form').submit();
 			}
 		});
-
+		
+		$("#chatList").click(function(){
+			var userid = ${login.userid};
+			
+			$.ajax({
+				url : 'chatList',
+				type : 'get',
+				dataType:"json",//데이터타입 밑으로 들어옴
+				success : function(data, status, xhr) {
+					$('#chatListGetFive').html('');
+					
+					var result = "";
+                    for(var i = 0 ; i < data.chat.length ; i++){
+                    	var chatid = data.chat[i].chatid;
+                    	result += "<a href ='javascript:chatLink("+chatid+")'";
+                    	result += "class='list-group-item' ><b>";
+                    	if(data.chat[i].sUserid == userid){
+                    		result += data.chat[i].bUserid+"</b>님과의 채팅</a>";
+                    	} else{
+                    		result += data.chat[i].sUserid+"</b>님과의 채팅</a>";
+                    	}
+                    }
+					$('#chatListGetFive').html(result);
+				},
+				error : function(xhr, status, error) {
+					console.log("error");
+				}
+			});
+			$('.my-chat').toggleClass('d-none');
+		});
+		
 		$('#alarmList').click(function() {
 			if (window.innerWidth < 992) {
 				location.href = "loginCheck/myAlarm";
@@ -48,7 +85,7 @@
 					var result = "";
                     for(var i = 0 ; i < 5 ; i++){
                     	result += first;
-                    	result += data.alarm[i].sender+"</b>님이<br> ["+data.alarm[i].detail+"]글에 댓글을 남겼습니다.</li>";
+                    	result += data.chat[i].sender+"</b>님이<br> ["+data.alarm[i].detail+"]글에 댓글을 남겼습니다.</li>";
                     }
                     console.log(result);
 					$('#alarmListGetFive').html(result);
@@ -128,6 +165,10 @@
 	top: 68px;
 	right: 12px;
 }
+.my-chat {
+	top: 68px;
+	right: 12px;
+}
 
 .searchInput {
 	width: 46vw;
@@ -179,8 +220,8 @@
 							aria-current="page" href="logout">로그아웃</a></li>
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" href="/postWrite">글쓰기</a></li>
-						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" href="chatRoom">채팅</a></li>
+						<li class="nav-item"><a class="nav-link active"  id = "chatList" 
+							aria-current="page" href="#none">채팅</a></li>
 						<li class="nav-item" id="alarmList"><a
 							class="nav-link active" aria-current="page" href="#none">알림</a></li>
 					</c:if>
@@ -209,13 +250,17 @@
 						</ul>
 					</li>
 				</ul>
+				<ul class="list-group position-absolute my-chat text-start d-none" id="chatListGetFive">
+				
+				</ul>
+				
 				<ul class="list-group position-absolute my-alarm text-start d-none" id="alarmListGetFive">
 					<!-- 비동기 -->
 				</ul>
 			</div>
 		</div>
-		
 	</nav>
+
 	<div aria-live="polite" aria-atomic="true" class="position-relative">
   		<div class="toast-container position-absolute top-0 end-0 p-3">
 		</div>

@@ -8,12 +8,14 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dao.ChatDAO;
 import com.dto.ChatMessage;
+import com.dto.ChatRoom;
 
 @Service
 public class ChatService {
@@ -72,6 +74,11 @@ public class ChatService {
 	public void creatRoom(HashMap<String, String> map) {
 		dao.createRoom(map);
 		
+	}
+	
+	public List<ChatRoom> getChatList(String userid) {
+		
+		return dao.getChatList(userid);
 	}
 
 }
