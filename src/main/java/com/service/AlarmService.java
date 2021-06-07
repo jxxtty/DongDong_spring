@@ -35,6 +35,10 @@ public class AlarmService {
 	public int readAlarmOne(int aNum) {
 		return dao.readAlarmOne(aNum);
 	}
+
+	public List<Alarm> myAlarmListFive(String userid) {
+		return dao.myAlarmListFive(userid);
+	}
 	
 	
 }
