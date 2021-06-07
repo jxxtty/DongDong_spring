@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +27,7 @@ import com.dto.CommentsDTO;
 import com.dto.FavoriteDTO;
 import com.dto.MemberDTO;
 import com.dto.PostDTO;
+import com.service.AlarmService;
 import com.service.CommentsService;
 import com.service.FavoriteService;
 import com.service.MemberService;
@@ -59,34 +58,6 @@ public class PostController {
 	public String postWrite() {
 		return "redirect:../postWrite"; // 글쓰기화면으로전환
 	}
-	
-	/*
-	 * @RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.POST)
-	 * public String postWrite(String pTitle, String pCategory, String pContent,
-	 * String pPrice, HttpSession session, MultipartFile file) { PostDTO pDto = new
-	 * PostDTO(); // 입력되어온 내용 pDto에 값 넣기 MemberDTO mDto =
-	 * (MemberDTO)session.getAttribute("login"); pDto.setUserid(mDto.getUserid());
-	 * // 아이디 pDto.setAddr(mDto.getAddr()); // 주소 pDto.setpCategory(pCategory); //
-	 * 카테고리 pDto.setpTitle(pTitle); // 제목 pContent = pContent.replaceAll("\r\n",
-	 * "<br>"); pDto.setpContent(pContent); // 글내용
-	 * pDto.setpPrice(Integer.parseInt(pPrice)); // 가격 pDto.setpStatus("0"); //
-	 * default로 들어가는 값 pDto.setpPull("3"); // default로 들어가는 값 pDto.setpHit(0); //
-	 * default로 들어가는 값
-	 * 
-	 * String fileName = file.getOriginalFilename(); fileName =
-	 * fileName.substring(fileName.lastIndexOf("\\")+1); UUID uuid =
-	 * UUID.randomUUID(); fileName = uuid.toString()+"_"+fileName; File target = new
-	 * File(uploadPath, fileName); pDto.setpImage(fileName); // 경로생성 if(! new
-	 * File(uploadPath).exists()) { new File(uploadPath).mkdirs(); } // 파일복사 try {
-	 * FileCopyUtils.copy(file.getBytes(), target); } catch(Exception e) {
-	 * e.printStackTrace(); }
-	 * 
-	 * // 글쓴내용저장 int n = pService.newPost(pDto);
-	 * 
-	 * // 파일저장이름 중복제거할예정
-	 * 
-	 * return "redirect:../"; // main으로 이동하는 경로 }
-	 */
 	
 	@RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.POST)
 	public String postWrite(MultipartHttpServletRequest mtfRequest, HttpSession session) {
@@ -192,14 +163,7 @@ public class PostController {
 			updateDto.setpStatus(pDto.getpStatus());
 			updateDto.setpPull(pDto.getpPull());
 			updateDto.setpHit(pDto.getpHit());
-				// 기존에 저장되어있던 파일 삭제
-				/*
-				 * String[] originalImages = pDto.getpImage().split(" "); for(String s :
-				 * originalImages) { String deleteImg = uploadPath+s;
-				 * System.out.println("삭제하는 파일 경로와 이름 : " + deleteImg); File file = new
-				 * File(deleteImg); file.delete(); }
-				 * System.out.println("기존에 저장되어있던 이미지파일 삭제완료");
-				 */
+				
 			int flag = 0;
 			String dbSave = "";// db에 저장될 이미지파일이름의 조합
 			for(int i = 0 ; i < fileList.size() ; i++) {
@@ -359,6 +323,7 @@ public class PostController {
     	PostDTO pDTO = pService.getPostByPNum(Integer.parseInt(pNum));
     	MemberDTO mDTO = mService.mypage(pDTO.getUserid());
     	List<CommentsDTO> comments = cService.getCommentsByPNum(Integer.parseInt(pNum));
+
     	//게시글 조회수 증가
     	pDTO.setpHit(pDTO.getpHit()+1);
     	int updateResult = pService.updatePHit(pDTO);

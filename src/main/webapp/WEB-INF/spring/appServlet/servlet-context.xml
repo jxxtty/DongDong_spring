@@ -4,9 +4,7 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc"
 	xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:websocket="http://www.springframework.org/schema/websocket"
-	xsi:schemaLocation="http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket-4.3.xsd
-		http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
@@ -48,6 +46,7 @@
 	<mvc:view-controller path="/pullPost" view-name="pullPost" /><!--pullPost.jsp  -->
 	<mvc:view-controller path="/orderSheet" view-name="orderSheet/orderSheet" /><!--orderSheet.jsp  -->
 	<mvc:view-controller path="/orderEndSheet" view-name="orderSheet/orderEndSheet" /><!--orderEndSheet.jsp  -->
+	<mvc:view-controller path="/myAlarm" view-name="myAlarm" /><!--myAlarm.jsp  -->
 	
 	
 
@@ -80,5 +79,5 @@
         <!-- max size of file in memory (in bytes) -->
         <beans:property name="maxInMemorySize" value="1048576" /> <!-- 1MB -->
     </beans:bean>
-     
+
 </beans:beans>

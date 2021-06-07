@@ -75,5 +75,9 @@ public class MemberDAO {
 		int n = template.update("MemberMapper.addrAuth2", dto2);
 		return n;
 	}
+
+	public MemberDTO getMemberByUserid(String senderId) {
+		return template.selectOne("MemberMapper.getMemberByUserid", senderId);
+	}
 }//end MemberDAO
 

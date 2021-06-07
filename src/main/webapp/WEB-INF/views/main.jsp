@@ -32,9 +32,6 @@
 	
 	
 	header {
-		/* background-image : url('/Dong-Dong/images/util/main.jpg');
-		background-repeat : no-repeat;
-		background-size : cover; */
 		margin : 0;
 		padding : 0;
 		position : fixed;
@@ -43,23 +40,19 @@
 		right : 0;
 		z-index : 1;
 		text-align : center;
-		height : 114px;
 		background-color : white;
 	}
 	
 	#main_img{
+		margin-top : 68px;
 		padding : 0;
-		margin : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
-		background-size : 1187px 390px;
-		background-position: center;
+		background-size : cover;
 		z-index : 1;
 		width : 100%;
 		height : 500px;
 	}
-	
-	
 </style>
 </head>
 <body>
@@ -92,14 +85,14 @@
 %>
 
 <header>
-	<jsp:include page="common/top.jsp" flush="true"></jsp:include><br>
+	<jsp:include page="common/top.jsp" flush="true"></jsp:include>
 </header>
 <div id="main_img"></div>
 <main>
-	<jsp:include page="post/postList.jsp" flush="true"></jsp:include><br>
+	<jsp:include page="post/postList.jsp" flush="true"></jsp:include>
 </main>
 <footer>
-	<jsp:include page="layout/bottom.jsp" flush="true"></jsp:include><br>
+	<jsp:include page="layout/bottom.jsp" flush="true"></jsp:include>
 	</footer>
 </body>
 </html>
