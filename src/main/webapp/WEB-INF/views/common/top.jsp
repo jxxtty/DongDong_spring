@@ -12,7 +12,6 @@
 	type="text/javascript"></script>
 <script type="text/javascript">
 	function chatLink(chatid){
-		/* var chatid = $("#chatLink").attr("data-xxx"); */
 		window.open('chatList/chat?chatId='+chatid, '_blank' ,'width=550, height=620');
 	}
 
@@ -58,6 +57,11 @@
                     		result += data.chat[i].sUserid+"</b>님과의 채팅</a>";
                     	}
                     }
+                    
+                    if(data.chat.length < 1){
+                    	result = "<li class = 'list-group-item'>채팅이 없습니다.</li>"
+                    }
+                    
 					$('#chatListGetFive').html(result);
 				},
 				error : function(xhr, status, error) {
@@ -85,7 +89,7 @@
 					var result = "";
                     for(var i = 0 ; i < 5 ; i++){
                     	result += first;
-                    	result += data.chat[i].sender+"</b>님이<br> ["+data.alarm[i].detail+"]글에 댓글을 남겼습니다.</li>";
+                    	result += data.alarm[i].sender+"</b>님이<br> ["+data.alarm[i].detail+"]글에 댓글을 남겼습니다.</li>";
                     }
                     console.log(result);
 					$('#alarmListGetFive').html(result);
