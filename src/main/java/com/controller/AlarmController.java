@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -41,7 +42,6 @@ public class AlarmController {
 	@RequestMapping(value = "/myAlarmList", produces = "text/plain;charset=UTF-8") // 한글처리
 	public @ResponseBody String myAlarmList(@RequestParam("id") String userid) { // top.jsp에서 알림클릭 시 안읽은 알림 중 최근5개만 긁어온다.
 		List<Alarm> list = aService.myAlarmListFive(userid);
-		JSONArray jArr = new JSONArray();
 		JSONObject obj = new JSONObject();
         try {
             JSONArray jArray = new JSONArray();//배열이 필요할때
@@ -92,5 +92,21 @@ public class AlarmController {
 
 		return "redirect:../loginCheck/myAlarm"; // 내알림함으로 이동
 	}
+	
+	
+	@RequestMapping(value = "/loginCheck/deleteAlarmAll")
+	public String deleteAlarmAll(@RequestParam("data") String num) {
+		String [] check = num.split(",");
+		List<String> list = Arrays.asList(check);
+		aService.deleteAlarmAll(list);
+		return "redirect:../loginCheck/myAlarm"; // 내알림함으로 이동
+	}
 
+	@RequestMapping(value = "/loginCheck/readAlarmAll")
+	public String readAlarmAll(@RequestParam("data") String num) {
+		String [] check = num.split(",");
+		List<String> list = Arrays.asList(check);
+		aService.readAlarmAll(list);
+		return "redirect:../loginCheck/myAlarm"; // 내알림함으로 이동
+	}
 }

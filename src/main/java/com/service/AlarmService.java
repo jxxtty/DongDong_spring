@@ -39,6 +39,12 @@ public class AlarmService {
 	public List<Alarm> myAlarmListFive(String userid) {
 		return dao.myAlarmListFive(userid);
 	}
+
+	public int deleteAlarmAll(List<String> list) {
+		return dao.deleteAlarmAll(list);
+	}
 	
-	
+	public int readAlarmAll(List<String> list) {
+		return dao.readAlarmAll(list);
+	}
 }

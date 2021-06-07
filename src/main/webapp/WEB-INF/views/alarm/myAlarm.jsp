@@ -14,7 +14,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	window.name = "parent";
 	$(document).ready(function() {
 		//전체 체크
 		$("#allCheck").click(function() {
@@ -38,20 +37,23 @@
 			location.href="loginCheck/alarmReadOne?aNum="+num; 
 		});//end readBtn
 		
-		
-		
-		
-		//체크한 게시글 삭제
 		$("#delAllAlarm").click(function() {
 			var num = [];
 			$(".check:checked").each(function(idx, data) {
 				num[idx] = $(this).val();
 			});
 			
-			location.href="PostDelAllServlet?data="+num;
-		});//end delAllpost
+			location.href="/loginCheck/deleteAlarmAll?data="+num;
+		});
 		
-		
+		$("#readAllAlarm").click(function() {
+			var num = [];
+			$(".check:checked").each(function(idx, data) {
+				num[idx] = $(this).val();
+			});
+			
+			location.href="/loginCheck/readAlarmAll?data="+num;
+		});
 	})//end ready
 	
 </script>
