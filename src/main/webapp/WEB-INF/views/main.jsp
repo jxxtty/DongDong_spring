@@ -48,15 +48,18 @@
 	}
 	
 	#main_img{
-		margin : 0;
 		padding : 0;
+		margin : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
-		background-size : cover;
+		background-size : 1187px 390px;
+		background-position: center;
 		z-index : 1;
 		width : 100%;
 		height : 500px;
 	}
+	
+	
 </style>
 </head>
 <body>
