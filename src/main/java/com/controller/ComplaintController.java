@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,9 +32,11 @@ public class ComplaintController {
 	PostService pService;
 	@Autowired
 	CommentsService cService;
-
+	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
+	
 	@RequestMapping(value = "/loginCheck/complaintAccept")
 	public @ResponseBody String ComplaintAccept(HttpSession session, @RequestParam Map<String, String> map) {
+		String targetType [] = {"member","post","comment"};
 		MemberDTO dto = (MemberDTO)session.getAttribute("login");
 		String coTarget = map.get("coTarget");
 		String userid = map.get("userid");
@@ -65,6 +69,7 @@ public class ComplaintController {
 		coDTO.setUserid(userid);
 			
 		if(coService.checkDuplication(coDTO)) {
+			complaintLogger.info("ComplaintController ComplaintDenied- userid: "+userid+", targetType: "+targetType[coType-1]+", targetNum: "+coTarget);
 			returnValue = "dup"; 
 		} else {
 			coDTO.setCoContent(coContent);
@@ -72,9 +77,11 @@ public class ComplaintController {
 				
 			int insertResult = coService.insertComplaint(coDTO);
 				
-			if(insertResult!=1) { // 게시글 업데이트가 실패했을 경우 
+			if(insertResult!=1) {
+				complaintLogger.info("ComplaintController ComplaintFail- userid: "+userid+", targetType: "+targetType[coType-1]+", targetNum: "+coTarget);
 				returnValue = "false"; 
-		    } else {	
+		    } else {
+		    	complaintLogger.info("ComplaintController ComplaintAccept- userid: "+userid+", targetType: "+targetType[coType-1]+", targetNum: "+coTarget);
 		    	returnValue = "true"; 
 		    }	
 		}	
