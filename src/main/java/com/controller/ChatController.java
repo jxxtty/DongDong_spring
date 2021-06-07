@@ -107,5 +107,12 @@ public class ChatController {
 		mav.addObject("chatList", list);
 		return mav;
 	}
+	
+	@RequestMapping(value = "/chatList/chat", method = RequestMethod.GET)
+	public ModelAndView startChat(String chatId, HttpSession session) {
+		ModelAndView mav = new ModelAndView("chat/chatMessage");
+		mav.addObject("chatId", chatId);
+		return mav;
+	}
 
 }
