@@ -361,6 +361,7 @@ public class MypageController {
 		Map<String,String> typeMap = new HashMap<>();
 		typeMap.put("c", "댓글");
 		typeMap.put("o", "주문서");
+		typeMap.put("rc", "대댓글");
 		attr.addFlashAttribute("typeMap", typeMap);
 		
 		return "redirect:../myAlarm";

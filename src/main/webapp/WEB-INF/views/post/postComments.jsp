@@ -65,31 +65,47 @@ padding-bottom: 300px;
 		});
 		
 		
-		var receiver = $("#receiver").val();
-		var sender = $("#sender").val();
-		console.log("글작성자 : ", receiver);
+		var receiverPost = $("#receiverPost").val();
+		var sender = $("#sender").val(); // 현재 로그인 되어있다
+		var receiverReplyComments = $("#receiverReplyComments").val();
+		
+		console.log("글작성자 : ", receiverPost);
 		console.log("현재 로그인되어있는 회원 : " + sender);
+		console.log("댓글작성자 : ", receiverReplyComments);
 		var stompClient = null;
-		if(sender.length != 0 && sender!= receiver){ // 글을 보고있는 사람이 회원이고, 글보는사람과 글작성자의 userid가 다를때만
+		if(sender.length != 0){ // 글을 보고있는 사람이 회원
 			var sockJS = new SockJS('/sockJS');
 			stompClient = Stomp.over(sockJS);
-			console.log("글보는사람과 글작성자의 userid가 달라서 소켓연결했어!");
 		}
 		
-		$("#comments_submit").click(function(){ sendMessage(); });
-	
-		function sendMessage(){
+		$("#comments_submit").click(function(){ 
+			if(sender!= receiverPost){
+				console.log("댓글알림 전송한다!!!!");
+				sendMessage(receiverPost, 'c'); // 현재 로그인 되어있는 유저와 글작성자가 다른 경우에만 알림전송
+			}
+		});
+		
+		if(receiverReplyComments.length != 0){ // 원댓글이 있을 때
+			$("#comments_reply_submit").click(function(){
+				if(sender != receiverReplyComments){
+					console.log("대댓글알림 전송한다!!!");
+					sendMessage(receiverReplyComments, 'rc'); // 현재 로그인 되어있는 유저와 댓글작성자가 다른 경우
+				}
+			});
+		}
+		
+		function sendMessage(receiver, type){
 			var pNum = $("#pNum").val();
 			var json = {
 				'sender' : sender,
 				'receiver' : receiver,
-				'type' : 'c',
+				'type' : type,
 				'info' : pNum,
 				'detail' : pTitle,
 				'isRead' : '0'
 			};
-			console.log("댓글>>>데이터전달했어 : " + JSON.stringify(json));
-			stompClient.send('/send/reply/'+receiver, {}, JSON.stringify(json));
+			console.log(c,">>>데이터전달했어 : " + JSON.stringify(json));
+			//stompClient.send('/send/reply/'+receiver, {}, JSON.stringify(json));
 			
 		}
 	});
@@ -157,14 +173,15 @@ padding-bottom: 300px;
 	      		</div>
 	      		<c:if test="${pStatus!='1'}">
 	      		<div>
-	      		  <div class="comment-form well">
+	      		  <div class="comment-form well"><!-- 대댓글 -->
+	      		  	<input type="hidden" id="receiverReplyComments" value="${cDTO.userid }"> <!-- 대댓글이 달리는 원댓글 작성자의 userid -->
      			    <form class="comment-reply-form" action="loginCheck/commentsWrite" method="post">
       			  	  <label for="contactComment"></label> 
       				  <input type="hidden" name="pNum"  value="${pNum}"/>
       				  <input type="hidden" name="parentNum" value="${cDTO.cNum}"/>
     			  	  <textarea rows="3" class="form-control" name="cContent" style="resize: none;"></textarea> 
       			  	  <div style="text-align : right" >
-      			  	  	<input type="submit" class="btn btn-outline-primary btn-block btn-sm" value="답글"/>
+      			  	  	<input type="submit" class="btn btn-outline-primary btn-block btn-sm" id="comments_reply_submit" value="답글"/>
       			      </div>
       			    </form>
    			      </div>
@@ -187,7 +204,7 @@ padding-bottom: 300px;
       	</div>
      </c:forEach>
      
-     <input type="hidden" id="receiver" value="${userid}"> <!-- 글 작성자의 userid -->
+     <input type="hidden" id="receiverPost" value="${userid}"> <!-- 글 작성자의 userid -->
      <input type="hidden" id="sender" value="${login.userid}"> <!-- 댓글작성자의 userid -->
 	    
       <c:if test="${pStatus!='1' && empty login}">

@@ -46,7 +46,7 @@
 	#main_img{
 		margin-top : 68px;
 		padding : 0;
-		background-image : url('/Dong-Dong/images/util/main6.jpg');
+		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
 		background-size : cover;
 		z-index : 1;
