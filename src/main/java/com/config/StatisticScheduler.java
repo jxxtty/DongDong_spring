@@ -44,9 +44,9 @@ public class StatisticScheduler {
 			while(y!=2022) {
 				for(int i=0; i<24; i++) {
 					rannum10 = (int)((Math.random()*10000)%10);
-					rannum100 = (int)((Math.random()*100000)%10);
-					rannum500 = (int)((Math.random()*500000)%10);
-					rannum1000 = (int)((Math.random()*1000000)%10);
+					rannum100 = (int)((Math.random()*10000)%10)*10;
+					rannum500 = (int)((Math.random()*10000)%10)*50;
+					rannum1000 = (int)((Math.random()*10000)%10)*100;
 					if(m<10) {
 						sm="0"+m;
 					} else {
