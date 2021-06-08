@@ -57,6 +57,11 @@
                     		result += data.chat[i].sUserid+"</b>님과의 채팅</a>";
                     	}
                     }
+                    
+                    if(data.chat.length < 1){
+                    	result = "<li class = 'list-group-item'>채팅이 없습니다.</li>"
+                    }
+                    
 					$('#chatListGetFive').html(result);
 				},
 				error : function(xhr, status, error) {
@@ -82,6 +87,7 @@
 					$('#alarmListGetFive').html('');
 					var first = "<li class='list-group-item' id='alarmList_link'>";
 					var result = "";
+
                     if(data.alarm.length == 0){
                     	result += first + "알림이 없습니다.</li>";
                     } else {
@@ -97,6 +103,7 @@
 	                        }
                         }
                     	result += first+"<a href='loginCheck/myAlarm'><img src='/Dong-Dong/images/util/plus.png' width='20px'></a></li>";
+
                     }
 					$('#alarmListGetFive').html(result);
 				},
@@ -195,7 +202,7 @@
 
 .nav-link {
 	font-family: 'Nanum Gothic', sans-serif;
-	font-size: 15px;
+	font-size: 20px;
 	font-weight: 700;
 	color: #8db0d7 !important;
 }
@@ -236,7 +243,7 @@
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<c:if test="${!empty login}">
 						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" href="/mypage">mypage</a></li>
+							aria-current="page" href="/mypage">마이페이지</a></li>
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" href="logout">로그아웃</a></li>
 						<li class="nav-item"><a class="nav-link active"
@@ -258,7 +265,7 @@
 		          </a> -->
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<c:if test="${!empty login}">
-								<li><a class="dropdown-item" href="/mypage">mypage</a></li>
+								<li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
 								<li><a class="dropdown-item" href="/logout">로그아웃</a></li>
 								<li><a class="dropdown-item" href="/postWrite">글쓰기</li>
 								<li><a class="dropdown-item" href="chatRoom">채팅</a></li>

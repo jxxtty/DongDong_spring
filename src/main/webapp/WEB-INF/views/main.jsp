@@ -52,7 +52,7 @@
 		 background-position: center;
 		z-index : 1;
 		width : 100%;
-		height : 500px;
+		height : 580px;
 	}
 </style>
 </head>
