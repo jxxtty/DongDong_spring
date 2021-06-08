@@ -22,10 +22,7 @@ $(function(){
 		 }
 	 }) //form end
 	
-	 
-
 })
-
 </script>
 
 	<div class="limiter">
@@ -74,7 +71,7 @@ $(function(){
 						<span class="txt1">
 							Don’t have an account?
 						</span><br>
-						<a href = "MemberAdd">회원가입</a><br>
+						<a href = "memberForm">회원가입</a><br>
 						<a href = "idSearch">아이디 찾기 </a><br>
 						<a href = "pwSearch">비밀번호 찾기 </a>
 					</div>

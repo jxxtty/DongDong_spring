@@ -10,6 +10,7 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -160,15 +161,9 @@ public class MemberController {
 
 	//회원가입 
 	@RequestMapping(value = "/memberAdd") // 회원가입 기능
-	public String memberAdd(MemberDTO m,
-			String email1,
-			String email2,
-			String nickName,
-			Model model) {
+	public String memberAdd(MemberDTO m,String email1,String email2,String nickName,HttpSession session,Model model) {
 		//회원가입시 가입 이메일 보내기 
 		  String mailTo =(email1 + "@" + email2);
-		  System.out.println("회원가입 할때 ===> "+mailTo); 
-		  System.out.println("회원가입 할때 ===> "+nickName);
 		  String host = "smtp.naver.com"; // 호스트 네이버 메일
 		  String subject = "동동 회원님 가입을  환영합니다 !! "; // 메일제목
 		  String from ="qkrtmdtn3520@naver.com"; // 보내는 사람 메일 주소 //이부분 채워주셔야 합니다. 
@@ -180,10 +175,9 @@ public class MemberController {
 		  sendMail(model, host, subject, from, fromName, to, content, mesg);
 		 
 		mService.memberAdd(m);
-		model.addAttribute("success", "회원가입성공");
-		return "main";
+		//model.addAttribute("success", "회원가입성공");
+		session.setAttribute("success",  "회원가입성공");
+		System.out.println(m);
+		return "redirect:/";
 	}
-	
-	
 }
-

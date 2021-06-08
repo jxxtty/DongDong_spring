@@ -10,8 +10,18 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
 
-<c:if test= "${!empty success}">
-<script>alert("${success}")</script>
+<%-- <c:if test= "${!empty success}">
+<script>
+console.log("${success}");
+alert("${success}")</script>
+</c:if> --%>
+
+<c:set var="mesg" value="${success}"></c:set>
+<c:if test="${!empty success}"> 
+<script>
+alert("${success}")
+</script>
+<c:remove var="success" scope="session" />
 </c:if>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
