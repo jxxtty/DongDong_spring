@@ -214,7 +214,8 @@ $("#MOVE_TOP_BTN").click(function() {
 	<div class="all">
 		<!-- 여기서부터 -->
 		<div class="center">
-			<div class="container">
+			<div class="container col-md-6">
+			
 
 				<!-- Bootstrap js -->
 
@@ -275,7 +276,7 @@ $(document).ready(function(){
 					} //end for
 				%>
 			
-				</div>
+				
 			</div>
 			<!-- container -->
 
@@ -284,7 +285,8 @@ $(document).ready(function(){
 	</div>
 	<!-- all  -->
 	<!-- 여기까지 -->
-	<br />
+	<br/>
+	
 	<div class="page_wrap">
 	<div class="page center">
 		<div class="page_nation" id="page_nation">	
