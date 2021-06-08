@@ -53,35 +53,28 @@
 			<version>${org.slf4j-version}</version>
 			<scope>runtime</scope>
 		</dependency>
+
+		
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>${org.slf4j-version}</version>
-			<scope>runtime</scope>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.7.3</version>	
 		</dependency>
+
+		<!-- LogBack 사용을 위해 log4j 관련 dependency 주석 처리 -->
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
+			<version>${org.slf4j-version}</version> <scope>runtime</scope> </dependency> 
+			<dependency> <groupId>log4j</groupId> <artifactId>log4j</artifactId> <version>1.2.15</version> 
+			<exclusions> <exclusion> <groupId>javax.mail</groupId> <artifactId>mail</artifactId> 
+			</exclusion> <exclusion> <groupId>javax.jms</groupId> <artifactId>jms</artifactId> 
+			</exclusion> <exclusion> <groupId>com.sun.jdmk</groupId> <artifactId>jmxtools</artifactId> 
+			</exclusion> <exclusion> <groupId>com.sun.jmx</groupId> <artifactId>jmxri</artifactId> 
+			</exclusion> </exclusions> <scope>runtime</scope> </dependency> -->
+		<!-- LogBack -->
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.mail</groupId>
-					<artifactId>mail</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>javax.jms</groupId>
-					<artifactId>jms</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jdmk</groupId>
-					<artifactId>jmxtools</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>com.sun.jmx</groupId>
-					<artifactId>jmxri</artifactId>
-				</exclusion>
-			</exclusions>
-			<scope>runtime</scope>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.2.3</version>
 		</dependency>
 
 		<!-- @Inject -->
@@ -203,20 +196,65 @@
 			<version>2.8.0</version>
 		</dependency>
 		<!-- gson -->
-		
+
 		<!-- 파일업로드/다운로드 -->
 		<dependency>
-    		<groupId>commons-fileupload</groupId>
-    		<artifactId>commons-fileupload</artifactId>
-    		<version>1.4</version>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.4</version>
 		</dependency>
- 
+
 		<!-- 파일관련 / 썸네일라이브러리 -->
 		<dependency>
-    		<groupId>org.imgscalr</groupId>
-    		<artifactId>imgscalr-lib</artifactId>
-    		<version>4.2</version>
+			<groupId>org.imgscalr</groupId>
+			<artifactId>imgscalr-lib</artifactId>
+			<version>4.2</version>
 		</dependency>
+
+		<!-- json simple -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+		<!-- json simple -->
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20160810</version>
+		</dependency>
+
+		<!-- for SimpleMessagingTemplate -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-messaging -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+			<version>4.3.22.RELEASE</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.webjars/webjars-locator-core -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>webjars-locator-core</artifactId>
+			<version>0.46</version>
+		</dependency>
+
+		<!-- STOMP websocket -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>stomp-websocket</artifactId>
+			<version>2.3.4</version>
+		</dependency>
+
+		<!-- SockJS -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>sockjs-client</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+
 		<!-- naver -->
 		<dependency>
 			<groupId>com.github.scribejava</groupId>
@@ -225,18 +263,24 @@
 		</dependency>
 		<!-- 파일업로드 -->
 		<dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.5</version>
-        </dependency>
-		
-		<!--json  -->
-		 <dependency>
-            <groupId>com.googlecode.json-simple</groupId>
-            <artifactId>json-simple</artifactId>
-            <version>1.1</version>
-        </dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.5</version>
+		</dependency>
 
+		<!--json -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/net.gpedro.integrations.slack/slack-webhook -->
+		<dependency>
+			<groupId>net.gpedro.integrations.slack</groupId>
+			<artifactId>slack-webhook</artifactId>
+			<version>1.4.0</version>
+		</dependency>
 
 	</dependencies>
 	<build>

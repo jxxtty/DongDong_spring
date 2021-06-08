@@ -28,11 +28,12 @@ public class LoginController {
 	@Autowired
 	MemberService service;
 	
-	@RequestMapping(value = "/loginCheck/logout")
+	
+	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
 		// return "../"; //.xml에 설정 main.jsp
-		return "redirect:../"; // .xml에 설정 main.jsp ../ 을 이용하여 /loginCheck 의 상위 주소로 이동
+		return "redirect:/"; // .xml에 설정 main.jsp ../ 을 이용하여 /loginCheck 의 상위 주소로 이동
 		// 하여 주소를 사용함
 	}
 

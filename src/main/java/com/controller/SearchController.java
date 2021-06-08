@@ -1,5 +1,6 @@
 package com.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,13 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dto.MemberDTO;
 import com.dto.PageDTO;
 import com.dto.PostDTO;
+import com.service.FavoriteService;
 import com.service.PostService;
 
 @Controller
 public class SearchController {
 	@Autowired
 	PostService pService;
-	
+	@Autowired
+	FavoriteService fService;
 
 	
 
@@ -32,8 +35,11 @@ public class SearchController {
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String curPage = request.getParameter("curPage");
 		String addr = "null";
+		List<PostDTO> list2 = new ArrayList<>();
 		if(mDto != null) { // 로그인 된 상태
+			String userid = mDto.getUserid();
 			addr = mDto.getAddr();
+			list2 = fService.favoriteList(userid);	
 		}
 		if(curPage == null) {
 			curPage = "1";
@@ -54,7 +60,7 @@ public class SearchController {
 			String[] image = list.get(i).getpImage().split(" ");
 			list.get(i).setpImage(image[0]);
 		}
-		
+		request.setAttribute("favoriteList", list2);
 		request.setAttribute("keyword", keyword);
 		request.setAttribute("postList",list);
 		request.setAttribute("blockPerPage", pDTO.getBlockPerPage());
@@ -77,8 +83,11 @@ public class SearchController {
 
 		MemberDTO mDto = (MemberDTO)session.getAttribute("login");
 		String addr = "null";
+		List<PostDTO> list2 = new ArrayList<>();
 		if(mDto != null) { // 로그인 된 상태
+			String userid = mDto.getUserid();
 			addr = mDto.getAddr();
+			list2 = fService.favoriteList(userid);	
 		}
 		String curPage = request.getParameter("curPage");
 		if(curPage == null) {
@@ -118,7 +127,7 @@ public class SearchController {
 			list.get(i).setpImage(image[0]);
 		}
 		
-		
+		m.addAttribute("favoriteList",list2);
 		m.addAttribute("category",category);
 		m.addAttribute("categoryMap",categoryMap);
 		m.addAttribute("postList",list);

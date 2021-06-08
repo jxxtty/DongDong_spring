@@ -27,7 +27,6 @@
 <script type="text/javascript">
 	$(function() {
 		$("form").submit(function() {
-
 			var oPrice = $("#oPrice").val();
 			var oAddr = $("#oAddr").val();
 			var oMessage = $("#oMessage").val();

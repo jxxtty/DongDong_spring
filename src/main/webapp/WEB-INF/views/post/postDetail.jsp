@@ -21,6 +21,7 @@
 </style>
 
 <script type="text/javascript">
+	var pTitle = "${pTitle}";
 	var favorite = ${favorite};
 	$(function() {
 		$("#favorite").on("click", function(){
@@ -75,6 +76,8 @@
 			$("#userprofile").click(function() {
 			userprofile();
 		});
+		
+		
 	});//end ready
 </script>
 
@@ -121,9 +124,6 @@
 		<!-- 버튼 표시 시작 -->
 		<c:if test="${empty login}">
 			<a class="btn btn-primary" href="loginForm">&nbsp;구매시 로그인이 필요합니다.&nbsp;</a>&nbsp;
-		</c:if>
-		<c:if test="${!empty login && pStatus!='1'}">
-			<a class="btn btn-primary" onclick="window.open('chat/chat.jsp','window_name','width=400,height=400,location=no,status=no,scrollbars=yes,left='+((window.screen.width/2)-200)+',top='+((window.screen.height/2)-250))">&nbsp;채팅&nbsp;</a>&nbsp;
 		</c:if>
 		<c:if test="${!empty login && pStatus!='1'&&login.userid==userid}">
 			<a class="btn btn-primary" href="loginCheck/postUpdate?pNum=${pNum}">&nbsp;상품 정보 수정&nbsp;</a>&nbsp;

@@ -2,7 +2,10 @@ package com.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,15 +24,20 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.dto.Alarm;
 import com.dto.FavoriteDTO;
 import com.dto.MemberDTO;
 import com.dto.MyOrderSheetDTO;
 import com.dto.PostDTO;
+import com.service.AlarmService;
 import com.service.FavoriteService;
 import com.service.MemberService;
 import com.service.OrderSheetService;
 import com.service.PostService;
 import com.service.TransactionService;
+
+import net.gpedro.integrations.slack.SlackApi;
+import net.gpedro.integrations.slack.SlackMessage;
 
 @Controller
 public class MypageController {
@@ -43,6 +51,9 @@ public class MypageController {
 	OrderSheetService oService;
 	@Autowired
 	TransactionService tService;
+	@Autowired
+	AlarmService aService;
+	
 	@Resource(name="uploadPath")
 	String uploadPath;
 	
@@ -176,12 +187,12 @@ public class MypageController {
 	}//관심목록 개별삭제
 	
 	@RequestMapping(value = "loginCheck/MyPostList", produces = "text/plain;charset=UTF-8")
-	public String mypostList(HttpSession session, RedirectAttributes attr) {
+	public String mypostList(HttpSession session, RedirectAttributes attr,Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = pService.mypostList(userid);
-		attr.addFlashAttribute("mypostList", list);
-		return "redirect:../mypostList";
+		m.addAttribute("mypostList", list);
+		return "mypostList";
 	}//내 게시물 보기
 	
 	@RequestMapping(value = "loginCheck/MyOrdersheetList", produces = "text/plain;charset=UTF-8")
@@ -270,13 +281,24 @@ public class MypageController {
 	}// 메세지창에서 삭제(수신)  테스트해야함
 	
 	@RequestMapping(value = "/loginCheck/Sale")
-	public String sale(@RequestParam("bUserid") String bUserid, 
+	public String sale(HttpSession session, @RequestParam("bUserid") String bUserid, 
 			@RequestParam("sUserid") String sUserid, @RequestParam("pNum") int pNum,
 			RedirectAttributes attr) {
+		MemberDTO dto =(MemberDTO)session.getAttribute("login");
+		String userid = dto.getUserid();
 		int n = oService.sale(bUserid, sUserid, pNum);
 		attr.addFlashAttribute("sale", n);
+		
+		PostDTO pDTO = pService.getPostByPNum(pNum);
+		
+		SimpleDateFormat timeFormat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		Calendar time = Calendar.getInstance();
+		
+		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
+		webhook.call(new SlackMessage("#transaction", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
+		
 		return "redirect:../salecomplete";
-	}//구매확정  테스트해야함
+	}
 	
 	@RequestMapping(value = "loginCheck/BuyList", produces = "text/plain;charset=UTF-8")
 	public String buyList(HttpSession session, RedirectAttributes attr) {
@@ -284,6 +306,7 @@ public class MypageController {
 		String userid = dto.getUserid();
 		List<PostDTO> plist = tService.purchaseList(userid);
 		attr.addFlashAttribute("purchaseList", plist);
+		
 		return "redirect:../BuyList";
 	}//구매내역 
 	
@@ -344,5 +367,20 @@ public class MypageController {
 		return mav;
 	}
 	
+	
+	@RequestMapping(value = "/loginCheck/myAlarm", produces = "text/plain;charset=UTF-8")
+	public String myAlarm(HttpSession session, RedirectAttributes attr) {
+		MemberDTO dto =(MemberDTO)session.getAttribute("login");
+		String receiver = dto.getUserid(); // 해당 회원이 받은 알림
+		List<Alarm> list = aService.getMyAlarm(receiver);
+		attr.addFlashAttribute("myAlarmList", list);
+		
+		Map<String,String> typeMap = new HashMap<>();
+		typeMap.put("c", "댓글");
+		typeMap.put("o", "주문서");
+		attr.addFlashAttribute("typeMap", typeMap);
+		
+		return "redirect:../myAlarm";
+	}//내 알림 보기
 	
 }//mService

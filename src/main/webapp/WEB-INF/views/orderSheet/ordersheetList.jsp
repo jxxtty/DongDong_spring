@@ -12,8 +12,8 @@
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 function oMessage(oNum) {
-	var popupWidth = 300;
-	var popupHeight = 500;
+	var popupWidth = 540;
+	var popupHeight = 600;
 	var popupX = (window.screen.width / 2) - (popupWidth / 2);
 	var popupY= (window.screen.height / 2) - (popupHeight / 2);
 	url = "/loginCheck/PopupMessage?oNum="+oNum;
@@ -38,6 +38,7 @@ function oMessage(oNum) {
 			console.log(num);
 			location.href="/loginCheck/OrderDel?oNum="+num; 
 		});//end delBtn
+		
 		
 	
 		//체크한 게시글 삭제
@@ -123,7 +124,6 @@ h2{
 		
 		<td class="text-center" width="80">${o.oPrice}</td><!--제시가격  -->
 		<td class="text-center" width="40">${o.oDate}</td><!--주문서 보낸 날짜  -->
-		
 		<td class="text-center" align="center" width="30" 
 			style='padding-left: 10px'>
 			<input type="button" value="삭제"  class="delBtn" data-xxx="${o.oNum}" ><!--주문서 삭제시 오더번호로  -->

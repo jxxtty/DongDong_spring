@@ -30,7 +30,7 @@
 		})
     	
     	$("#chat").click(function() {
-			location.href="chat/chat.jsp";
+			location.href="/chat?pNum=${message[0].pNum}&bUserid=${message[0].bUserid}&sUserid=${message[0].sUserid}";
 		})
 		//삭제버튼
 		$("#delete").on("click", function() {

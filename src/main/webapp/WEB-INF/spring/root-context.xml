@@ -38,6 +38,7 @@
 				<value>classpath:com/config/TransactionMapper.xml</value>
 				<value>classpath:com/config/ComplaintMapper.xml</value>
 				<value>classpath:com/config/SanctionMapper.xml</value>
+				<value>classpath:com/config/AlarmMapper.xml</value>
 			</list>
 		</property>
 		<property name="typeAliases">
@@ -52,6 +53,9 @@
 				<value>com.dto.MyOrderSheetDTO</value>
 				<value>com.dto.ComplaintDTO</value>
 				<value>com.dto.SanctionDTO</value>
+				<value>com.dto.Alarm</value>
+				<value>com.dto.ChatRoom</value>
+				<value>com.dto.ChatMessage</value>
 			</list>
 		</property>
 	</bean>
