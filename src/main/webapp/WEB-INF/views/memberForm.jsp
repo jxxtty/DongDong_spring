@@ -16,7 +16,7 @@
 
 	
 	main{
-		padding-top : 130px;
+		padding-top : 68px;
 		z-index : 2;
 	}
 	
@@ -40,7 +40,7 @@
 <body>
 
 <header>
-<jsp:include page="common/top.jsp" flush="true"></jsp:include><br>
+<jsp:include page="common/top.jsp" flush="true"></jsp:include>
 </header>
 
 <main>

@@ -37,7 +37,7 @@
 		});
 		
 		$("#chatList").click(function(){
-			var userid = ${login.userid};
+			var userid = $("#id").val();
 			
 			$.ajax({
 				url : 'chatList',
