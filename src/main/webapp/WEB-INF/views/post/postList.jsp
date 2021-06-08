@@ -1,3 +1,4 @@
+<%@page import="com.dto.MemberDTO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="com.dto.PostDTO"%>
@@ -14,7 +15,7 @@
 	int blockPerPage = (int)request.getAttribute("blockPerPage");
 	int prevPageBlock = (int)request.getAttribute("prevPageBlock");
 	int nextPageBlock = (int)request.getAttribute("nextPageBlock");
-	
+	MemberDTO member = (MemberDTO)request.getSession().getAttribute("login");
 	if (request.getParameter("curPage") != null) {
 		curPage = Integer.parseInt((String) request.getAttribute("curPage"));
 	}
@@ -133,11 +134,19 @@ img#MOVE_TOP_BTN {
 	float: left;
 	text-align: center;
 	margin-right: -850px;
-	margin-top: 350px;
+	margin-top: 450px;
 }
 
 .current {
 	color: red;
+}
+
+#favorite{
+	font-family: 'Nanum Gothic', sans-serif;
+	font-size: 16px;
+	font-weight: 700;
+	color: #8db0d7 !important;
+	text-decoration: none;
 }
 </style>
 <script
@@ -182,10 +191,11 @@ $("#MOVE_TOP_BTN").click(function() {
 
 <% 
 	/* if(list2 != null){  */
+		if(member != null){
 %>
-	<div id="followquick" style="max-width: 85px; max-height:450px; text-align:center;">&nbsp;&nbsp;&nbsp;&nbsp;찜 목록
+	
+	<div id="followquick" class="border border-4" style="max-width: 116px; max-height:450px; text-align:center;"><a href="/loginCheck/FavoriteList" id="favorite">&nbsp;관심 목록</a>
  <%
- 	
  	List<PostDTO> list2 = (List<PostDTO>)request.getAttribute("favoriteList");
 	for(int k=0; k<list2.size(); k++){
 		if(k==3){
@@ -198,16 +208,18 @@ $("#MOVE_TOP_BTN").click(function() {
 	String userid = dto.getUserid();
 %>
 
-	<div class="card" style="max-width:110px; height:110px;">
+	<div class="card border border-3" style="max-width:107px; height:117px;">
 	      <a href="postDetail?pNum=<%=pNum %>">
       <img class="card-img-top" src="/Dong-Dong/images/<%=pImage %>" alt="Responsive image" style="max-width:110px; height:110px; display: block; margin: auto;" ></a>
       </div><!-- card -->
-    
+    	
       
 <%
 	}// for
-%>    
- </div><!--찜목록 위젯 설정-->
+ }//if
+%>   
+</span>
+ 	</div><!--찜목록 위젯 설정-->
  
 	<img id="MOVE_TOP_BTN" src="/Dong-Dong/images/util/topbutton.png"
 		href="#" style="width: 75px; height: 75px;"><!-- 최상단으로 갈수있는 top버튼 -->

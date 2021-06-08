@@ -287,18 +287,11 @@
 				</ul>
 			</div>
 		</div>
-<<<<<<< HEAD
-<%
-	} else{ //아닌경우
-%>
-			<a href="loginForm">로그인</a>
-			<a href="memberForm">회원가입</a><!--MVC 패턴 -->
-=======
 	</nav>
 
 	<div aria-live="polite" aria-atomic="true" class="position-relative">
   		<div class="toast-container position-absolute top-0 end-0 p-3">
->>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
+
 		</div>
 	</div>
 </body>

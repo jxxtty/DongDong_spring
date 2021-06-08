@@ -165,11 +165,10 @@ $("#passwd2").on("keyup",function(){
 		// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼줌
 		var popupY= (window.screen.height / 2) - (popupHeight / 2);
 		// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼줌
-<<<<<<< HEAD
+
 		url = "emailAuth" // 바뀐 부분 @@@
-=======
+
 		url = "emailAuth"
->>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
 		open(url,"confirm", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 	}
 	//닉네임 체크 //이메일 값 넘겨주기
