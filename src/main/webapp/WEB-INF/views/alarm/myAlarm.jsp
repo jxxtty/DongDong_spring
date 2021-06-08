@@ -14,7 +14,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
-	window.name = "parent";
 	$(document).ready(function() {
 		//전체 체크
 		$("#allCheck").click(function() {
@@ -38,20 +37,29 @@
 			location.href="loginCheck/alarmReadOne?aNum="+num; 
 		});//end readBtn
 		
-		
-		
-		
-		//체크한 게시글 삭제
 		$("#delAllAlarm").click(function() {
 			var num = [];
 			$(".check:checked").each(function(idx, data) {
 				num[idx] = $(this).val();
 			});
 			
-			location.href="PostDelAllServlet?data="+num;
-		});//end delAllpost
+			location.href="/loginCheck/deleteAlarmAll?data="+num;
+		});
 		
+		$("#readAllAlarm").click(function() {
+			var num = [];
+			$(".check:checked").each(function(idx, data) {
+				num[idx] = $(this).val();
+			});
+			
+			location.href="/loginCheck/readAlarmAll?data="+num;
+		});
 		
+		$(".goPost").click(function(){
+			var num = $(this).attr("data-info");
+			location.href="postDetail?pNum="+num;
+			// 글 눌러서 이동하면 alarm의 isRead값 수정하기
+		});
 	})//end ready
 	
 </script>
@@ -65,6 +73,10 @@ h2{
 	color: #8E8E93; 
 }
 
+.goPost:hover{
+	cursor : pointer;
+	text-decoration : underline;
+}
 
 </style>
 
@@ -94,7 +106,7 @@ h2{
 			<td class="text-center" width="120">
 				<%-- <a href="/postDetail?pNum=${p.pNum}">
 					<img src="/Dong-Dong/images/${p.pImage}" border="0"  width="80" /></a> --%>
-					<div>${a.detail}</div> 
+					<div class="goPost" data-info="${a.info}">${a.detail}</div> 
 			</td><!-- 상세정보 -->
 			<td class="text-center" align="center" width="30" style='padding-left: 10px'>
 				<c:if test="${a.isRead == 0 }">

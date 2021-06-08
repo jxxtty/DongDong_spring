@@ -82,5 +82,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	where userid = #{userid}
 	</update>
 	
+	<select id="getMemberByUserid" parameterType="String" resultType="MemberDTO">
+		SELECT * FROM member WHERE userid = #{senderId}
+	</select>
 
 </mapper>

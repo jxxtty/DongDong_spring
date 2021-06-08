@@ -40,4 +40,12 @@ public class AlarmDAO {
 	public List<Alarm> myAlarmListFive(String userid) {
 		return template.selectList("AlarmMapper.myAlarmListFive", userid, new RowBounds(0, 5));
 	}
+
+	public int deleteAlarmAll(List<String> list) {
+		return template.delete("AlarmMapper.deleteAlarmAll", list);
+	}
+	
+	public int readAlarmAll(List<String> list) {
+		return template.update("AlarmMapper.readAlarmAll", list);
+	}
 }

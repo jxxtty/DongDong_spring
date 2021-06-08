@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -28,7 +29,7 @@ public class AlarmController {
 	SimpMessagingTemplate simpMessageTemplate;
 	@Autowired
 	AlarmService aService;
-
+	
 	@MessageMapping("/reply/{userid}")
 	public void sendAlarm(Alarm alarm) throws IOException {
 		int aNumPK = aService.newAlarm(alarm); // alarm DB에 데이터 쌓고, 방금insert한 레코드의 PK값을 받아온다.
@@ -41,7 +42,6 @@ public class AlarmController {
 	@RequestMapping(value = "/myAlarmList", produces = "text/plain;charset=UTF-8") // 한글처리
 	public @ResponseBody String myAlarmList(@RequestParam("id") String userid) { // top.jsp에서 알림클릭 시 안읽은 알림 중 최근5개만 긁어온다.
 		List<Alarm> list = aService.myAlarmListFive(userid);
-		JSONArray jArr = new JSONArray();
 		JSONObject obj = new JSONObject();
         try {
             JSONArray jArray = new JSONArray();//배열이 필요할때
@@ -49,15 +49,17 @@ public class AlarmController {
                 JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
                 sObject.put("sender", list.get(i).getSender());
                 sObject.put("info", list.get(i).getInfo());
-                sObject.put("detail", list.get(i).getDetail());
+                sObject.put("type", list.get(i).getType()); // 글제목이 길 경우
+                if(list.get(i).getDetail().length() > 7) {
+                	sObject.put("detail", list.get(i).getDetail().substring(0,7)+"...");
+                } else {
+                	sObject.put("detail", list.get(i).getDetail());
+                } 
                 sObject.put("date", list.get(i).getaDate());
                 jArray.put(sObject);
             }
             
             obj.put("alarm", jArray);//배열을 넣음
-
-            System.out.println(obj.toString());
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -92,5 +94,21 @@ public class AlarmController {
 
 		return "redirect:../loginCheck/myAlarm"; // 내알림함으로 이동
 	}
+	
+	
+	@RequestMapping(value = "/loginCheck/deleteAlarmAll")
+	public String deleteAlarmAll(@RequestParam("data") String num) {
+		String [] check = num.split(",");
+		List<String> list = Arrays.asList(check);
+		aService.deleteAlarmAll(list);
+		return "redirect:../loginCheck/myAlarm"; // 내알림함으로 이동
+	}
 
+	@RequestMapping(value = "/loginCheck/readAlarmAll")
+	public String readAlarmAll(@RequestParam("data") String num) {
+		String [] check = num.split(",");
+		List<String> list = Arrays.asList(check);
+		aService.readAlarmAll(list);
+		return "redirect:../loginCheck/myAlarm"; // 내알림함으로 이동
+	}
 }
