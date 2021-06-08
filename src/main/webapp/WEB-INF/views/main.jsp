@@ -32,9 +32,6 @@
 	
 	
 	header {
-		/* background-image : url('/Dong-Dong/images/util/main.jpg');
-		background-repeat : no-repeat;
-		background-size : cover; */
 		margin : 0;
 		padding : 0;
 		position : fixed;
@@ -49,12 +46,12 @@
 	#main_img{
 		margin-top : 68px;
 		padding : 0;
-		background-image : url('/Dong-Dong/images/util/main.jpg');
+		background-image : url('/Dong-Dong/images/util/main6.jpg');
 		background-repeat : no-repeat;
 		background-size : cover;
 		z-index : 1;
 		width : 100%;
-		height : 500px;
+		height : 580px;
 	}
 </style>
 </head>

@@ -43,7 +43,6 @@
 		right : 0;
 		z-index : 1;
 		text-align : center;
-		height : 114px;
 		background-color : white;
 	}
 </style>

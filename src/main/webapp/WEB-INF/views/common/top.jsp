@@ -202,7 +202,7 @@
 
 .nav-link {
 	font-family: 'Nanum Gothic', sans-serif;
-	font-size: 15px;
+	font-size: 20px;
 	font-weight: 700;
 	color: #8db0d7 !important;
 }
@@ -243,7 +243,7 @@
 				<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
 					<c:if test="${!empty login}">
 						<li class="nav-item"><a class="nav-link active"
-							aria-current="page" href="/mypage">mypage</a></li>
+							aria-current="page" href="/mypage">마이페이지</a></li>
 						<li class="nav-item"><a class="nav-link active"
 							aria-current="page" href="logout">로그아웃</a></li>
 						<li class="nav-item"><a class="nav-link active"
@@ -265,7 +265,7 @@
 		          </a> -->
 						<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 							<c:if test="${!empty login}">
-								<li><a class="dropdown-item" href="/mypage">mypage</a></li>
+								<li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
 								<li><a class="dropdown-item" href="/logout">로그아웃</a></li>
 								<li><a class="dropdown-item" href="/postWrite">글쓰기</li>
 								<li><a class="dropdown-item" href="chatRoom">채팅</a></li>
