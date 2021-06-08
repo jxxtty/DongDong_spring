@@ -67,7 +67,7 @@ alert("${success}")
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
 		background-size : 1190px 400px;
-		 background-position: center;
+		background-position: center;
 		z-index : 1;
 		width : 100%;
 		height : 580px;

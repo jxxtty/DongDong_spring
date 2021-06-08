@@ -12,6 +12,8 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeUtility;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import com.service.MemberService;
 public class MemberController {
 	@Autowired
 	MemberService mService;
+	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
 	
 	//랜덤값 생성 
 	//public class GenerateCertPassword{
@@ -175,6 +178,7 @@ public class MemberController {
 		  sendMail(model, host, subject, from, fromName, to, content, mesg);
 		 
 		mService.memberAdd(m);
+		complaintLogger.info("MemberController AccountCreated- "+m);
 		//model.addAttribute("success", "회원가입성공");
 		session.setAttribute("success",  "회원가입성공");
 		System.out.println(m);

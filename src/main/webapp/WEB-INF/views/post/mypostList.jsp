@@ -46,7 +46,7 @@
 			
 			// 해당 버튼에 저장되어있는 pNum값을 뽑아서 PostPullUIServlet에 같이 넘겨준다.
 			
-			url = "loginCheck/postPull?pNum="+num;
+			url = "/loginCheck/postPull?pNum="+num;
 			open(url,"child_pull", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 		}
 		// 끌올 버튼 클릭 시 자식창(pullPost.jsp)가 뜨게한다

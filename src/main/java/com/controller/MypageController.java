@@ -13,6 +13,8 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -57,7 +59,7 @@ public class MypageController {
 	@Resource(name="uploadPath")
 	String uploadPath;
 	
-	
+	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
 	
 	@RequestMapping(value = "/loginCheck/mypage")
 	public String myPage(HttpSession session) {
@@ -287,6 +289,7 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		int n = oService.sale(bUserid, sUserid, pNum);
+		complaintLogger.info("MypageController PurchaseComplete - bUserid: "+sUserid+", sUserid: "+sUserid+", pNum: "+pNum);
 		attr.addFlashAttribute("sale", n);
 		
 		PostDTO pDTO = pService.getPostByPNum(pNum);
@@ -378,6 +381,7 @@ public class MypageController {
 		Map<String,String> typeMap = new HashMap<>();
 		typeMap.put("c", "댓글");
 		typeMap.put("o", "주문서");
+		typeMap.put("rc", "대댓글");
 		attr.addFlashAttribute("typeMap", typeMap);
 		
 		return "redirect:../myAlarm";
