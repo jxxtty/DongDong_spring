@@ -44,6 +44,7 @@ public class StatisticService {
 			
 			BufferedReader reader = new BufferedReader(new FileReader(readFile));
 			String targetDate=null;
+			String currentDate=dateFormat.format(startDate);
 			String nextLine=null;
 			int thisDateSum=0;
 			while((nextLine = reader.readLine())!=null){
@@ -59,10 +60,10 @@ public class StatisticService {
 					} else if(statisticType.equals("M")) {
 						cal.add(Calendar.MONTH, 1);
 					}
-				} else if(statisticType.equals("M")&&nextLine.contains("[H]"+date)) {
+				} else if(statisticType.equals("M")&&nextLine.contains("[H]"+currentDate)) {
 					String [] str = nextLine.split(":");
 					thisDateSum+=Integer.parseInt(str[1]);
-				} else if(statisticType.equals("D")&&nextLine.contains("[H]"+date)) {
+				} else if(statisticType.equals("D")&&nextLine.contains("[H]"+currentDate)) {
 					String [] str = nextLine.split(":");
 					thisDateSum+=Integer.parseInt(str[1]);
 				}
