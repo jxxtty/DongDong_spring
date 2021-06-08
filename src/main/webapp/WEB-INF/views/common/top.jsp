@@ -57,6 +57,11 @@
                     		result += data.chat[i].sUserid+"</b>님과의 채팅</a>";
                     	}
                     }
+                    
+                    if(data.chat.length < 1){
+                    	result = "<li class = 'list-group-item'>채팅이 없습니다.</li>"
+                    }
+                    
 					$('#chatListGetFive').html(result);
 				},
 				error : function(xhr, status, error) {
@@ -82,6 +87,7 @@
 					$('#alarmListGetFive').html('');
 					var first = "<li class='list-group-item' id='alarmList_link'>";
 					var result = "";
+
                     if(data.alarm.length == 0){
                     	result += first + "알림이 없습니다.</li>";
                     } else {
@@ -97,6 +103,7 @@
 	                        }
                         }
                     	result += first+"<a href='loginCheck/myAlarm'><img src='/Dong-Dong/images/util/plus.png' width='20px'></a></li>";
+
                     }
 					$('#alarmListGetFive').html(result);
 				},
@@ -291,10 +298,18 @@
 				</ul>
 			</div>
 		</div>
+<<<<<<< HEAD
+<%
+	} else{ //아닌경우
+%>
+			<a href="loginForm">로그인</a>
+			<a href="memberForm">회원가입</a><!--MVC 패턴 -->
+=======
 	</nav>
 
 	<div aria-live="polite" aria-atomic="true" class="position-relative">
   		<div class="toast-container position-absolute top-0 end-0 p-3">
+>>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
 		</div>
 	</div>
 </body>

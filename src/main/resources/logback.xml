@@ -12,7 +12,7 @@
 		<file>C:/Dong-Dong_log/common.log</file>
 		<rollingPolicy
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>C:/Dong-Dong_log/common.%d{yyyy-MM-dd_HH}.log
+			<fileNamePattern>C:/Dong-Dong_log/common.%d{yyyy-MM-dd}.log
 			</fileNamePattern>
 			<maxHistory>30</maxHistory>
 		</rollingPolicy>
@@ -28,7 +28,7 @@
 			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
 			<fileNamePattern>C:/Dong-Dong_log/statistics.%d{yyyy-MM-dd_HH}.log
 			</fileNamePattern>
-			<maxHistory>30</maxHistory>
+			<maxHistory>1</maxHistory>
 		</rollingPolicy>
 		
 		<encoder>

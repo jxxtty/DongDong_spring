@@ -44,6 +44,12 @@
 	<mvc:view-controller path="/salecomplete" view-name="salecomplete" /><!--salecomplete.jsp  -->
 	<mvc:view-controller path="/BuyList" view-name="BuyList" /><!--BuyList.jsp  -->
 	<mvc:view-controller path="/SaleList" view-name="SaleList" /><!--SaleList.jsp  -->
+	<mvc:view-controller path="/emailAuth" view-name="emailAuth" /><!--emailAuth.jsp  -->
+	<mvc:view-controller path="/CheckmailAuth" view-name="CheckmailAuth" /><!--checkmailAuth.jsp  -->
+	
+	
+	
+	
 	<mvc:view-controller path="/pullPost" view-name="pullPost" /><!--pullPost.jsp  -->
 	<mvc:view-controller path="/orderSheet" view-name="orderSheet/orderSheet" /><!--orderSheet.jsp  -->
 	<mvc:view-controller path="/orderEndSheet" view-name="orderSheet/orderEndSheet" /><!--orderEndSheet.jsp  -->

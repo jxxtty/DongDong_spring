@@ -44,7 +44,7 @@
 </header>
 
 <main>
-<jsp:include page="member/memberForm.jsp"  flush="false"></jsp:include>
+<jsp:include page="member/memberForm.jsp"  flush="true"></jsp:include>
 </main>
 </body>
 </html>

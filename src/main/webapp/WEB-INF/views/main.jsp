@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,8 +9,24 @@
 <title>dongdong market-Home</title>
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+<%-- <c:if test= "${!empty success}">
+<script>
+console.log("${success}");
+alert("${success}")</script>
+</c:if> --%>
+
+<c:set var="mesg" value="${success}"></c:set>
+<c:if test="${!empty success}"> 
+<script>
+alert("${success}")
+</script>
+<c:remove var="success" scope="session" />
+</c:if>
+
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
+
 
 	$(document).ready(function() {
 		$("#main").click(function() {
@@ -48,7 +66,8 @@
 		padding : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
-		background-size : cover;
+		background-size : 1190px 400px;
+		 background-position: center;
 		z-index : 1;
 		width : 100%;
 		height : 580px;

@@ -9,7 +9,7 @@
 <script type="text/javascript">
 
 $(document).ready(function(){
-//form 서브밋 - 아이디 중복( 닉네임 중복), 비밀번호 불일치
+//form 서브밋 - 아이디 중복( 닉네임 중복), 비밀번호 불일치+정규표현식
 //이름,전화번호,주소 입력바람 
 $("form").on("submit",function(event){
  var userid = $("#userid").val();
@@ -21,6 +21,8 @@ $("form").on("submit",function(event){
  var addr =$("#addr").val();
  
  var result = $("#result").text();
+ var result1 = $("#result1").text();
+ 
  var result3 = $("#result3").text();
  var result4 = $("#result4").text();
  
@@ -54,9 +56,9 @@ $("form").on("submit",function(event){
 			$("#passwd").focus();
 			event.preventDefault();
 		
-/* 		}else if (result4 !="인증완료"){
+		}else if (result4 !="인증완료"){
 			alert("이메일 인증해 주세요.")
-			event.preventDefault(); */
+			event.preventDefault(); 
 		
 		}else if(username.length==0){
 			alert("이름을 입력해주세요.")
@@ -72,15 +74,43 @@ $("form").on("submit",function(event){
 			alert("주소를 입력해주세요.")
 			$("#addr").focus();
 			event.preventDefault();
+			
+		}else if (result1 !="사용가능합니다"){
+			alert("패스워드 확인 바랍니다.")
+			$("#passwd").focus();
+			event.preventDefault();
 		}
-
 		
 	});
+	
+//정규표현식 - 영문(대소문자) 포함,숫자 포함,특수 문자 포함,공백 X,비밀번호 자리 8~20자
+$("#passwd").on("keyup",function(){
+	 var pw = $("#passwd").val();
+	 var num = pw.search(/[0-9]/g);
+	 var eng = pw.search(/[a-z]/ig);
+	 var spe = pw.search(/[`~!@@#$%^&*|₩₩₩'₩";:₩/?]/gi);
+	 var mesg1 = "";
+	 
+	 
+	 if(pw.length < 8 || pw.length > 20){
+		  mesg1="8자리 ~ 20자리 이내로 입력해주세요.";
+	 
+	 }else if(pw.search(/\s/) != -1){
+		 mesg1="비밀번호는 공백 없이 입력해주세요.";
+	
+	 }else if(num < 0 || eng < 0 || spe < 0 ){
+		 mesg1="영문,숫자, 특수문자를 혼합하여 입력해주세요.";
+	 }else {
+		 mesg1="사용가능합니다";
+	 }$("#result1").text(mesg1);
+	 
+});
 	
 //패스워드 확인 
 $("#passwd2").on("keyup",function(){
 	var passwd = $("#passwd").val();
 	var mesg = "패스워드 불일치";
+	
 	if(passwd == $(this).val()){
 		mesg = "패스워드 일치";
 	}
@@ -135,7 +165,11 @@ $("#passwd2").on("keyup",function(){
 		// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼줌
 		var popupY= (window.screen.height / 2) - (popupHeight / 2);
 		// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼줌
+<<<<<<< HEAD
+		url = "emailAuth" // 바뀐 부분 @@@
+=======
 		url = "emailAuth"
+>>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
 		open(url,"confirm", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 	}
 	//닉네임 체크 //이메일 값 넘겨주기
@@ -155,7 +189,7 @@ $("#passwd2").on("keyup",function(){
 	<div class="col-sm-50"><!--세로 길이 -->
 	
 	
-<form action="memberAdd" method="get"><!-- MemberAddServlet에서 memberAdd로 변경 -->
+<form action="memberAdd" method="post"><!-- MemberAddServlet에서 memberAdd로 변경 -->
 
 <!-- 유저이미지 = default  -->	
 <input type="hidden" name="userimage" value="default_userImg.PNG">
@@ -179,7 +213,11 @@ $("#passwd2").on("keyup",function(){
 
 <tr>
 <th><h3>패스워드</h3></th>
+<<<<<<< HEAD
+<td colspan="3"style="width:20%;"><input type="password" class="form-control" name="passwd" id="passwd" style="width:700px;height:50px" placeholder="영문(대소문자) 포함,숫자 포함,특수 문자 포함,공백 X,비밀번호 자리 8~20자"><span id="result1"/></td>
+=======
 <td colspan="3"style="width:20%;"><input type="password" class="form-control" name="passwd" id="passwd" style="width:700px;height:50px" placeholder="비밀번호 입력"></td>
+>>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
 </tr>
 
 <tr>
@@ -204,9 +242,9 @@ $("#passwd2").on("keyup",function(){
 
 <tr>
 <th><h3>이메일</h3></th>
-<td  style="width:20%;"><input type="text" class="form-control" name="email1"style="width:315px;height:50px"></td>
+<td  style="width:20%;"><input type="text" class="form-control" id ="email1" name="email1" style="width:315px;height:50px"></td>
 <td>@</td>
-<td><input type="text" class="form-control" name="email2"style="width:315px;height:50px">
+<td><input type="text" class="form-control" id ="email2"name="email2"style="width:315px;height:50px">
 <button type="button" id="mailAuth"class="btn btn-info">메일 인증</button><span id="result4" text=""></span></td>		
 </tr>
 
