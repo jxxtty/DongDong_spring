@@ -56,7 +56,7 @@ public class PostController {
 
 	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
 	
-	// 글쓰기 관련---------------------------------------------------------------------------
+	// 글쓰기 ---------------------------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.GET)
 	public String postWrite() {
 		return "redirect:../postWrite"; // 글쓰기화면으로전환
@@ -114,7 +114,7 @@ public class PostController {
 	}
 	
 	
-	// 글수정 관련-----------------------------------------------------------
+	// 글수정 -----------------------------------------------------------
 	
 	@RequestMapping(value="/loginCheck/postUpdate", method=RequestMethod.GET)
 	public ModelAndView postUpdate(@RequestParam("pNum") String pNum) {
@@ -214,7 +214,7 @@ public class PostController {
 		return "redirect:../postDetail?pNum="+pDto.getpNum();
 	}
 	
-	// 글삭제 관련-----------------------------------------------------------
+	// 글삭제 -----------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postDelete", method=RequestMethod.GET)
 	public String postDelete(@RequestParam("pNum") String pNum, HttpSession session) {
 		
@@ -271,7 +271,7 @@ public class PostController {
 	}// 내 게시물 체크삭제
 	
 	
-	// 끌올 관련------------------------------------------------------------
+	// 끌올 ------------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postPull", method=RequestMethod.GET)
 	public String postPull(@RequestParam("pNum") String pNum, HttpSession session, Model m){ 
 		PostDTO pDto = pService.getPostByPNum(Integer.parseInt(pNum)); // 글번호로 해당 글정보 불러오기
@@ -320,6 +320,7 @@ public class PostController {
 		return "redirect:../loginCheck/MyPostList"; // 내글보기로 이동
 	}
 	
+	// 글 상세보기 ---------------------------------------------------------------------------
 	@RequestMapping(value = "/postDetail")
 	public ModelAndView postDetail(HttpSession session, @RequestParam("pNum") String pNum) {
 		ModelAndView mav = new ModelAndView();
@@ -440,6 +441,7 @@ public class PostController {
 		return mav;
 	}
 	
+	// 댓글 ---------------------------------------------------------------------------
 	@RequestMapping(value = "/loginCheck/commentsWrite")
 	public String commentsWrite(HttpSession session, @RequestParam Map<String, String> map) {
 		MemberDTO dto = (MemberDTO)session.getAttribute("login");
@@ -465,7 +467,7 @@ public class PostController {
 		int insertResult = cService.insertComments(cDTO);
 			
 		if(insertResult!=1) { // 게시글 업데이트가 실패했을 경우 
-			session.setAttribute("mesg", "댓글 수정 중 오류가 발생하였습니다.");
+			session.setAttribute("mesg", "댓글 작성 중 오류가 발생하였습니다.");
 	    } else {
 	    	nextPage="postDetail?pNum="+pNum;
 	    }

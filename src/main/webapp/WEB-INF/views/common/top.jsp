@@ -136,11 +136,12 @@
 				$('.my-alarm').addClass('d-none');
 			}
 		});
-	});
+	}); // end-documentready
 
 	function createToast(alarmObj) { // 받아온 데이터를 파싱해서 화면에 뿌려줄 코드를 작성한다.
+		var print = "";
 		if (alarmObj.type == "c") {
-			var print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
+			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
 					+ '<div class="toast-body" id="toast_body">'
 					+ '<p><b>'
 					+ alarmObj.sender
@@ -149,21 +150,31 @@
 					+ '<button type="button" id="goPage" class="btn btn-primary btn-sm">확인하기</button>'
 					+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
 					+ '</div>' + '</div>' + '</div>';
-
-			$(".toast-container").append(print);
-			$(".toast").toast('show');
-
-			$("#goPage").click(function() { // 버튼클릭시 해당 글로 이동하게!
-				location.href = "postDetail?pNum=" + alarmObj.info;
-			});
-
-			var myToastEl = document.querySelector('.toast');
-			myToastEl.addEventListener('hidden.bs.toast', function() {
-				$('.toast-container').html('');
-			});
-
+		} else if (alarmObj.type == "rc"){
+			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
+				+ '<div class="toast-body" id="toast_body">'
+				+ '<p><b>'
+				+ alarmObj.sender
+				+ '님</b>이 <br> 회원님이 작성하신 댓글에 <b>대댓글</b>을 달았습니다.</p>'
+				+ '<div class="mt-2 pt-2 border-top">'
+				+ '<button type="button" id="goPage" class="btn btn-primary btn-sm">확인하기</button>'
+				+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
+				+ '</div>' + '</div>' + '</div>';
 		}
+		$(".toast-container").append(print);
+		$(".toast").toast('show');
+
+		$("#goPage").click(function() { // 버튼클릭시 해당 글로 이동하게!
+			location.href = "postDetail?pNum=" + alarmObj.info;
+		});
+
+		var myToastEl = document.querySelector('.toast');
+		myToastEl.addEventListener('hidden.bs.toast', function() {
+			$('.toast-container').html('');
+		});
+
 	}
+
 
 
 </script>
