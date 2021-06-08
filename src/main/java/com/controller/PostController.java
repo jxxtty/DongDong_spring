@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,7 +53,8 @@ public class PostController {
 	
 	@Resource(name="uploadPath")
 	String uploadPath;
-	
+
+	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
 	
 	// 글쓰기 관련---------------------------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.GET)
@@ -106,6 +109,7 @@ public class PostController {
 		pDto.setpImage(dbSave);
 		System.out.println("DB에 들어가는 이미지파일 " + dbSave);
 		int n = pService.newPost(pDto);
+		complaintLogger.info("PostController postWriteSuccess- userid: "+pDto.getUserid());
 		return "redirect:../"; // main으로 이동하는 경로
 	}
 	
