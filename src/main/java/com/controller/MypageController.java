@@ -270,7 +270,7 @@ public class MypageController {
 		}else {
 			return "popupclose";
 		}
-	}// 메세지창에서 삭제(발신)  테스트해야함
+	}// 메세지창에서 삭제(발신) 
 	
 	@RequestMapping(value = "/loginCheck/PopupOrderDel")
 	public String PopupOrderDel(@RequestParam("oNum") int num, @RequestParam("popup") Integer popup) {
@@ -280,7 +280,7 @@ public class MypageController {
 		} else {
 			return "popupclose";
 		}
-	}// 메세지창에서 삭제(수신)  테스트해야함
+	}// 메세지창에서 삭제(수신)
 	
 	@RequestMapping(value = "/loginCheck/Sale")
 	public String sale(HttpSession session, @RequestParam("bUserid") String bUserid, 
