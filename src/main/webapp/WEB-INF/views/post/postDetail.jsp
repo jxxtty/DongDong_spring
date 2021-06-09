@@ -23,7 +23,9 @@
 <script type="text/javascript">
 	var pTitle = "${pTitle}";
 	var favorite = ${favorite};
+	var pNum = ${pNum};
 	$(function() {
+		
 		$("#favorite").on("click", function(){
 			$.ajax({
 				type: "get",
@@ -61,9 +63,11 @@
 			url = "loginCheck/complaintDetail?pNum="+"${pNum}"+"&coType=2";
 			open(url,"complaintPost", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 		}//end compliantPost
+		
 		$("#complaintPost").click(function() {
 			complaintPost();
 		});
+		
 		function userprofile() {
 			var popupWidth = 300;
 			var popupHeight = 500;
@@ -73,12 +77,12 @@
 			open(url,"userprofile", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 		}//end userprofile
 			
-			$("#userprofile").click(function() {
+		$("#userprofile").click(function() {
 			userprofile();
 		});
 		
-		
 	});//end ready
+	
 </script>
 
 <!-- --------------------------------페이지 표시 시작 지점--------------------------------- -->  
