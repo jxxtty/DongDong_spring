@@ -32,15 +32,12 @@
 			} 
 			
 			main{
-				padding-top : 130px;
+				padding-top : 100px;
 				z-index : 2;
 			}
 	
 	
 			header {
-				/* background-image : url('/Dong-Dong/images/util/main.jpg');
-				background-repeat : no-repeat;
-				background-size : cover; */
 				margin : 0;
 				padding : 0;
 				position : fixed;
@@ -49,7 +46,6 @@
 				right : 0;
 				z-index : 1;
 				text-align : center;
-				height : 114px;
 				background-color : white;
 			}
 		</style>

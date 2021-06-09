@@ -17,7 +17,12 @@
 	max-height: initial;
 	margin-top: -10%;
 }
-
+#multiImgCenter{
+	width : 100%;
+	height : 100%;
+	display : flex;
+	justify-content : center;
+}
 </style>
 
 <script type="text/javascript">
@@ -81,15 +86,40 @@
 			userprofile();
 		});
 		
+		
+		$(".multiImageOne").on("click",function(){
+			var path = $(this).attr('src');
+			$("#mainImage").attr("src", path);
+			
+		});
+		
 	});//end ready
 	
 </script>
 
 <!-- --------------------------------페이지 표시 시작 지점--------------------------------- -->  
   <div class="container" style="max-width: 1100px">
-    <div class="row align-items-center my-5">
+    <div class="row align-items-center my-0">
       <div id="mainImgDiv" class="col-lg-7">
-        <img id="mainImage" class="img-fluid rounded mb-4 mb-lg-0" src="/Dong-Dong/images/${imageDetail[0]}" width="700px" height="">
+      	<c:if test="${isMultiFile eq 'N'}">
+      		<img id="mainImage" class="img-fluid rounded mb-4 mb-lg-0" src="/Dong-Dong/images/${imageDetail[0]}" width="700px" height="">
+      	</c:if>
+        <c:if test="${isMultiFile eq 'Y'}">
+        	<img id="mainImage" class="rounded mb-4 mb-lg-0" src="/Dong-Dong/images/${imageDetail[0]}" width="100%" height="600px">
+      		<div id="multiImgCenter">
+  				<div class="card text-dark my-0 py-0" id="multiImgDiv" style="border: none; ">
+      				<div class="align-items-center" id="multiImage">
+      					<c:forEach var="originImage" items="${imageDetail}">
+							<div style="display: inline-flex; padding-top: 10px; padding-right: 10px;">
+								<li style="list-style:none;">
+									<img src="/Dong-Dong/images/${originImage}" class="multiImageOne" width="100" height="100" /><br>
+								</li>
+							</div>
+						</c:forEach>
+					</div>
+    			</div>
+    		</div>
+  		</c:if>
       </div>
       <div class="col-lg-5 font-weight-bold" style="text-align: left">
         <br>
@@ -154,7 +184,22 @@
 		</div>
       </div>
     </div>
-
+	
+	<!-- 다중파일일 경우 mainImg아래 넣는다. -->
+<%-- 	<c:if test="${isMultiFile eq 'Y'}">
+  		<div class="card text-dark my-0 py-0" id="multiImgDiv" style="border: none; ">
+      		<div class="align-items-center" id="multiImage">
+      			<c:forEach var="originImage" items="${imageDetail}">
+					<div style="display: inline-flex; padding-top: 10px; padding-right: 10px;">
+						<li style="list-style:none;">
+							<img src="/Dong-Dong/images/${originImage}" class="multiImageOne" width="100" height="100" /><br>
+						</li>
+					</div>
+				</c:forEach>
+			</div>
+    	</div>
+  	</c:if> --%>
+	
     <div class="card text-dark my-5 py-4" style="border: none; ">
       <div style="text-align : left; font-weight: bolder; margin-left: 20px"><h2>상세 설명</h2></div>
       <hr>
@@ -163,21 +208,7 @@
       </div>
     </div>
     
-    <c:if test="${isMultiFile eq 'Y'}">
-  		<div class="card text-dark my-5 py-4" style="border: none; ">
-      		<div style="text-align : left; font-weight: bolder; margin-left: 20px"><h2>상세 사진</h2></div>
-      		<hr>
-      		<div id="multiImage">
-      			<c:forEach var="originImage" items="${imageDetail}">
-					<div style="display: inline-flex; padding: 10px;">
-						<li style="list-style:none;">
-							<img src="/Dong-Dong/images/${originImage}"  width=200 height=200 /><br>
-						</li>
-					</div>
-				</c:forEach>
-			</div>
-    	</div>
-  	</c:if>
+    
   
     
     
