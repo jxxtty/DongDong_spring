@@ -52,6 +52,8 @@
 	crossorigin="anonymous">
 
 <style type="text/css">
+
+
 .all {
 	width: 1950px;
 	height: auto;
@@ -129,12 +131,12 @@ img#MOVE_TOP_BTN {
 
 #followquick {
 	position: absolute;
-	top: 180px;
+	top: 160px;
 	right: 50%;
 	float: left;
 	text-align: center;
 	margin-right: -850px;
-	margin-top: 450px;
+	margin-top: 500px;
 }
 
 .current {
@@ -148,6 +150,85 @@ img#MOVE_TOP_BTN {
 	color: #8db0d7 !important;
 	text-decoration: none;
 }
+@media (min-width:300px) and (max-width: 991.98px){
+  .container{
+  	grid-template-columns: 1fr;
+  	margin: 0 1px;
+  	height: auto;
+  	max-width: 500px;
+  }
+   .page_nation {
+	width: 300px;
+	margin-left: -190px;
+	margin-right: 300px;
+	display: inline-block;
+	text-align: center;
+}
+#followquick {
+	position: absolute;
+	top: 160px;
+	right: 50%;
+	float: left;
+	text-align: center;
+	margin-right: -330px;
+	margin-top: 500px;
+}
+}
+ @media (min-width:992px) and (max-width: 1199.98px){
+  .container{
+  	grid-template-columns: 1fr 1fr;
+  	margin: 0 1px;
+  	height: auto;
+  	max-width: 630px;
+  }
+  .page_nation {
+	width: 300px;
+	margin-left: -80px;
+	margin-right: 100px;
+	display: inline-block;
+	text-align: center;
+}
+#followquick {
+	position: absolute;
+	top: 160px;
+	right: 50%;
+	float: left;
+	text-align: center;
+	margin-right: -510px;
+	margin-top: 500px;
+}
+}
+  @media (min-width:1200px) and (max-width: 1560px){
+  .container{
+  	grid-template-columns: 1fr 1fr 1fr;
+  	margin: 0 1px;
+  	height: auto;
+  	max-width: 920px;
+  }
+.page_nation {
+	width: 300px;
+	margin-left: 90px;
+	display: inline-block;
+	text-align: center;
+}
+#followquick {
+	position: absolute;
+	top: 160px;
+	right: 50%;
+	float: left;
+	text-align: center;
+	margin-right: -700px;
+	margin-top: 500px;
+}
+}
+@media (min-width:1561.98px) and (max-width: 2400px){
+  .page_nation {
+	width: 300px;
+	margin-left: 90px;
+	display: inline-block;
+	text-align: center;
+}
+}
 </style>
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -159,14 +240,19 @@ img#MOVE_TOP_BTN {
  $(function() {
 	$(window).scroll(function(){
 		var scrollTop = $(document).scrollTop();
-		if (scrollTop < 180) {
-		 scrollTop = 180;
+		if (scrollTop < 160) {
+		 scrollTop = 160;
+		} 
+		$("#followquick").stop();
+		$("#followquick").animate( { "top" : scrollTop });
+		if (scrollTop > 1300) {
+			scrollTop = 1300;
 		}
 		$("#followquick").stop();
 		$("#followquick").animate( { "top" : scrollTop });
 	}); //window scroll
  });//전체
- 
+
 
 $(function() { //top 버튼 처리
 $(window).scroll(function() {
@@ -226,7 +312,7 @@ $("#MOVE_TOP_BTN").click(function() {
 	<div class="all">
 		<!-- 여기서부터 -->
 		<div class="center">
-			<div class="container col-md-6">
+			<div class="container">
 			
 
 				<!-- Bootstrap js -->
@@ -412,4 +498,5 @@ $(document).ready(function(){
 		</div> <!--page_nation  -->
 		</div> <!--page center  -->
 </div><!-- page_wrap  -->
+<br/>
 </body>	 
