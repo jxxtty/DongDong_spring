@@ -22,10 +22,7 @@ $(function(){
 		 }
 	 }) //form end
 	
-	 
-
 })
-
 </script>
 
 	<div class="limiter">

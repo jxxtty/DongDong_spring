@@ -2,7 +2,9 @@ package com.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +13,8 @@ import java.util.UUID;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +38,9 @@ import com.service.OrderSheetService;
 import com.service.PostService;
 import com.service.TransactionService;
 
+import net.gpedro.integrations.slack.SlackApi;
+import net.gpedro.integrations.slack.SlackMessage;
+
 @Controller
 public class MypageController {
 	@Autowired
@@ -52,7 +59,7 @@ public class MypageController {
 	@Resource(name="uploadPath")
 	String uploadPath;
 	
-	
+	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
 	
 	@RequestMapping(value = "/loginCheck/mypage")
 	public String myPage(HttpSession session) {
@@ -276,13 +283,25 @@ public class MypageController {
 	}// 메세지창에서 삭제(수신)  테스트해야함
 	
 	@RequestMapping(value = "/loginCheck/Sale")
-	public String sale(@RequestParam("bUserid") String bUserid, 
+	public String sale(HttpSession session, @RequestParam("bUserid") String bUserid, 
 			@RequestParam("sUserid") String sUserid, @RequestParam("pNum") int pNum,
 			RedirectAttributes attr) {
+		MemberDTO dto =(MemberDTO)session.getAttribute("login");
+		String userid = dto.getUserid();
 		int n = oService.sale(bUserid, sUserid, pNum);
+		complaintLogger.info("MypageController PurchaseComplete - bUserid: "+sUserid+", sUserid: "+sUserid+", pNum: "+pNum);
 		attr.addFlashAttribute("sale", n);
+		
+		PostDTO pDTO = pService.getPostByPNum(pNum);
+		
+		SimpleDateFormat timeFormat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		Calendar time = Calendar.getInstance();
+		
+		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
+		webhook.call(new SlackMessage("#transaction", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
+		
 		return "redirect:../salecomplete";
-	}//구매확정  테스트해야함
+	}
 	
 	@RequestMapping(value = "loginCheck/BuyList", produces = "text/plain;charset=UTF-8")
 	public String buyList(HttpSession session, RedirectAttributes attr) {
@@ -290,6 +309,7 @@ public class MypageController {
 		String userid = dto.getUserid();
 		List<PostDTO> plist = tService.purchaseList(userid);
 		attr.addFlashAttribute("purchaseList", plist);
+		
 		return "redirect:../BuyList";
 	}//구매내역 
 	
@@ -361,6 +381,7 @@ public class MypageController {
 		Map<String,String> typeMap = new HashMap<>();
 		typeMap.put("c", "댓글");
 		typeMap.put("o", "주문서");
+		typeMap.put("rc", "대댓글");
 		attr.addFlashAttribute("typeMap", typeMap);
 		
 		return "redirect:../myAlarm";

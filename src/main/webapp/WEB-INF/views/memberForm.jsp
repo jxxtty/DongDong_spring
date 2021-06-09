@@ -16,7 +16,7 @@
 
 	
 	main{
-		padding-top : 130px;
+		padding-top : 68px;
 		z-index : 2;
 	}
 	
@@ -33,7 +33,6 @@
 		right : 0;
 		z-index : 1;
 		text-align : center;
-		height : 114px;
 		background-color : white;
 	}
 </style>
@@ -41,11 +40,11 @@
 <body>
 
 <header>
-<jsp:include page="common/top.jsp" flush="true"></jsp:include><br>
+<jsp:include page="common/top.jsp" flush="true"></jsp:include>
 </header>
 
 <main>
-<jsp:include page="member/memberForm.jsp"  flush="false"></jsp:include>
+<jsp:include page="member/memberForm.jsp"  flush="true"></jsp:include>
 </main>
 </body>
 </html>
