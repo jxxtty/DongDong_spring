@@ -98,7 +98,7 @@
 	                        	result += "<p id='alarmList_Sub'>by <b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
 	                        } else if(data.alarm[i].type == "o"){
 	                        	result += first;
-	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글의 주문서가 도착했습니다.</a><br>";
+	                        	result += "<a href='loginCheck/OrdersheetList'>["+data.alarm[i].detail+"]글의 주문서가 도착했습니다.</a><br>";
 	                        	result += "<p id='alarmList_Sub'> by<b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
 	                        } else {
 	                        	result += first;

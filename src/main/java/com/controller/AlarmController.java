@@ -34,6 +34,10 @@ public class AlarmController {
 	public void sendAlarm(Alarm alarm) throws IOException {
 		int aNumPK = aService.newAlarm(alarm); // alarm DB에 데이터 쌓고, 방금insert한 레코드의 PK값을 받아온다.
 		alarm.setaNum(aNumPK);
+		String title = alarm.getDetail();
+		if(title.length() > 7) {
+			alarm.setDetail(title.substring(0,7)+"...");
+		}
 		String urlSubscribe = "/subscribe/alarm/" + alarm.getReceiver(); // receiver = 글작성자
 		simpMessageTemplate.convertAndSend(urlSubscribe, alarm);
 	}
