@@ -48,7 +48,8 @@
 		padding : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
-		background-size : cover;
+		background-size : 1160px 260px;
+		 background-position: center;
 		z-index : 1;
 		width : 100%;
 		height : 500px;
