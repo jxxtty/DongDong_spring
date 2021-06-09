@@ -66,8 +66,13 @@ alert("${success}")
 		padding : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
+<<<<<<< HEAD
+		background-size : 1160px 260px;
+		 background-position: center;
+=======
 		background-size : 1190px 400px;
 		background-position: center;
+>>>>>>> bad4f23bb8db76bb0b32d099dd62f39d2f73c294
 		z-index : 1;
 		width : 100%;
 		height : 580px;

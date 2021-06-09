@@ -26,6 +26,8 @@ padding-bottom: 300px;
 
 <c:if test="${!empty login}">
 <script type="text/javascript">
+	var postWriter = "${userid}"; // 글쓴사람의 userid
+	var sender = ${login.userid}; // 현재 로그인 되어있다(댓글이나 대댓글을 작성하는애)	
 	
 	$(document).ready(function() {
 		$(".update_comment").on("click", function() {
@@ -44,7 +46,6 @@ padding-bottom: 300px;
 		
 		$("form").on("submit",function(event){
 			var cContent = $(this).find("textarea").val();
-
 			if(cContent.length == 0){
 				alert("댓글을 입력하세요.");
 				$(this).find("textarea").focus();
@@ -65,50 +66,35 @@ padding-bottom: 300px;
 		});
 		
 		
-		var receiverPost = $("#receiverPost").val();
-		var sender = $("#sender").val(); // 현재 로그인 되어있다
-		var receiverReplyComments = $("#receiverReplyComments").val();
-		
-		console.log("글작성자 : ", receiverPost);
-		console.log("현재 로그인되어있는 회원 : " + sender);
-		console.log("댓글작성자 : ", receiverReplyComments);
-		var stompClient = null;
-		if(sender.length != 0){ // 글을 보고있는 사람이 회원
-			var sockJS = new SockJS('/sockJS');
-			stompClient = Stomp.over(sockJS);
-		}
-		
+		// 댓글작성 알림
 		$("#comments_submit").click(function(){ 
-			if(sender!= receiverPost){
-				console.log("댓글알림 전송한다!!!!");
-				sendMessage(receiverPost, 'c'); // 현재 로그인 되어있는 유저와 글작성자가 다른 경우에만 알림전송
+			if(sender != postWriter){ // 현재 로그인 되어있는 유저와 글작성자가 다른 경우에만 알림전송 -> 글작성자에게 알림전송
+				sendMessage(postWriter, 'c'); 
 			}
 		});
 		
-		if(receiverReplyComments.length != 0){ // 원댓글이 있을 때
-			$("#comments_reply_submit").click(function(){
-				if(sender != receiverReplyComments){
-					console.log("대댓글알림 전송한다!!!");
-					sendMessage(receiverReplyComments, 'rc'); // 현재 로그인 되어있는 유저와 댓글작성자가 다른 경우
-				}
-			});
-		}
-		
-		function sendMessage(receiver, type){
-			var pNum = $("#pNum").val();
-			var json = {
-				'sender' : sender,
-				'receiver' : receiver,
-				'type' : type,
-				'info' : pNum,
-				'detail' : pTitle,
-				'isRead' : '0'
-			};
-			console.log(c,">>>데이터전달했어 : " + JSON.stringify(json));
-			//stompClient.send('/send/reply/'+receiver, {}, JSON.stringify(json));
-			
-		}
+		// 대댓글 작성 알림
+		$(".comments_reply_submit").click(function(){
+			var commentsWriter = $(this).attr("data-xxx");
+			if(sender != commentsWriter){ // 현재 로그인 되어있는 유저와 댓글작성자가 다른 경우에만 알림 전송
+				sendMessage(commentsWriter, 'rc');
+			}
+		});
 	});
+	
+	function sendMessage(receiver, type){
+		var pNum = $("#pNum").val();
+		var json = {
+			'sender' : sender,
+			'receiver' : receiver,
+			'type' : type,
+			'info' : pNum,
+			'detail' : pTitle,
+			'isRead' : '0'
+		};
+		console.log("sendMessage호출됐음 : ", JSON.stringify(json));
+		stompClient.send('/send/reply/'+receiver, {}, JSON.stringify(json));
+	}
 </script>
 </c:if>
     <!-- 댓글 기능 표시 시작 지점 --------------------------------------- -->
@@ -174,14 +160,15 @@ padding-bottom: 300px;
 	      		<c:if test="${pStatus!='1'}">
 	      		<div>
 	      		  <div class="comment-form well"><!-- 대댓글 -->
-	      		  	<input type="hidden" id="receiverReplyComments" value="${cDTO.userid }"> <!-- 대댓글이 달리는 원댓글 작성자의 userid -->
+	      		  	<!-- <input type="hidden" id="receiverReplyComments" value="${cDTO.userid }"> 대댓글이 달리는 원댓글 작성자의 userid -->
      			    <form class="comment-reply-form" action="loginCheck/commentsWrite" method="post">
       			  	  <label for="contactComment"></label> 
       				  <input type="hidden" name="pNum"  value="${pNum}"/>
       				  <input type="hidden" name="parentNum" value="${cDTO.cNum}"/>
     			  	  <textarea rows="3" class="form-control" name="cContent" style="resize: none;"></textarea> 
       			  	  <div style="text-align : right" >
-      			  	  	<input type="submit" class="btn btn-outline-primary btn-block btn-sm" id="comments_reply_submit" value="답글"/>
+      			  	  	<input type="submit" class="btn btn-outline-primary btn-block btn-sm comments_reply_submit" 
+      			  	  	 	value="답글" data-xxx="${cDTO.userid}"/>
       			      </div>
       			    </form>
    			      </div>

@@ -15,7 +15,7 @@
 		window.open('chatList/chat?chatId='+chatid, '_blank' ,'width=550, height=620');
 	}
 
-
+	var stompClient = null; // 전역
 	$(document).ready(function() {
 		
 		$("#main").click(function() {
@@ -96,10 +96,14 @@
 	                    		result += first;
 	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글에 댓글이 작성되었습니다.</a><br>";
 	                        	result += "<p id='alarmList_Sub'>by <b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
-	                        } else {
+	                        } else if(data.alarm[i].type == "o"){
 	                        	result += first;
 	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글의 주문서가 도착했습니다.</a><br>";
 	                        	result += "<p id='alarmList_Sub'> by<b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
+	                        } else {
+	                        	result += first;
+	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글에 작성한 댓글에 대댓글이 작성되었습니다.</a><br>";
+	                        	result += "<p id='alarmList_Sub'>by <b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
 	                        }
                         }
                     	result += first+"<a href='loginCheck/myAlarm'><img src='/Dong-Dong/images/util/plus.png' width='20px'></a></li>";
@@ -115,7 +119,6 @@
 		});
 
 		var isLogin = $("#id").val();
-		var stompClient = null;
 		if (isLogin && isLogin.length != 0) {
 			var sockJS = new SockJS('http://localhost:8079/sockJS');
 			var urlSubscribe = '/subscribe/alarm/' + isLogin; // 세션에 저장되어있는login정보에서 userid를 추출해서 연결
@@ -140,24 +143,34 @@
 
 	function createToast(alarmObj) { // 받아온 데이터를 파싱해서 화면에 뿌려줄 코드를 작성한다.
 		var print = "";
-		if (alarmObj.type == "c") {
+		if (alarmObj.type == "c") { // 댓글알림
 			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
 					+ '<div class="toast-body" id="toast_body">'
 					+ '<p><b>'
-					+ alarmObj.sender
-					+ '님</b>이 <br> 회원님이 작성하신 글에 <b>댓글</b>을 달았습니다.</p>'
+					+ alarmObj.sender + '님</b>이 ['
+					+ alarmObj.detail +']에 <br> <b>댓글</b>을 작성했습니다.</p>'
 					+ '<div class="mt-2 pt-2 border-top">'
-					+ '<button type="button" id="goPage" class="btn btn-primary btn-sm">확인하기</button>'
+					+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
 					+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
 					+ '</div>' + '</div>' + '</div>';
-		} else if (alarmObj.type == "rc"){
+		} else if (alarmObj.type == "rc"){ // 대댓글알림
 			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
 				+ '<div class="toast-body" id="toast_body">'
 				+ '<p><b>'
-				+ alarmObj.sender
-				+ '님</b>이 <br> 회원님이 작성하신 댓글에 <b>대댓글</b>을 달았습니다.</p>'
+				+ alarmObj.sender + '님</b>이 ['
+				+ alarmObj.detail +']에 <br> 회원님이 작성한 댓글에 <b>대댓글</b>을 작성했습니다.</p>'
 				+ '<div class="mt-2 pt-2 border-top">'
-				+ '<button type="button" id="goPage" class="btn btn-primary btn-sm">확인하기</button>'
+				+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
+				+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
+				+ '</div>' + '</div>' + '</div>';
+		} else { // 주문서알림
+			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
+				+ '<div class="toast-body" id="toast_body">'
+				+ '<p><b>'
+				+ alarmObj.sender + '님</b>이 ['
+				+ alarmObj.detail +']에 <br><b>주문서</b>를 보냈습니다.</p>'
+				+ '<div class="mt-2 pt-2 border-top">'
+				+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
 				+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
 				+ '</div>' + '</div>' + '</div>';
 		}
@@ -165,9 +178,13 @@
 		$(".toast").toast('show');
 
 		$("#goPage").click(function() { // 버튼클릭시 해당 글로 이동하게!
-			location.href = "postDetail?pNum=" + alarmObj.info;
+			if (alarmObj.type == "o"){
+				location.href="loginCheck/OrdersheetList";
+			} else {
+				location.href = "postDetail?pNum=" + alarmObj.info;
+			}
 		});
-
+		
 		var myToastEl = document.querySelector('.toast');
 		myToastEl.addEventListener('hidden.bs.toast', function() {
 			$('.toast-container').html('');
