@@ -177,6 +177,10 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = fService.favoriteList(userid);
+		for(int i = 0 ; i < list.size() ; i++) {
+			String[] image = list.get(i).getpImage().split(" ");
+			list.get(i).setpImage(image[0]);
+		}
 		attr.addFlashAttribute("favoriteList", list);
 		return "redirect:../favoriteList";
 	}//관심목록 리스트
@@ -193,6 +197,10 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = pService.mypostList(userid);
+		for(int i = 0 ; i < list.size() ; i++) {
+			String[] image = list.get(i).getpImage().split(" ");
+			list.get(i).setpImage(image[0]);
+		}
 		m.addAttribute("mypostList", list);
 		return "mypostList";
 	}//내 게시물 보기
@@ -202,6 +210,10 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<MyOrderSheetDTO> list = oService.myordersheetList(userid);
+		for(int i = 0 ; i < list.size() ; i++) {
+			String[] image = list.get(i).getpImage().split(" ");
+			list.get(i).setpImage(image[0]);
+		}
 		m.addAttribute("ordersheetList", list);
 		return "myordersheetList";
 	}// 주문서 발신함
@@ -225,6 +237,10 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<MyOrderSheetDTO> list = oService.ordersheetList(userid);
+		for(int i = 0 ; i < list.size() ; i++) {
+			String[] image = list.get(i).getpImage().split(" ");
+			list.get(i).setpImage(image[0]);
+		}
 		m.addAttribute("ordersheetList", list);
 		return "ordersheetList";
 	}// 주문서 수신함
