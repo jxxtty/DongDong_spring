@@ -322,6 +322,10 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> slist = tService.saleList(userid);
+		for(int i = 0 ; i < slist.size() ; i++) {
+			String[] image = slist.get(i).getpImage().split(" ");
+			slist.get(i).setpImage(image[0]);
+		}
 		attr.addFlashAttribute("saleList", slist);
 		return "redirect:../SaleList";
 	}//판매내역  
