@@ -36,10 +36,10 @@ alert("${success}")
 </script>
 <style type="text/css">
 	
-	footer
+	
 	* {
 		font-family: 'Nanum Gothic', sans-serif;
-		font-size: 15px;
+		font-size: 13px;
 		font-weight : 400;
 	}
 	

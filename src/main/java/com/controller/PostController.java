@@ -89,8 +89,6 @@ public class PostController {
 		for(int i = 0 ; i < fileList.size() ; i++) {
 			MultipartFile mf = fileList.get(i);
 			String originalFileName = mf.getOriginalFilename(); // 원본파일 이름
-			//long fileSize = mf.getSize(); // 파일사이즈
-			//String safeFile = path + System.currentTimeMillis()+"_" +i+ originalFileName;
 			String safeFile = uploadPath + System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
 			
 			String dbSaveFile = System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
@@ -107,7 +105,6 @@ public class PostController {
 			}
 		}
 		pDto.setpImage(dbSave);
-		System.out.println("DB에 들어가는 이미지파일 " + dbSave);
 		int n = pService.newPost(pDto);
 		complaintLogger.info("PostController postWriteSuccess- userid: "+pDto.getUserid());
 		return "redirect:../"; // main으로 이동하는 경로
@@ -174,7 +171,6 @@ public class PostController {
 				MultipartFile mf = fileList.get(i);
 				String originalFileName = mf.getOriginalFilename(); // 원본파일 이름
 				if(originalFileName.length() == 0) {
-					System.out.println("수정된거 없어서 flag증가시키고 break함");
 					flag++;
 					break;
 				}
