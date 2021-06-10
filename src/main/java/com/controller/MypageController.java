@@ -177,10 +177,6 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = fService.favoriteList(userid);
-		for(int i = 0 ; i < list.size() ; i++) {
-			String[] image = list.get(i).getpImage().split(" ");
-			list.get(i).setpImage(image[0]);
-		}
 		attr.addFlashAttribute("favoriteList", list);
 		return "redirect:../favoriteList";
 	}//관심목록 리스트
@@ -197,10 +193,6 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = pService.mypostList(userid);
-		for(int i = 0 ; i < list.size() ; i++) {
-			String[] image = list.get(i).getpImage().split(" ");
-			list.get(i).setpImage(image[0]);
-		}
 		m.addAttribute("mypostList", list);
 		return "mypostList";
 	}//내 게시물 보기
@@ -210,10 +202,6 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<MyOrderSheetDTO> list = oService.myordersheetList(userid);
-		for(int i = 0 ; i < list.size() ; i++) {
-			String[] image = list.get(i).getpImage().split(" ");
-			list.get(i).setpImage(image[0]);
-		}
 		m.addAttribute("ordersheetList", list);
 		return "myordersheetList";
 	}// 주문서 발신함
@@ -237,10 +225,6 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<MyOrderSheetDTO> list = oService.ordersheetList(userid);
-		for(int i = 0 ; i < list.size() ; i++) {
-			String[] image = list.get(i).getpImage().split(" ");
-			list.get(i).setpImage(image[0]);
-		}
 		m.addAttribute("ordersheetList", list);
 		return "ordersheetList";
 	}// 주문서 수신함
@@ -286,7 +270,7 @@ public class MypageController {
 		}else {
 			return "popupclose";
 		}
-	}// 메세지창에서 삭제(발신)  테스트해야함
+	}// 메세지창에서 삭제(발신) 
 	
 	@RequestMapping(value = "/loginCheck/PopupOrderDel")
 	public String PopupOrderDel(@RequestParam("oNum") int num, @RequestParam("popup") Integer popup) {
@@ -296,7 +280,7 @@ public class MypageController {
 		} else {
 			return "popupclose";
 		}
-	}// 메세지창에서 삭제(수신)  테스트해야함
+	}// 메세지창에서 삭제(수신)
 	
 	@RequestMapping(value = "/loginCheck/Sale")
 	public String sale(HttpSession session, @RequestParam("bUserid") String bUserid, 
@@ -313,7 +297,7 @@ public class MypageController {
 		SimpleDateFormat timeFormat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
 		Calendar time = Calendar.getInstance();
 		
-		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
+		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
 		webhook.call(new SlackMessage("#transaction", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
 		
 		return "redirect:../salecomplete";
@@ -338,10 +322,6 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> slist = tService.saleList(userid);
-		for(int i = 0 ; i < slist.size() ; i++) {
-			String[] image = slist.get(i).getpImage().split(" ");
-			slist.get(i).setpImage(image[0]);
-		}
 		attr.addFlashAttribute("saleList", slist);
 		return "redirect:../SaleList";
 	}//판매내역  
