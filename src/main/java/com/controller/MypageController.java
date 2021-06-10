@@ -173,12 +173,14 @@ public class MypageController {
 	}//회원탈퇴
 	
 	@RequestMapping(value = "loginCheck/FavoriteList", produces = "text/plain;charset=UTF-8")
-	public String favoritList(HttpSession session,Model m) {
+	public String favoritList(HttpSession session,RedirectAttributes attr, Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = fService.favoriteList(userid);
-		m.addAttribute("favoriteList", list);
-		return "favoriteList";
+		attr.addFlashAttribute("favoriteList", list);
+		return "redirect:../favoriteList";
+		//m.addAttribute("favoriteList", list);
+		//return "favoriteList";
 	}//관심목록 리스트
 	
 	@RequestMapping(value = "loginCheck/favoriteDel")
@@ -193,17 +195,21 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = pService.mypostList(userid);
-		m.addAttribute("mypostList", list);
-		return "mypostList";
+		//m.addAttribute("mypostList", list);
+		//return "mypostList";
+		attr.addFlashAttribute("mypostList", list);
+		return "redirect:../mypostList";
 	}//내 게시물 보기
 	
 	@RequestMapping(value = "loginCheck/MyOrdersheetList", produces = "text/plain;charset=UTF-8")
-	public String MyOrdersheetList(HttpSession session, Model m) {
+	public String MyOrdersheetList(HttpSession session, Model m,RedirectAttributes attr) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<MyOrderSheetDTO> list = oService.myordersheetList(userid);
-		m.addAttribute("ordersheetList", list);
-		return "myordersheetList";
+		//m.addAttribute("ordersheetList", list);
+		//return "myordersheetList";
+		attr.addFlashAttribute("ordersheetList", list);
+		return "redirect:../myordersheetList";
 	}// 주문서 발신함
 	
 	@RequestMapping(value = "/loginCheck/myOrderDel")
@@ -221,12 +227,14 @@ public class MypageController {
 	}// 발신함 체크삭제
 	
 	@RequestMapping(value = "loginCheck/OrdersheetList", produces = "text/plain;charset=UTF-8")
-	public String OrdersheetList(HttpSession session, Model m) {
+	public String OrdersheetList(HttpSession session, Model m,RedirectAttributes attr) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<MyOrderSheetDTO> list = oService.ordersheetList(userid);
-		m.addAttribute("ordersheetList", list);
-		return "ordersheetList";
+		//m.addAttribute("ordersheetList", list);
+		//return "ordersheetList";
+		attr.addFlashAttribute("ordersheetList", list);
+		return "redirect:../ordersheetList";
 	}// 주문서 수신함
 	
 	@RequestMapping(value = "/loginCheck/OrderDel")
@@ -297,29 +305,33 @@ public class MypageController {
 		SimpleDateFormat timeFormat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
 		Calendar time = Calendar.getInstance();
 		
-		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
-		webhook.call(new SlackMessage("#Dong-Dong", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
+		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
+		webhook.call(new SlackMessage("#동동", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
 		
 		return "redirect:../salecomplete";
 	}
 	
 	@RequestMapping(value = "loginCheck/BuyList", produces = "text/plain;charset=UTF-8")
-	public String buyList(HttpSession session,Model m) {
+	public String buyList(HttpSession session, RedirectAttributes attr,Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> plist = tService.purchaseList(userid);
-		m.addAttribute("purchaseList", plist);
-		return "BuyList";
+		attr.addFlashAttribute("purchaseList", plist);
+		return "redirect:../BuyList";
+		//m.addAttribute("purchaseList", plist);
+		//return "BuyList";
 		
 	}//구매내역 
 	
 	@RequestMapping(value = "loginCheck/SaleList", produces = "text/plain;charset=UTF-8")
-	public String saleList(HttpSession session, Model m) {
+	public String saleList(HttpSession session, RedirectAttributes attr,Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> slist = tService.saleList(userid);
-		m.addAttribute("saleList", slist);
-		return "SaleList";
+		attr.addFlashAttribute("saleList", slist);
+		return "redirect:../SaleList";
+		//m.addAttribute("saleList", slist);
+		//return "SaleList";
 	}//판매내역  
 	
 	@RequestMapping(value = "/loginCheck/favorateSwitch")
