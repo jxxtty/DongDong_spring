@@ -46,6 +46,17 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
-
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>SSL Forward</web-resource-name>
+			<url-pattern>/loginForm</url-pattern>
+			<url-pattern>/memberForm</url-pattern>
+			<url-pattern>/loginCheck/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	
 
 </web-app>
