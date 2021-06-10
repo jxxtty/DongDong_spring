@@ -156,9 +156,9 @@
 		} else if (alarmObj.type == "rc"){ // 대댓글알림
 			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
 				+ '<div class="toast-body" id="toast_body">'
-				+ '<p><b>'
-				+ alarmObj.sender + '님</b>이 ['
-				+ alarmObj.detail +']에 <br> 회원님이 작성한 댓글에 <b>대댓글</b>을 작성했습니다.</p>'
+				+ '<p>['
+				+ alarmObj.detail +']에 작성한 댓글에<br><b>'
+				+ alarmObj.sender + '</b>님이 <b>대댓글</b>을 작성했습니다.</p>'
 				+ '<div class="mt-2 pt-2 border-top">'
 				+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
 				+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
@@ -245,6 +245,9 @@
 	color : black;
 }
 
+#keyword{
+	border: 2px solid #8db0d7;
+}
 
 </style>
 </head>

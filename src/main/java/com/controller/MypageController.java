@@ -316,6 +316,10 @@ public class MypageController {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> plist = tService.purchaseList(userid);
+		for(int i = 0 ; i < plist.size() ; i++) {
+			String[] image = plist.get(i).getpImage().split(" ");
+			plist.get(i).setpImage(image[0]);
+		}
 		attr.addFlashAttribute("purchaseList", plist);
 		return "redirect:../BuyList";
 		//m.addAttribute("purchaseList", plist);
