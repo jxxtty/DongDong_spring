@@ -173,12 +173,12 @@ public class MypageController {
 	}//회원탈퇴
 	
 	@RequestMapping(value = "loginCheck/FavoriteList", produces = "text/plain;charset=UTF-8")
-	public String favoritList(HttpSession session,RedirectAttributes attr) {
+	public String favoritList(HttpSession session,Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> list = fService.favoriteList(userid);
-		attr.addFlashAttribute("favoriteList", list);
-		return "redirect:../favoriteList";
+		m.addAttribute("favoriteList", list);
+		return "favoriteList";
 	}//관심목록 리스트
 	
 	@RequestMapping(value = "loginCheck/favoriteDel")
@@ -298,28 +298,28 @@ public class MypageController {
 		Calendar time = Calendar.getInstance();
 		
 		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
-		webhook.call(new SlackMessage("#transaction", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
+		webhook.call(new SlackMessage("#Dong-Dong", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
 		
 		return "redirect:../salecomplete";
 	}
 	
 	@RequestMapping(value = "loginCheck/BuyList", produces = "text/plain;charset=UTF-8")
-	public String buyList(HttpSession session, RedirectAttributes attr) {
+	public String buyList(HttpSession session,Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> plist = tService.purchaseList(userid);
-		attr.addFlashAttribute("purchaseList", plist);
+		m.addAttribute("purchaseList", plist);
+		return "BuyList";
 		
-		return "redirect:../BuyList";
 	}//구매내역 
 	
 	@RequestMapping(value = "loginCheck/SaleList", produces = "text/plain;charset=UTF-8")
-	public String saleList(HttpSession session, RedirectAttributes attr) {
+	public String saleList(HttpSession session, Model m) {
 		MemberDTO dto =(MemberDTO)session.getAttribute("login");
 		String userid = dto.getUserid();
 		List<PostDTO> slist = tService.saleList(userid);
-		attr.addFlashAttribute("saleList", slist);
-		return "redirect:../SaleList";
+		m.addAttribute("saleList", slist);
+		return "SaleList";
 	}//판매내역  
 	
 	@RequestMapping(value = "/loginCheck/favorateSwitch")
