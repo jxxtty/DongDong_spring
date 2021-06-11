@@ -69,6 +69,7 @@ alert("${success}")
 		background-repeat : no-repeat;
 		background-size : cover;
 		background-position: center;
+		height: 480px;
 		z-index : 1;
 
 	}
@@ -83,9 +84,6 @@ alert("${success}")
 		margin-bottom:-35px;
 	}
 }
-	
-	
-	
 	
 	@media (min-width:992px) and (max-width: 1199.98px){
 	 main{
@@ -109,14 +107,14 @@ alert("${success}")
 		margin-bottom:60px;
 	}
 	
-	@media (min-width:992px) and (max-width: 1199.98px){
+/* @media (min-width:1561.98px) and (max-width: 2400px){
 	#main_img{
 		height : 380px;
 		margin-bottom:60px;
 	}
 	
 	}
-}
+}  */
 </style>
 </head>
 <body>
