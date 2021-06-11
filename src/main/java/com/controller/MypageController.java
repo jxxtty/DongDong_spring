@@ -315,7 +315,7 @@ public class MypageController {
 		SimpleDateFormat timeFormat = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
 		Calendar time = Calendar.getInstance();
 		
-		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
+		SlackApi webhook = new SlackApi("https://hooks.slack.com/services/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"); // 본인의 슬랙 URL
 		webhook.call(new SlackMessage("#동동", "admin", "transaction : userid = " + userid + ", item = " + pDTO.getpTitle() +", " + timeFormat.format(time.getTime())));
 		
 		return "redirect:../salecomplete";

@@ -23,9 +23,10 @@
 </head>
 <body>
 <c:set var="mesg" value="${mesg}"></c:set>
+<c:set var="mesg1" value="${mesg1}"></c:set>
 <c:if test="${!empty mesg}"> 
 <script>
-alert("${mesg}")
+alert("${mesg} \n ${mesg1}")
 </script>
 <c:remove var="mesg" scope="session" />
 </c:if>

@@ -28,7 +28,7 @@ $(function(){
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100">
-				<form class="login100-form validate-form" action="login" method="get">
+				<form class="login100-form validate-form" action="login" method="post">
 					<span class="login100-form-title p-b-26">
 						Log-in
 					</span>

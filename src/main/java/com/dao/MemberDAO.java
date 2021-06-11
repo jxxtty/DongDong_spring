@@ -1,5 +1,6 @@
 package com.dao;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -78,6 +79,42 @@ public class MemberDAO {
 
 	public MemberDTO getMemberByUserid(String senderId) {
 		return template.selectOne("MemberMapper.getMemberByUserid", senderId);
+	}
+	
+	public int selectLockStatus(String userid) {
+		return template.selectOne("MemberMapper.selectLockStatus", userid);
+	}
+
+	public void updateClearLoginFailCount(String userid) {
+		template.update("MemberMapper.updateClearLoginFailCount", userid);
+	}
+
+	public void updateClearLockCount(String userid) {
+		template.update("MemberMapper.updateClearLockCount", userid);
+	}
+
+	public void plusLoginFailCount(String userid) {
+		template.update("MemberMapper.plusLoginFailCount", userid);
+	}
+
+	public void updateLockStatus(String userid) {
+		template.update("MemberMapper.updateLockStatus", userid);
+	}
+
+	public Date selectLoginDate(String userid) {
+		return template.selectOne("MemberMapper.selectLoginDate", userid);
+	}
+
+	public int selectLockCount(String userid) {
+		return template.selectOne("MemberMapper.selectLockCount", userid);
+	}
+
+	public int selectFailCount(String userid) {
+		return template.selectOne("MemberMapper.selectFailCount", userid);
+	}
+
+	public void loginDate(String userid) {
+		template.update("MemberMapper.loginDate", userid);
 	}
 }//end MemberDAO
 
