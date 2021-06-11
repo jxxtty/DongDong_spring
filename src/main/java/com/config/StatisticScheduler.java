@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StatisticScheduler {
+	
 	private Logger statisticLogger = LoggerFactory.getLogger("statistics");
+
 	public void test() {
 		System.out.println("test start");
 		int days [] = {0,31,28,31,30,31,30,31,31,30,31,30,31};
@@ -44,9 +46,9 @@ public class StatisticScheduler {
 			while(y!=2022) {
 				for(int i=0; i<24; i++) {
 					rannum10 = (int)((Math.random()*10000)%10);
-					rannum100 = (int)((Math.random()*10000)%10)*10;
-					rannum500 = (int)((Math.random()*10000)%10)*50;
-					rannum1000 = (int)((Math.random()*10000)%10)*100;
+					rannum100 = (int)(((Math.random()*10000)%10)*10.123123);
+					rannum500 = (int)(((Math.random()*10000)%10)*50.31231);
+					rannum1000 = (int)(((Math.random()*10000)%10)*100.12314);
 					if(m<10) {
 						sm="0"+m;
 					} else {

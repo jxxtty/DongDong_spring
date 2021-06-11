@@ -28,13 +28,13 @@ function number_format(number, decimals, dec_point, thousands_sep) {
 
 // Area Chart Example
 
-var ctx = document.getElementById("myAreaChart");
-var mainChart = new Chart(ctx, {
+var ctx = document.getElementById("txChart");
+var txChart = new Chart(ctx, {
   type: 'line',
   data: {
     labels: [],
     datasets: [{
-      label: "글 등록",
+      label: "TX 처리량",
       lineTension: 0.3,
       backgroundColor: "rgba(78, 115, 223, 0.05)",
       borderColor: "rgba(78, 115, 223, 1)",
@@ -42,54 +42,12 @@ var mainChart = new Chart(ctx, {
       pointBackgroundColor: "rgba(78, 115, 223, 1)",
       pointBorderColor: "rgba(78, 115, 223, 1)",
       pointHoverRadius: 3,
-      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
       pointHoverBorderColor: "rgba(78, 115, 223, 1)",
       pointHitRadius: 10,
       pointBorderWidth: 2,
       data: [],
-    },{
-        label: "거래",
-        lineTension: 0.3,
-        backgroundColor: "rgba(28, 200, 138, 0.05)",
-        borderColor: "rgba(28, 200, 138, 1)",
-        pointRadius: 3,
-        pointBackgroundColor: "rgba(28, 200, 138, 1)",
-        pointBorderColor: "rgba(28, 200, 138, 1)",
-        pointHoverRadius: 3,
-        pointHoverBackgroundColor: "rgba(28, 200, 138, 1)",
-        pointHoverBorderColor: "rgba(28, 200, 138, 1)",
-        pointHitRadius: 10,
-        pointBorderWidth: 2,
-        data: [],
-      },{
-          label: "가입",
-          lineTension: 0.3,
-          backgroundColor: "rgba(54, 185, 204, 0.05)",
-          borderColor: "rgba(54, 185, 204, 1)",
-          pointRadius: 3,
-          pointBackgroundColor: "rgba(54, 185, 204, 1)",
-          pointBorderColor: "rgba(54, 185, 204, 1)",
-          pointHoverRadius: 3,
-          pointHoverBackgroundColor: "rgba(54, 185, 204, 1)",
-          pointHoverBorderColor: "rgba(54, 185, 204, 1)",
-          pointHitRadius: 10,
-          pointBorderWidth: 2,
-          data: [],
-        },{
-            label: "신고",
-            lineTension: 0.3,
-            backgroundColor: "rgba(117, 117, 117, 0.05)",
-            borderColor: "rgba(117, 117, 117, 1)",
-            pointRadius: 3,
-            pointBackgroundColor: "rgba(117, 117, 117, 1)",
-            pointBorderColor: "rgba(117, 117, 117, 1)",
-            pointHoverRadius: 3,
-            pointHoverBackgroundColor: "rgba(117, 117, 117, 1)",
-            pointHoverBorderColor: "rgba(117, 117, 117, 1)",
-            pointHitRadius: 10,
-            pointBorderWidth: 2,
-            data: [],
-          }],
+    }],
   },
   options: {
     maintainAspectRatio: false,
@@ -159,20 +117,19 @@ var mainChart = new Chart(ctx, {
   }
 });
 
-function mainChartUpdate(label, post, purchase, account, complaint) {
-	removeMainChartData();
-	mainChart.data.labels = label;
-	mainChart.data.datasets[0].data=post;
-	mainChart.data.datasets[1].data=purchase;
-	mainChart.data.datasets[2].data=account;
-	mainChart.data.datasets[3].data=complaint;
-	mainChart.update();
+function txChartUpdate(label, data) {
+	removeTXChartData();
+	txChart.data.labels = label;
+	txChart.data.datasets.forEach((dataset)=>{
+        dataset.data = data;
+    });
+	txChart.update();
 }
 
-function removeMainChartData() {
-	mainChart.data.labels.pop();
-	mainChart.data.datasets.forEach((dataset) => {
+function removeTXChartData() {
+	txChart.data.labels.pop();
+	txChart.data.datasets.forEach((dataset) => {
         dataset.data.pop();
     });
-	mainChart.update();
+	txChart.update();
 }

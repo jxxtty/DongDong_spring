@@ -23,13 +23,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dto.MemberDTO;
 import com.mail.MailAuth;
 import com.service.MemberService;
+import com.service.SanctionService;
 
 @Controller
 public class LoginController {
 
 	@Autowired
 	MemberService service;
-	
+	@Autowired
+	SanctionService saService;
 	
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
@@ -45,8 +47,17 @@ public class LoginController {
 		String userid = map.get("userid");
 		//System.out.println(map);
 		if (dto != null) {
+			if(service.isAdmin(userid)){
+				session.setAttribute("login", dto);
+				session.setAttribute("admin", true);
+				return "redirect:/admin";
+			}
 			int lockStatusN= service.selectLockStatus(userid);
-			if(lockStatusN >= 1) {
+			if(saService.isSanctioned(userid)) {
+				model.addAttribute("mesg", "정지된 계정입니다. ("+saService.getSanctionReasonByUserid(userid)+")"); //줄바꿈
+				model.addAttribute("mesg1", saService.getEndDateByUserid(userid)+"까지"); //줄바꿈
+				return "loginForm";
+			} else if(lockStatusN >= 1) {
 				Date loginDate= service.selectLoginDate(userid);
 				int lockCount = service.selectLockCount(userid);
 				int time = lockCount*3;

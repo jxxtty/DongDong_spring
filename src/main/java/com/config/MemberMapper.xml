@@ -139,4 +139,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		set is_lock = 'Y', lock_count = lock_count + 1
 		where userid = #{userid} and login_fail_count > 4
 	</update>
+	
+	<select id="isAdmin" parameterType="string" resultType="int">
+		select admin
+		from member
+		where userid=#{userid}
+	</select>
 </mapper>

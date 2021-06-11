@@ -1,14 +1,14 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
 // Pie Chart Example
-var ctx = document.getElementById("myPieChart");
-var myPieChart = new Chart(ctx, {
+var ctx = document.getElementById("txPieChart");
+var txPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Direct", "Referral", "Social"],
+    labels: ["글 등록","거래","가입","신고"],
     datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      data: [],
+      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc','#757575'],
+      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf','#616161'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
@@ -30,3 +30,18 @@ var myPieChart = new Chart(ctx, {
     cutoutPercentage: 80,
   },
 });
+
+function txPieChartUpdate(data) {
+	removeTXPieChartData();
+	txPieChart.data.datasets.forEach((dataset)=>{
+        dataset.data = data;
+    });
+	txPieChart.update();
+}
+
+function removeTXPieChartData() {
+	txPieChart.data.datasets.forEach((dataset) => {
+        dataset.data.pop();
+    });
+	txPieChart.update();
+}

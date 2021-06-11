@@ -116,5 +116,14 @@ public class MemberDAO {
 	public void loginDate(String userid) {
 		template.update("MemberMapper.loginDate", userid);
 	}
+
+	public boolean isAdmin(String userid) {
+		int adminNum = template.selectOne("MemberMapper.isAdmin", userid);
+		if(adminNum==1) {
+			return true;
+		}
+		return false;
+		
+	}
 }//end MemberDAO
 

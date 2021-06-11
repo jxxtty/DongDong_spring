@@ -130,8 +130,11 @@ public class MemberService {
 		return dao.selectFailCount(userid);
 	}
 
-
 	public void loginDate(String userid) {
 		dao.loginDate(userid);
+	}
+	
+	public boolean isAdmin(String userid) {
+		return dao.isAdmin(userid);
 	}
 }

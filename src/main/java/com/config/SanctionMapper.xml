@@ -23,6 +23,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 	</insert>
 	
+	<select	id="getSanctionReasonByUserid" parameterType="string" resultType="int">        
+		SELECT satype
+		FROM sanction 
+		WHERE endDate=(SELECT MAX(endDate) 
+            		   FROM sanction 
+            		   WHERE userid=#{userid})
+      		  AND userid=#{userid}
+	</select>
+	
 	<select id="sanctionList" parameterType="string" resultType="SanctionDTO">
 		SELECT *
 		FROM sanction

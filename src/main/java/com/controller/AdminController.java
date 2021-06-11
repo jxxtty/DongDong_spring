@@ -1,7 +1,9 @@
 package com.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,18 +45,130 @@ public class AdminController {
 	@Autowired
 	StatisticService stService;
 	
+	@RequestMapping(value = "/admin/logout")
+	public String adminLogout(HttpSession session) {
+		session.invalidate();
+		return "redirect:/";
+	}
+	
 	@RequestMapping(value = "/admin")
 	public ModelAndView adminPage(Model model) {
+		ModelAndView mav = new ModelAndView();
+		
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH");
 		String currentTime = sdf.format(cal.getTime());
-		Map<String, List> complaintChartData = stService.getComplaintChartData(currentTime,"H", 7);
+		Map<String, List> purchaseChartData = stService.getPurchaseChartData(currentTime, "H", 7);
+		Map<String, List> postChartData = stService.getPostWriteChartData(currentTime, "H", 7);
+		Map<String, List> accountChartData = stService.getAccountCreateChartData(currentTime, "H", 7);
+		Map<String, List> complaintChartData = stService.getComplaintChartData(currentTime, "H", 7);
+		mav.addObject("mainChartLabel",purchaseChartData.get("purchaseChartLabel"));
+		mav.addObject("purchaseChartData",purchaseChartData.get("purchaseChartData"));
+		mav.addObject("postChartData",postChartData.get("postWriteChartData"));
+		mav.addObject("accountChartData",accountChartData.get("accountCreateChartData"));
+		mav.addObject("complaintChartData",complaintChartData.get("complaintChartData"));
+
+		Map<String, List> txChartData = stService.getTXChartData(currentTime, "H", 7);
+		mav.addObject("txChartLabel",txChartData.get("txChartLabel"));
+		mav.addObject("txChartData",txChartData.get("txChartData"));
 		
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("dailyChartLabel",complaintChartData.get("complaintChartLabel"));
-		mav.addObject("dailyChartData",complaintChartData.get("complaintChartData"));
+		Map<String, List> dailyPostWriteMap = stService.getPostWriteChartData(currentTime, "D", 1);
+		List<Integer> temp = dailyPostWriteMap.get("postWriteChartData");
+		int dailyPostWrite = temp.get(0);
+		
+		Map<String, List> dailyPurchaseMap = stService.getPurchaseChartData(currentTime, "D", 1);
+		temp = dailyPurchaseMap.get("purchaseChartData");
+		int dailyPurchase = temp.get(0);
+		
+		Map<String, List> dailyAccountMap = stService.getAccountCreateChartData(currentTime, "D", 1);
+		temp = dailyAccountMap.get("accountCreateChartData");
+		int dailyAccount = temp.get(0);
+		
+		Map<String, List> dailyComplaintMap = stService.getComplaintChartData(currentTime, "D", 1);
+		temp = dailyComplaintMap.get("complaintChartData");
+		int dailyComplaint = temp.get(0);
+
+		mav.addObject("dailyPostWrite",dailyPostWrite);
+		mav.addObject("dailyPurchase",dailyPurchase);
+		mav.addObject("dailyAccount",dailyAccount);
+		mav.addObject("dailyComplaint",dailyComplaint);
+		
+		dailyPostWriteMap = stService.getPostWriteChartData(currentTime, "H", 1);
+		temp = dailyPostWriteMap.get("postWriteChartData");
+		dailyPostWrite = temp.get(0);
+		
+		dailyPurchaseMap = stService.getPurchaseChartData(currentTime, "H", 1);
+		temp = dailyPurchaseMap.get("purchaseChartData");
+		dailyPurchase = temp.get(0);
+		
+		dailyAccountMap = stService.getAccountCreateChartData(currentTime, "H", 1);
+		temp = dailyAccountMap.get("accountCreateChartData");
+		dailyAccount = temp.get(0);
+		
+		dailyComplaintMap = stService.getComplaintChartData(currentTime, "H", 1);
+		temp = dailyComplaintMap.get("complaintChartData");
+		dailyComplaint = temp.get(0);
+		 
+		List<Integer> txPieChartData = new ArrayList<Integer>();
+		txPieChartData.add(dailyPostWrite);
+		txPieChartData.add(dailyPurchase);
+		txPieChartData.add(dailyAccount);
+		txPieChartData.add(dailyComplaint);
+		mav.addObject("txPieChartData",txPieChartData);
+		
 		mav.setViewName("admin/adminMain");
 		return mav;
+	}
+	
+	@RequestMapping(value = "/admin/txChartChange")
+	public @ResponseBody Map<String, List> txChartChange(HttpSession session, @RequestParam Map<String, String> map) {
+		String start = map.get("startDate");
+		String end = map.get("endDate");
+		String selectType = map.get("selectType");
+		Date temp = null;
+		SimpleDateFormat inputDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		SimpleDateFormat changeDataFormat = new SimpleDateFormat("yyyy-MM-dd_HH");
+		Calendar startCal = Calendar.getInstance();
+		Calendar endCal = Calendar.getInstance();
+		Calendar curCal = Calendar.getInstance();
+		long longLength = 0;
+		int length = 0;
+		try {
+			temp = inputDateFormat.parse(start);
+			startCal.setTime(temp);
+			temp = inputDateFormat.parse(end);
+			endCal.setTime(temp);
+			String currentTime = changeDataFormat.format(curCal.getTime());
+			
+			if(selectType.equals("H")) {
+				end = changeDataFormat.format(endCal.getTime());
+				if(end.substring(0,10).equals(currentTime.substring(0,10))) {
+					longLength = (curCal.getTimeInMillis()-startCal.getTimeInMillis())/60/60/1000;
+					length = (int)longLength;
+					end = changeDataFormat.format(curCal.getTime());
+				} else{
+					longLength = (endCal.getTimeInMillis()-startCal.getTimeInMillis())/60/60/1000;
+					length = (int)longLength+23;
+					end = end.substring(0,10).concat("_23");
+				}
+				
+			} else if(selectType.equals("D")) {
+				longLength = (endCal.getTimeInMillis()-startCal.getTimeInMillis())/60/60/24/1000;
+				length = (int)longLength+1;
+				end = changeDataFormat.format(endCal.getTime());
+				end = end.substring(0,10);
+			} else if(selectType.equals("M")) {
+				longLength = (endCal.getTimeInMillis()-startCal.getTimeInMillis())/60/60/24/1000/30;
+				length = (int)longLength+1;
+				end = changeDataFormat.format(endCal.getTime());
+				end = end.substring(0,7);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		Map<String, List> txChartData = stService.getTXChartData(end, selectType, length);
+		
+		return txChartData; 
 	}
 	
 	@RequestMapping(value = "/admin/complaintMember")
