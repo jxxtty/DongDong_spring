@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,18 +22,14 @@
 <title>Insert title here</title>
 </head>
 <body>
-<%
-	String mesg = (String)session.getAttribute("mesg");
-	if(mesg != null){
-%>
-	<script type = "text/javascript">
-		alert('<%=mesg %>');
-	</script>
-<%
-	//
-	session.removeAttribute("mesg");
-	}
-%>	
+<c:set var="mesg" value="${mesg}"></c:set>
+<c:set var="mesg1" value="${mesg1}"></c:set>
+<c:if test="${!empty mesg}"> 
+<script>
+alert("${mesg} \n ${mesg1}")
+</script>
+<c:remove var="mesg" scope="session" />
+</c:if>
 <jsp:include page = "member/loginForm.jsp" flush ="true" />
 </body>
 </html>

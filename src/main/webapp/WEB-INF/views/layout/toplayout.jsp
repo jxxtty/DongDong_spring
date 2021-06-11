@@ -50,10 +50,10 @@ $(function() {
 						<span>주문 요청함 보기</span></a>
 						
 						<div id="hiddenmenu1" style="display:none;">
-						<a id="menu5-1" href="../loginCheck/MyOrdersheetList"
+						<a id="menu5-1" href="loginCheck/MyOrdersheetList"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						▶발신함</a>
-						<a id="menu5-2" href="../loginCheck/OrdersheetList"
+						<a id="menu5-2" href="loginCheck/OrdersheetList"
 						class="list-group-item list-group-item-action text-center font-weight-bold border border-dark">
 						▶수신함</a>
 						</div><!--hiddenmenu  -->

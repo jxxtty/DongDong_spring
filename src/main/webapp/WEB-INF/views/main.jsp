@@ -36,10 +36,10 @@ alert("${success}")
 </script>
 <style type="text/css">
 	
-	footer
+	
 	* {
 		font-family: 'Nanum Gothic', sans-serif;
-		font-size: 15px;
+		font-size: 13px;
 		font-weight : 400;
 	}
 	
@@ -70,8 +70,7 @@ alert("${success}")
 		background-size : cover;
 		background-position: center;
 		z-index : 1;
-		width : 100%;
-		height : 480px;
+
 	}
 	@media (min-width:500px) and (max-width: 991.98px){
 	 main{

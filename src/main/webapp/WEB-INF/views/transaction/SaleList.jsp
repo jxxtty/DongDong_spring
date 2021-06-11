@@ -54,7 +54,7 @@ h2{
 	<tr>
 		<td class="text-center" width="1">${s.pNum}</td>	
 		<td class="text-center" width="120"><a
-			href="PostDetailServlet?pNum=${s.pNum}">
+			href="/postDetail?pNum=${s.pNum}">
 				<%--여기 해당상품 이동될 페이지  --%> <img src="/Dong-Dong/images/${s.pImage}"
 				border="0"  width="80" /></a>
 				<!-- <div> -->
