@@ -77,7 +77,7 @@
 }
 
 .card {
-	margin-bottom: 25px;
+	margin-bottom: 15px;
 	width: 340px;
 	height: 410px;
 }
