@@ -44,6 +44,7 @@ alert("${success}")
 	}
 	
 	main{
+		height:2180px;
 		padding-top : 10px;
 		z-index : 2;
 	}
@@ -62,21 +63,61 @@ alert("${success}")
 	}
 	
 	#main_img{
-		margin-top : 68px;
+		margin-top : 100px;
 		padding : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
-<<<<<<< HEAD
-		background-size : 1160px 260px;
-		 background-position: center;
-=======
-		background-size : 1190px 400px;
+		background-size : cover;
 		background-position: center;
->>>>>>> bad4f23bb8db76bb0b32d099dd62f39d2f73c294
 		z-index : 1;
 		width : 100%;
-		height : 580px;
+		height : 480px;
 	}
+	@media (min-width:500px) and (max-width: 991.98px){
+	 main{
+		height:4150px;
+		padding-top : 10px;
+		z-index : 2;
+	}
+	#main_img{
+		height : 380px;
+		margin-bottom:-35px;
+	}
+}
+	
+	
+	
+	
+	@media (min-width:992px) and (max-width: 1199.98px){
+	 main{
+		height:4090px;
+		padding-top : 10px;
+		z-index : 2;
+	}
+	#main_img{
+		height : 380px;
+		margin-bottom:60px;
+	}
+}
+	 @media (min-width:1200px) and (max-width: 1560px){
+	 main{
+		height:3080px;
+		padding-top : 10px;
+		z-index : 2;
+	}
+	#main_img{
+		height : 380px;
+		margin-bottom:60px;
+	}
+	
+	@media (min-width:992px) and (max-width: 1199.98px){
+	#main_img{
+		height : 380px;
+		margin-bottom:60px;
+	}
+	
+	}
+}
 </style>
 </head>
 <body>

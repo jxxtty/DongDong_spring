@@ -295,7 +295,7 @@
 							<c:if test="${!empty login}">
 								<li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
 								<li><a class="dropdown-item" href="/logout">로그아웃</a></li>
-								<li><a class="dropdown-item" href="/postWrite">글쓰기</li>
+								<li><a class="dropdown-item" href="/postWrite">글쓰기</a></li>
 								<li><a class="dropdown-item" href="chatRoom">채팅</a></li>
 								<li><a class="dropdown-item" id="alarmList" href="#none">알림</a></li>
 							</c:if>

@@ -55,30 +55,31 @@
 
 
 .all {
-	width: 1950px;
+	width: 2050px;
 	height: auto;
 	margin: 0 auto;
 }
 
 .center {
 	text-align: center;
-	width: 1430px;
+	width: 1950px;
 	height: auto;
 	margin: 0 auto;
 }
 
 .container {
-	width: 1220px;
-	height: auto;
+	margin-top:90px;
+	max-width: 1550px;
+	max-height: auto;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr;
-	grid-template-rows: 390px;
+	grid-template-rows: 485px;
 }
 
 .card {
-	margin-bottom: 10px;
-	width: 288px;
-	height: 380px;
+	margin-bottom: 25px;
+	width: 340px;
+	height: 410px;
 }
 
 #mesg {
@@ -101,7 +102,7 @@
 
 .page_nation {
 	width: 300px;
-	margin-left: 80px;
+	margin-left: 130px;
 	display: inline-block;
 	text-align: center;
 }
@@ -135,8 +136,8 @@ img#MOVE_TOP_BTN {
 	right: 50%;
 	float: left;
 	text-align: center;
-	margin-right: -850px;
-	margin-top: 500px;
+	margin-right: -925px;
+	margin-top: 520px;
 }
 
 .current {
@@ -150,81 +151,70 @@ img#MOVE_TOP_BTN {
 	color: #8db0d7 !important;
 	text-decoration: none;
 }
-@media (min-width:300px) and (max-width: 991.98px){
+@media (min-width:500px) and (max-width: 991.98px){ /* 반응형 적용 제일 크기 작을때  */
   .container{
-  	grid-template-columns: 1fr;
-  	margin: 0 1px;
+  	grid-template-columns: 1fr 1fr;
+  	margin-left: 70px;
   	height: auto;
-  	max-width: 500px;
+  	max-width: 750px;
   }
    .page_nation {
 	width: 300px;
-	margin-left: -190px;
+	margin-left: -620px;
 	margin-right: 300px;
 	display: inline-block;
 	text-align: center;
 }
-#followquick {
-	position: absolute;
-	top: 160px;
-	right: 50%;
-	float: left;
-	text-align: center;
-	margin-right: -330px;
-	margin-top: 500px;
+.card{
+	max-width: 310px; 
+	height: 280px;
+}
+#card-img-top{
+	max-width: 310px; 
+	height: 210px;
+}
+.card-body{
+	max-width: 310px;
 }
 }
- @media (min-width:992px) and (max-width: 1199.98px){
+ @media (min-width:992px) and (max-width: 1199.98px){ /* 반응형 적용 두번쨰로 크기 작을때  */
   .container{
   	grid-template-columns: 1fr 1fr;
   	margin: 0 1px;
   	height: auto;
-  	max-width: 630px;
+  	max-width: 820px;
+  	margin-left: 100px;
   }
   .page_nation {
 	width: 300px;
-	margin-left: -80px;
+	margin-left: -670px;
 	margin-right: 100px;
 	display: inline-block;
 	text-align: center;
 }
-#followquick {
-	position: absolute;
-	top: 160px;
-	right: 50%;
-	float: left;
-	text-align: center;
-	margin-right: -510px;
-	margin-top: 500px;
-}
+
 }
   @media (min-width:1200px) and (max-width: 1560px){
   .container{
+ 	margin-top:180px;
   	grid-template-columns: 1fr 1fr 1fr;
   	margin: 0 1px;
   	height: auto;
-  	max-width: 920px;
+  	max-width: 1210px;
+  	margin-left: 100px;
   }
 .page_nation {
 	width: 300px;
-	margin-left: 90px;
+	margin-left: -450px;
 	display: inline-block;
 	text-align: center;
 }
-#followquick {
-	position: absolute;
-	top: 160px;
-	right: 50%;
-	float: left;
-	text-align: center;
-	margin-right: -700px;
-	margin-top: 500px;
-}
+
 }
 @media (min-width:1561.98px) and (max-width: 2400px){
   .page_nation {
 	width: 300px;
-	margin-left: 90px;
+	margin-left: 130px;
 	display: inline-block;
 	text-align: center;
 }
@@ -240,13 +230,13 @@ img#MOVE_TOP_BTN {
  $(function() {
 	$(window).scroll(function(){
 		var scrollTop = $(document).scrollTop();
-		if (scrollTop < 160) {
-		 scrollTop = 160;
+		if (scrollTop < 154) {
+		 scrollTop = 154;
 		} 
 		$("#followquick").stop();
 		$("#followquick").animate( { "top" : scrollTop });
-		if (scrollTop > 1300) {
-			scrollTop = 1300;
+		if (scrollTop > 1650) {
+			scrollTop = 1650;
 		}
 		$("#followquick").stop();
 		$("#followquick").animate( { "top" : scrollTop });
@@ -273,10 +263,9 @@ $("#MOVE_TOP_BTN").click(function() {
 
 </script>
 </head>
-<body>
+<body style="overflow-x: hidden">
 
 <% 
-	/* if(list2 != null){  */
 		if(member != null){
 %>
 	
@@ -294,9 +283,9 @@ $("#MOVE_TOP_BTN").click(function() {
 	String userid = dto.getUserid();
 %>
 
-	<div class="card border border-3" style="max-width:107px; height:117px;">
+	<div class="card border border-3" style="max-width:105px; height:105px;">
 	      <a href="postDetail?pNum=<%=pNum %>">
-      <img class="card-img-top" src="/Dong-Dong/images/<%=pImage %>" alt="Responsive image" style="max-width:110px; height:110px; display: block; margin: auto;" ></a>
+      <img class="card-img-top" src="/Dong-Dong/images/<%=pImage %>" alt="Responsive image" style="max-width:100px; height:100px; display: block; margin: auto;" ></a>
       </div><!-- card -->
     	
       
@@ -304,7 +293,6 @@ $("#MOVE_TOP_BTN").click(function() {
 	}// for
  }//if
 %>   
-</span>
  	</div><!--찜목록 위젯 설정-->
  
 	<img id="MOVE_TOP_BTN" src="/Dong-Dong/images/util/topbutton.png"
@@ -328,7 +316,11 @@ $("#MOVE_TOP_BTN").click(function() {
 						String pDate = dto.getpDate();
 						String addr = dto.getAddr();
 						int pNum = dto.getpNum();
-
+						String pTit = null;
+						if(pTitle.length() >= 16){
+						pTit = dto.getpTitle().substring(0,14)+"...";
+						}
+						
 						// 가격에 1000단위에 쉼표를 붙여 줍니다.
 						DecimalFormat formatter = new DecimalFormat("###,###");
 						String price = formatter.format(pPrice);
@@ -357,11 +349,20 @@ $(document).ready(function(){
 </script>
 
 				<div class="card" id="card<%=pNum%>"
-					style="background-color: white; width: 288px; height: 380px; cursor: pointer;">
+					style="background-color: white; width: 340px; height: 460px; cursor: pointer;">
 					<img class="card-img-top" src="/Dong-Dong/images/<%=pImage%>"
-						alt="Responsive image" style="max-width: 288px; height: 285px;">
-					<div class="card-body" style="width: 288px; height: 70px;">
+						alt="Responsive image" style="max-width: 340px; height: 358px;">
+					<div class="card-body" style="width: 340px; height: 100px;">
+					<%
+					if(pTitle.length() <= 15){%>
 						<h5 class="card-title" style="height: 35px;"><%=pTitle%></h5>
+						<%
+					} else { %>
+						<h5 class="card-title" style="height: 35px;"><%=pTit%></h5>
+					<%
+					}
+					%>
+						
 						<h4 class="price"><%=price%>원
 						</h4>
 						<small class="text-muted"
