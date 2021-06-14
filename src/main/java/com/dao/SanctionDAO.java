@@ -30,4 +30,8 @@ public class SanctionDAO {
 		double result = template.selectOne("SanctionMapper.isSanctioned",userid);
 		return (result<0?true:false);
 	}
+
+	public int getSanctionReasonByUserid(String userid) {
+		return template.selectOne("SanctionMapper.getSanctionReasonByUserid",userid);
+	}
 }

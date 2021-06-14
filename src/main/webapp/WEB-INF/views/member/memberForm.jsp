@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- 
+<!--  
 <head>
 <jsp:include page="Header.jsp" />
-</head>
+</head>--> 
 
 <script  src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
@@ -165,11 +165,7 @@ $("#passwd2").on("keyup",function(){
 		// 만들 팝업창 width 크기의 1/2 만큼 보정값으로 빼줌
 		var popupY= (window.screen.height / 2) - (popupHeight / 2);
 		// 만들 팝업창 height 크기의 1/2 만큼 보정값으로 빼줌
-<<<<<<< HEAD
 		url = "emailAuth" // 바뀐 부분 @@@
-=======
-		url = "emailAuth"
->>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
 		open(url,"confirm", 'status=no, height=' + popupHeight  + ', width=' + popupWidth  + ', left='+ popupX + ', top='+ popupY);
 	}
 	//닉네임 체크 //이메일 값 넘겨주기
@@ -213,11 +209,7 @@ $("#passwd2").on("keyup",function(){
 
 <tr>
 <th><h3>패스워드</h3></th>
-<<<<<<< HEAD
 <td colspan="3"style="width:20%;"><input type="password" class="form-control" name="passwd" id="passwd" style="width:700px;height:50px" placeholder="영문(대소문자) 포함,숫자 포함,특수 문자 포함,공백 X,비밀번호 자리 8~20자"><span id="result1"/></td>
-=======
-<td colspan="3"style="width:20%;"><input type="password" class="form-control" name="passwd" id="passwd" style="width:700px;height:50px" placeholder="비밀번호 입력"></td>
->>>>>>> 002b0a9e0b00c5ea276add6c26c67cdacf0aeacc
 </tr>
 
 <tr>

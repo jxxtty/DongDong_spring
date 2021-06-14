@@ -66,6 +66,14 @@
 			<beans:ref bean="loginCheckInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
+	
+	<beans:bean id="adminCheckInterceptor" class="com.interceptor.AdminCheckInterceptor"></beans:bean>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/admin/**"/>
+			<beans:ref bean="adminCheckInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
 	<!-- interceptor의 사용  끝 -->
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->

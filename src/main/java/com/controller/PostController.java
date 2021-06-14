@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,9 +53,10 @@ public class PostController {
 	
 	@Resource(name="uploadPath")
 	String uploadPath;
+
+	private Logger complaintLogger = LoggerFactory.getLogger("statistics");
 	
-	
-	// 글쓰기 관련---------------------------------------------------------------------------
+	// 글쓰기 ---------------------------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postWrite", method=RequestMethod.GET)
 	public String postWrite() {
 		return "redirect:../postWrite"; // 글쓰기화면으로전환
@@ -86,8 +89,6 @@ public class PostController {
 		for(int i = 0 ; i < fileList.size() ; i++) {
 			MultipartFile mf = fileList.get(i);
 			String originalFileName = mf.getOriginalFilename(); // 원본파일 이름
-			//long fileSize = mf.getSize(); // 파일사이즈
-			//String safeFile = path + System.currentTimeMillis()+"_" +i+ originalFileName;
 			String safeFile = uploadPath + System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
 			
 			String dbSaveFile = System.currentTimeMillis()+"_" + mDto.getUserid() +"_"+ i +"_"+originalFileName;
@@ -104,13 +105,13 @@ public class PostController {
 			}
 		}
 		pDto.setpImage(dbSave);
-		System.out.println("DB에 들어가는 이미지파일 " + dbSave);
 		int n = pService.newPost(pDto);
+		complaintLogger.info("PostController postWriteSuccess- userid: "+pDto.getUserid());
 		return "redirect:../"; // main으로 이동하는 경로
 	}
 	
 	
-	// 글수정 관련-----------------------------------------------------------
+	// 글수정 -----------------------------------------------------------
 	
 	@RequestMapping(value="/loginCheck/postUpdate", method=RequestMethod.GET)
 	public ModelAndView postUpdate(@RequestParam("pNum") String pNum) {
@@ -170,7 +171,6 @@ public class PostController {
 				MultipartFile mf = fileList.get(i);
 				String originalFileName = mf.getOriginalFilename(); // 원본파일 이름
 				if(originalFileName.length() == 0) {
-					System.out.println("수정된거 없어서 flag증가시키고 break함");
 					flag++;
 					break;
 				}
@@ -210,7 +210,7 @@ public class PostController {
 		return "redirect:../postDetail?pNum="+pDto.getpNum();
 	}
 	
-	// 글삭제 관련-----------------------------------------------------------
+	// 글삭제 -----------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postDelete", method=RequestMethod.GET)
 	public String postDelete(@RequestParam("pNum") String pNum, HttpSession session) {
 		
@@ -267,7 +267,7 @@ public class PostController {
 	}// 내 게시물 체크삭제
 	
 	
-	// 끌올 관련------------------------------------------------------------
+	// 끌올 ------------------------------------------------------------
 	@RequestMapping(value="/loginCheck/postPull", method=RequestMethod.GET)
 	public String postPull(@RequestParam("pNum") String pNum, HttpSession session, Model m){ 
 		PostDTO pDto = pService.getPostByPNum(Integer.parseInt(pNum)); // 글번호로 해당 글정보 불러오기
@@ -316,6 +316,7 @@ public class PostController {
 		return "redirect:../loginCheck/MyPostList"; // 내글보기로 이동
 	}
 	
+	// 글 상세보기 ---------------------------------------------------------------------------
 	@RequestMapping(value = "/postDetail")
 	public ModelAndView postDetail(HttpSession session, @RequestParam("pNum") String pNum) {
 		ModelAndView mav = new ModelAndView();
@@ -436,6 +437,7 @@ public class PostController {
 		return mav;
 	}
 	
+	// 댓글 ---------------------------------------------------------------------------
 	@RequestMapping(value = "/loginCheck/commentsWrite")
 	public String commentsWrite(HttpSession session, @RequestParam Map<String, String> map) {
 		MemberDTO dto = (MemberDTO)session.getAttribute("login");
@@ -461,7 +463,7 @@ public class PostController {
 		int insertResult = cService.insertComments(cDTO);
 			
 		if(insertResult!=1) { // 게시글 업데이트가 실패했을 경우 
-			session.setAttribute("mesg", "댓글 수정 중 오류가 발생하였습니다.");
+			session.setAttribute("mesg", "댓글 작성 중 오류가 발생하였습니다.");
 	    } else {
 	    	nextPage="postDetail?pNum="+pNum;
 	    }

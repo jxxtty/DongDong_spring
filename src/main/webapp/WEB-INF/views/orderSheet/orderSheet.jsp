@@ -26,11 +26,14 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript">
 	$(function() {
+		var postWriter = "${param.sUserid}";
+		
 		$("form").submit(function() {
 			var oPrice = $("#oPrice").val();
 			var oAddr = $("#oAddr").val();
 			var oMessage = $("#oMessage").val();
-
+			
+			
 			if (oPrice.length == 0) {
 				alert("희망가격을 입력하세요")
 				$("#oPrice").focus();
@@ -47,9 +50,10 @@
 				$("#oMessage").focus();
 				return false;
 			}
-
+			
+			opener.parent.sendMessage(postWriter, 'o'); // 부모창에있는 sendMessage함수 호출
 		}) //form end
-
+		
 	})
 </script>
 

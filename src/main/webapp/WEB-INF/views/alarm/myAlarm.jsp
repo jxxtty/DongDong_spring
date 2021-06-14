@@ -60,6 +60,11 @@
 			location.href="postDetail?pNum="+num;
 			// 글 눌러서 이동하면 alarm의 isRead값 수정하기
 		});
+		
+		$(".goOrderSheet").click(function(){
+			location.href="loginCheck/OrdersheetList";
+		});
+		
 	})//end ready
 	
 </script>
@@ -78,6 +83,10 @@ h2{
 	text-decoration : underline;
 }
 
+.goOrderSheet:hover{
+	cursor : pointer;
+	text-decoration : underline;
+}
 </style>
 
 
@@ -104,9 +113,12 @@ h2{
 			<td class="text-center" width="1">${typeMap[a.type]}</td><!-- 알림종류 -->
 			<td class="text-center" width="80">${a.sender}</td> <!-- 보낸사람 -->
 			<td class="text-center" width="120">
-				<%-- <a href="/postDetail?pNum=${p.pNum}">
-					<img src="/Dong-Dong/images/${p.pImage}" border="0"  width="80" /></a> --%>
-					<div class="goPost" data-info="${a.info}">${a.detail}</div> 
+				<c:if test="${a.type != 'o' }">
+					<div class="goPost" data-info="${a.info}">${a.detail}</div>
+				</c:if>
+				<c:if test="${a.type == 'o' }">
+					<div class="goOrderSheet">${a.detail}</div>
+				</c:if>
 			</td><!-- 상세정보 -->
 			<td class="text-center" align="center" width="30" style='padding-left: 10px'>
 				<c:if test="${a.isRead == 0 }">

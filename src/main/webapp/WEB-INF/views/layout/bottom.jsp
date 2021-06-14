@@ -5,9 +5,31 @@
 .bold{
     font-weight: bold;
 	}
+	
+@media (min-width:300px) and (max-width: 991.98px){
+.py-5{
+	padding-left:170px;
+}
+}
+ @media (min-width:992px) and (max-width: 1199.98px){
+.py-5{
+	padding-left:200px;
+}
+}
+@media (min-width:1200px) and (max-width: 1560px){
+.py-5{
+	padding-left:320px;
+}
+  }
+@media (min-width:1561.98px) and (max-width: 2400px){
+
+  .container2{
+	padding-left:470px;
+}
+}	
 </style>
 <footer class="py-5" style="background-color: #495057;">
-	<div class="container2" style="margin-left:570px;">
+	<div class="container2">
 	<div id="bottom">
 	<p class="m-0 text-left" style="color: #D3D2C9"> 
 <span class="bold">고객문의</span> [cs@dongdong.com]&nbsp;

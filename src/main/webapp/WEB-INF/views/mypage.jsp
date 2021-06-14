@@ -29,7 +29,7 @@
 
 	main{
 		padding-top : 130px;
-		z-index : 2;
+		/*z-index : 2;*/
 	}
 	
 	
@@ -43,7 +43,7 @@
 		top : 0;
 		left : 0;
 		right : 0;
-		z-index : 1;
+		/*z-index : 2;*/
 		text-align : center;
 		height : 114px;
 		background-color : white;

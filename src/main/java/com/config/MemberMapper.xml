@@ -86,4 +86,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT * FROM member WHERE userid = #{senderId}
 	</select>
 
+	<select id="selectLockStatus" parameterType="String" resultType="int">
+		SELECT COUNT(1)
+		from member
+		where userid = #{userid} and LATEST_TRY_LOGIN_DATE + ( 3 / 24 / 60 ) * LOCK_COUNT > SYSDATE
+	</select>
+	
+	<update id="loginDate" parameterType="MemberDTO" >
+		update member
+		set latest_try_login_date = sysdate
+		where userid = #{userid} 
+	</update>
+	
+	<select id="selectLoginDate" parameterType="String" resultType="Date">
+		SELECT LATEST_TRY_LOGIN_DATE 
+		from member
+		where userid = #{userid} 
+	</select>
+	
+	<select id="selectLockCount" parameterType="String" resultType="int">
+		SELECT LOCK_COUNT 
+		from member
+		where userid = #{userid} 
+	</select>
+	
+	<select id="selectFailCount" parameterType="String" resultType="int">
+		SELECT login_fail_count 
+		from member
+		where userid = #{userid} 
+	</select>
+	
+	<update id="updateClearLoginFailCount" parameterType="String" >
+		update member
+		set LOGIN_FAIL_COUNT = 0
+		where userid = #{userid} 
+	</update>
+	
+	<update id="updateClearLockCount" parameterType="String" >
+		update member
+		set lock_count = 0 , is_lock = 'N'
+		where userid = #{userid} 
+	</update>
+	
+	<update id="plusLoginFailCount" parameterType="MemberDTO" >
+		update member
+		set login_fail_count = login_fail_count + 1 ,latest_try_login_date = sysdate
+		where userid = #{userid} 
+	</update>
+	
+	<update id="updateLockStatus" parameterType="MemberDTO" >
+		update member
+		set is_lock = 'Y', lock_count = lock_count + 1
+		where userid = #{userid} and login_fail_count > 4
+	</update>
+	
+	<select id="isAdmin" parameterType="string" resultType="int">
+		select admin
+		from member
+		where userid=#{userid}
+	</select>
 </mapper>

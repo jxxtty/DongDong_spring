@@ -15,7 +15,7 @@
 		window.open('chatList/chat?chatId='+chatid, '_blank' ,'width=550, height=620');
 	}
 
-
+	var stompClient = null; // 전역
 	$(document).ready(function() {
 		
 		$("#main").click(function() {
@@ -37,7 +37,7 @@
 		});
 		
 		$("#chatList").click(function(){
-			var userid = ${login.userid};
+			var userid = $("#id").val();
 			
 			$.ajax({
 				url : 'chatList',
@@ -96,10 +96,14 @@
 	                    		result += first;
 	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글에 댓글이 작성되었습니다.</a><br>";
 	                        	result += "<p id='alarmList_Sub'>by <b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
+	                        } else if(data.alarm[i].type == "o"){
+	                        	result += first;
+	                        	result += "<a href='loginCheck/OrdersheetList'>["+data.alarm[i].detail+"]글의 주문서가 도착했습니다.</a><br>";
+	                        	result += "<p id='alarmList_Sub'> by<b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
 	                        } else {
 	                        	result += first;
-	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글의 주문서가 도착했습니다.</a><br>";
-	                        	result += "<p id='alarmList_Sub'> by<b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
+	                        	result += "<a href='postDetail?pNum="+data.alarm[i].info+"'>["+data.alarm[i].detail+"]글에 작성한 댓글에 대댓글이 작성되었습니다.</a><br>";
+	                        	result += "<p id='alarmList_Sub'>by <b>"+data.alarm[i].sender+"</b> "+data.alarm[i].date+"</p></li>";
 	                        }
                         }
                     	result += first+"<a href='loginCheck/myAlarm'><img src='/Dong-Dong/images/util/plus.png' width='20px'></a></li>";
@@ -115,7 +119,6 @@
 		});
 
 		var isLogin = $("#id").val();
-		var stompClient = null;
 		if (isLogin && isLogin.length != 0) {
 			var sockJS = new SockJS('http://localhost:8079/sockJS');
 			var urlSubscribe = '/subscribe/alarm/' + isLogin; // 세션에 저장되어있는login정보에서 userid를 추출해서 연결
@@ -136,34 +139,59 @@
 				$('.my-alarm').addClass('d-none');
 			}
 		});
-	});
+	}); // end-documentready
 
 	function createToast(alarmObj) { // 받아온 데이터를 파싱해서 화면에 뿌려줄 코드를 작성한다.
-		if (alarmObj.type == "c") {
-			var print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
+		var print = "";
+		if (alarmObj.type == "c") { // 댓글알림
+			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
 					+ '<div class="toast-body" id="toast_body">'
 					+ '<p><b>'
-					+ alarmObj.sender
-					+ '님</b>이 <br> 회원님이 작성하신 글에 <b>댓글</b>을 달았습니다.</p>'
+					+ alarmObj.sender + '님</b>이 ['
+					+ alarmObj.detail +']에 <br> <b>댓글</b>을 작성했습니다.</p>'
 					+ '<div class="mt-2 pt-2 border-top">'
-					+ '<button type="button" id="goPage" class="btn btn-primary btn-sm">확인하기</button>'
+					+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
 					+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
 					+ '</div>' + '</div>' + '</div>';
-
-			$(".toast-container").append(print);
-			$(".toast").toast('show');
-
-			$("#goPage").click(function() { // 버튼클릭시 해당 글로 이동하게!
-				location.href = "postDetail?pNum=" + alarmObj.info;
-			});
-
-			var myToastEl = document.querySelector('.toast');
-			myToastEl.addEventListener('hidden.bs.toast', function() {
-				$('.toast-container').html('');
-			});
-
+		} else if (alarmObj.type == "rc"){ // 대댓글알림
+			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
+				+ '<div class="toast-body" id="toast_body">'
+				+ '<p>['
+				+ alarmObj.detail +']에 작성한 댓글에<br><b>'
+				+ alarmObj.sender + '</b>님이 <b>대댓글</b>을 작성했습니다.</p>'
+				+ '<div class="mt-2 pt-2 border-top">'
+				+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
+				+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
+				+ '</div>' + '</div>' + '</div>';
+		} else { // 주문서알림
+			print = '<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="true">'
+				+ '<div class="toast-body" id="toast_body">'
+				+ '<p><b>'
+				+ alarmObj.sender + '님</b>이 ['
+				+ alarmObj.detail +']에 <br><b>주문서</b>를 보냈습니다.</p>'
+				+ '<div class="mt-2 pt-2 border-top">'
+				+ '<button type="button" class="btn btn-primary btn-sm" id="goPage">확인하기</button>'
+				+ '<button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">닫기</button>'
+				+ '</div>' + '</div>' + '</div>';
 		}
+		$(".toast-container").append(print);
+		$(".toast").toast('show');
+
+		$("#goPage").click(function() { // 버튼클릭시 해당 글로 이동하게!
+			if (alarmObj.type == "o"){
+				location.href="loginCheck/OrdersheetList";
+			} else {
+				location.href = "postDetail?pNum=" + alarmObj.info;
+			}
+		});
+		
+		var myToastEl = document.querySelector('.toast');
+		myToastEl.addEventListener('hidden.bs.toast', function() {
+			$('.toast-container').html('');
+		});
+
 	}
+
 
 
 </script>
@@ -217,6 +245,9 @@
 	color : black;
 }
 
+#keyword{
+	border: 2px solid #8db0d7;
+}
 
 </style>
 </head>
@@ -267,7 +298,7 @@
 							<c:if test="${!empty login}">
 								<li><a class="dropdown-item" href="/mypage">마이페이지</a></li>
 								<li><a class="dropdown-item" href="/logout">로그아웃</a></li>
-								<li><a class="dropdown-item" href="/postWrite">글쓰기</li>
+								<li><a class="dropdown-item" href="/postWrite">글쓰기</a></li>
 								<li><a class="dropdown-item" href="chatRoom">채팅</a></li>
 								<li><a class="dropdown-item" id="alarmList" href="#none">알림</a></li>
 							</c:if>
@@ -289,6 +320,7 @@
 		</div>
 	</nav>
 	<div aria-live="polite" aria-atomic="true" class="position-relative">
-  		<div class="toast-container position-absolute top-0 end-0 p-3" ></div>
+  		<div class="toast-container position-absolute top-0 end-0 p-3">
+		</div>
 	</div>
 </body>

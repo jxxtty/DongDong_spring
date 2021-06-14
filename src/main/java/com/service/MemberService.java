@@ -1,5 +1,6 @@
 package com.service;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -90,4 +91,50 @@ public class MemberService {
 		return dao.getMemberByUserid(senderId);
 	} // userid로 MemberDTO 반환
 	
+	public int selectLockStatus(String userid) {
+		return dao.selectLockStatus(userid);
+	}
+
+
+	public void updateClearLoginFailCount(String userid) {
+		dao.updateClearLoginFailCount(userid);
+	}
+
+
+	public void updateClearLockCount(String userid) {
+		dao.updateClearLockCount(userid);
+	}
+
+
+	public void plusLoginFailCount(String userid) {
+		dao.plusLoginFailCount(userid);
+	}
+
+
+	public void updateLockStatus(String userid) {
+		dao.updateLockStatus(userid);
+	}
+
+
+	public Date selectLoginDate(String userid) {
+		return dao.selectLoginDate(userid);
+	}
+
+
+	public int selectLockCount(String userid) {
+		return dao.selectLockCount(userid);
+	}
+
+
+	public int selectFailCount(String userid) {
+		return dao.selectFailCount(userid);
+	}
+
+	public void loginDate(String userid) {
+		dao.loginDate(userid);
+	}
+	
+	public boolean isAdmin(String userid) {
+		return dao.isAdmin(userid);
+	}
 }

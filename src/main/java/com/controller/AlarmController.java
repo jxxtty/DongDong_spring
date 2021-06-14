@@ -34,6 +34,10 @@ public class AlarmController {
 	public void sendAlarm(Alarm alarm) throws IOException {
 		int aNumPK = aService.newAlarm(alarm); // alarm DB에 데이터 쌓고, 방금insert한 레코드의 PK값을 받아온다.
 		alarm.setaNum(aNumPK);
+		String title = alarm.getDetail();
+		if(title.length() > 7) {
+			alarm.setDetail(title.substring(0,7)+"...");
+		}
 		String urlSubscribe = "/subscribe/alarm/" + alarm.getReceiver(); // receiver = 글작성자
 		simpMessageTemplate.convertAndSend(urlSubscribe, alarm);
 	}
@@ -49,8 +53,8 @@ public class AlarmController {
                 JSONObject sObject = new JSONObject();//배열 내에 들어갈 json
                 sObject.put("sender", list.get(i).getSender());
                 sObject.put("info", list.get(i).getInfo());
-                sObject.put("type", list.get(i).getType()); // 글제목이 길 경우
-                if(list.get(i).getDetail().length() > 7) {
+                sObject.put("type", list.get(i).getType()); 
+                if(list.get(i).getDetail().length() > 7) {// 글제목이 길 경우
                 	sObject.put("detail", list.get(i).getDetail().substring(0,7)+"...");
                 } else {
                 	sObject.put("detail", list.get(i).getDetail());

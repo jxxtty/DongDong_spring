@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -21,13 +23,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.dto.MemberDTO;
 import com.mail.MailAuth;
 import com.service.MemberService;
+import com.service.SanctionService;
 
 @Controller
 public class LoginController {
 
 	@Autowired
 	MemberService service;
-	
+	@Autowired
+	SanctionService saService;
 	
 	@RequestMapping(value = "/logout")
 	public String logout(HttpSession session) {
@@ -40,12 +44,44 @@ public class LoginController {
 	@RequestMapping(value = "/login")
 	public String login(@RequestParam HashMap<String, String> map, Model model, HttpSession session) {
 		MemberDTO dto = service.login(map);
+		String userid = map.get("userid");
 		//System.out.println(map);
 		if (dto != null) {
-			session.setAttribute("login", dto);
-			return "redirect:/";
+			if(service.isAdmin(userid)){
+				session.setAttribute("login", dto);
+				session.setAttribute("admin", true);
+				return "redirect:/admin";
+			}
+			int lockStatusN= service.selectLockStatus(userid);
+			if(saService.isSanctioned(userid)) {
+				model.addAttribute("mesg", "정지된 계정입니다. ("+saService.getSanctionReasonByUserid(userid)+")"); //줄바꿈
+				model.addAttribute("mesg1", saService.getEndDateByUserid(userid)+"까지"); //줄바꿈
+				return "loginForm";
+			} else if(lockStatusN >= 1) {
+				Date loginDate= service.selectLoginDate(userid);
+				int lockCount = service.selectLockCount(userid);
+				int time = lockCount*3;
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(loginDate);
+				cal.add(Calendar.MINUTE, time);
+				//model.addAttribute("mesg", "일시적으로 제한된 계정입니다.("+time+")분"+ cal.getTime()); //줄바꿈
+				model.addAttribute("mesg", "일시적으로 제한된 계정입니다. ("+time+")분"); //줄바꿈
+				model.addAttribute("mesg1", cal.getTime()+" 까지"); //줄바꿈
+				return "loginForm";
+			}else {
+				service.updateClearLoginFailCount(userid);
+				service.updateClearLockCount(userid);
+				service.loginDate(userid);
+				session.setAttribute("login", dto);
+				return "redirect:/";
+			}
+
 		} else {
-			model.addAttribute("mesg", "아이디 또는 비밀번호가 잘못되었습니다.");
+			service.plusLoginFailCount(userid);
+			service.updateLockStatus(userid);
+			int failCount = service.selectFailCount(userid);
+			model.addAttribute("mesg", "아이디 또는 비밀번호가 잘못되었습니다.("+failCount+"회 실패)");//줄바꿈이랑, 몇번남았는지 뜨게끔 수정
+			model.addAttribute("mesg1","5회 이상 틀릴 시 계정이 일시 정지 됩니다.");
 			return "loginForm";
 		}
 

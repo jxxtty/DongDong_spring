@@ -60,6 +60,13 @@ public class MainController {
 		String[] image = list.get(i).getpImage().split(" ");
 		list.get(i).setpImage(image[0]);
 	}
+	for(int i = 0 ; i < list2.size() ; i++) {
+		String[] image = list2.get(i).getpImage().split(" ");
+		list2.get(i).setpImage(image[0]);
+	}
+	
+	
+	model.addAttribute("login",member);
 	model.addAttribute("favoriteList", list2);
 	model.addAttribute("postList", list);
 	model.addAttribute("blockPerPage", pDTO.getBlockPerPage());

@@ -36,14 +36,15 @@ alert("${success}")
 </script>
 <style type="text/css">
 	
-	footer
+	
 	* {
 		font-family: 'Nanum Gothic', sans-serif;
-		font-size: 15px;
+		font-size: 13px;
 		font-weight : 400;
 	}
 	
 	main{
+		height:auto;
 		padding-top : 10px;
 		z-index : 2;
 	}
@@ -62,15 +63,48 @@ alert("${success}")
 	}
 	
 	#main_img{
-		margin-top : 68px;
+		margin-top : 100px;
 		padding : 0;
 		background-image : url('/Dong-Dong/images/util/main.jpg');
 		background-repeat : no-repeat;
-		background-size : 1190px 400px;
-		 background-position: center;
+		background-size : cover;
+		background-position: center;
+		height: 480px;
 		z-index : 1;
-		width : 100%;
-		height : 580px;
+
+	}
+	@media (min-width:500px) and (max-width: 991.98px){
+	 main{
+		height:auto;
+		padding-top : 10px;
+		z-index : 2;
+	}
+	#main_img{
+		height : 380px;
+		margin-bottom:-35px;
+	}
+}
+	
+	@media (min-width:992px) and (max-width: 1199.98px){
+	 main{
+		height:auto;
+		padding-top : 10px;
+		z-index : 2;
+	}
+	#main_img{
+		height : 380px;
+		margin-bottom:60px;
+	}
+}
+	 @media (min-width:1200px) and (max-width: 1560px){
+	 main{
+		height:auto;
+		padding-top : 10px;
+		z-index : 2;
+	}
+	#main_img{
+		height : 380px;
+		margin-bottom:60px;
 	}
 </style>
 </head>
