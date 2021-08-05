@@ -11,7 +11,7 @@
 ## 기술스택
 
 - FrontEnd : JSP, css, javascript, bootstrap, ajax
-- BackEnd : Java(8),Spring, MyBatis, Oracle, Maven
+- BackEnd : Java(8), Spring, MyBatis, Oracle, Maven
 - Server : Tomcat
 
 
@@ -22,9 +22,9 @@
 
 - SangBeen Lee : 회원정보(마이페이지), 소셜로그인, 페이지보안(SSL)
 - JaeHee Ahn : 게시글 CRUD, 멀티파일 업로드, 카테고리/키워드 검색, 끌올기능, 실시간 알림
-- GiDong Du: 게시글 CRUD, 댓글기능, 관리자페이지, 데이터 통계작업
-- MinSeok Jang: 메인페이지(페이징, 관심목록 위젯)
-- SungSu Park: 회원가입 
+- GiDong Du : 게시글 CRUD, 댓글기능, 관리자페이지, 데이터 통계작업
+- MinSeok Jang : 메인페이지(페이징, 관심목록 위젯)
+- SungSu Park : 회원가입 
 
 
 
@@ -39,6 +39,8 @@
 
 ### 회원
 
+- 소셜 로그인
+  - 카카오, 구글, 네이버
 - 게시글 CRUD
   - 최대 5장의 사진까지 업로드 가능
 - 마이페이지
